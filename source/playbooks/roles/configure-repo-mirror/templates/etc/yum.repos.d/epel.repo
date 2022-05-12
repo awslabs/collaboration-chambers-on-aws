@@ -1,0 +1,23 @@
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+baseurl={{RepositoryYumBaseUrl}}/epel/
+s3_enabled={{s3_enabled}}
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+baseurl={{RepositoryYumBaseUrl}}/epel-debuginfo/
+s3_enabled={{s3_enabled}}
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+
+[epel-source]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+baseurl={{RepositoryYumBaseUrl}}/epel-source/
+s3_enabled={{s3_enabled}}
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1

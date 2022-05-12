@@ -1,0 +1,1676 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: (SOCA) - Create custom AMIs
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+            default: Install Location
+        Parameters:
+          - S3ImageBuilderBucket
+          - S3ImageBuilderFolder
+
+      - Label:
+          default: Network and Security
+        Parameters:
+          - VpcCidr
+          - ClientIp
+          - PrefixListId
+          - SSHKeyPair
+
+      - Label:
+            default: Code Repository Output Location
+        Parameters:
+          - S3RepositoryBucket
+          - S3RepositoryFolder
+
+      - Label:
+          default: Configure EC2 ImageBuilder
+        Parameters:
+          - BuildCentos7MirrorReposAmi
+          - BuildCentos7SocaAmi
+          - BuildCentos7SocaDesktopAmi
+          - BuildCentos7EDAAmi
+          - BuildCentos7EDADesktopAmi
+          - BuildRHEL7MirrorReposAmi
+          - BuildRHEL7EDAAmi
+          - BuildRHEL7EDADesktopAmi
+          - TerminateBuildInstanceOnFailure
+          - SnsErrorTopicArn
+
+    ParameterLabels:
+      VpcCidr:
+        default: VpcCidr
+      ClientIp:
+        default: Which IP addresses should have access?
+      PrefixListId:
+        default: PrefixListId
+      SSHKeyPair:
+        default: What's your SSH keypair?
+      S3ImageBuilderBucket:
+        default: S3 bucket with your SOCA installer
+      S3ImageBuilderFolder:
+        default: S3 folder where you uploaded the SOCA files
+      S3RepositoryBucket:
+        default: S3RepositoryBucket
+      S3RepositoryFolder:
+        default: S3RepositoryFolder
+      BuildCentos7MirrorReposAmi:
+        default: Build CentOS 7 AMI that mirrors yum and other code for SOCA
+      BuildCentos7SocaAmi:
+        default: Build CentOS 7 AMI with SOCA packages installed
+      BuildCentos7SocaDesktopAmi:
+        default: Build CentOS 7 AMI with SOCA and DCV packages installed
+      BuildCentos7EDAAmi:
+        default: Build CentOS 7 AMI with SOCA and EDA packages installed
+      BuildCentos7EDADesktopAmi:
+        default: Build CentOS 7 AMI with SOCA, DCV, and EDA packages installed
+      BuildRHEL7MirrorReposAmi:
+        default: Build RHEL 7 AMI that mirrors yum and other code for SOCA
+      BuildRHEL7EDAAmi:
+        default: Build RHEL 7 AMI with SOCA and EDA packages installed
+      BuildRHEL7EDADesktopAmi:
+        default: Build RHEL 7 AMI with SOCA, DCV, and EDA packages installed
+      TerminateBuildInstanceOnFailure:
+        default: Terminate AMI build instances if the build fails.
+      SnsErrorTopicArn:
+        default: SNS topic to notify of errors
+
+Parameters:
+  VpcCidr:
+    Type: String
+    Default: 10.0.0.0/16
+    Description: Choose the Cidr block (/16 down to /24) you want to use for your VPC (eg 10.0.0.0/16 down to 10.0.0.0/24)
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/(1[6-9]|2[0-4])'
+    ConstraintDescription: Your VPC must use x.x.x.x/16 - x.x.x.x/24 CIDR range
+
+  ClientIp:
+    Type: String
+    Default: ""
+    Description: Default IP(s) allowed to directly SSH into the scheduler and access ElasticSearch. 0.0.0.0/0 means ALL INTERNET access. You probably want to change it with your own IP/subnet (x.x.x.x/32 for your own ip or x.x.x.x/24 for range. Replace x.x.x.x with your own PUBLIC IP. You can get your public IP using tools such as https://ifconfig.co/). Make sure to keep it restrictive!
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})|(^$)'
+    ConstraintDescription: ClientIP must be a valid IP or network range of the form x.x.x.x/x. If you want to add everyone (not recommended) use 0.0.0.0/0 otherwise specify your IP/NETMASK (e.g x.x.x/32 or x.x.x.x/24 for subnet range)
+
+  PrefixListId:
+    Type: String
+    Default: ""
+    Description: Prefix list with IP(s) allowed to directly SSH into the scheduler and access ElasticSearch.
+    AllowedPattern: '(pl-([a-zA-Z0-9]+))|(^$)'
+    ConstraintDescription: PrefixListId must be blank or pl-[a-z][A-Z][0-9]+
+
+  SSHKeyPair:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Default SSH pem keys used to SSH into the scheduler
+
+  S3ImageBuilderBucket:
+    Type: String
+    Description: Name of your S3 Bucket where you uploaded your install files
+    AllowedPattern: '(?=^.{3,63}$)(?!^(\d+\.)+\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])\.)*([a-z0-9]|[a-z0-9][a-z0-9\-]*[a-z0-9])$)'
+    ConstraintDescription: You must specify the bucket NAME only (no s3:// or https://bucket.s3.amazonaws.com)
+
+  S3ImageBuilderFolder:
+    Type: String
+    Description: Name of the S3 folder where you uploaded SOCA
+
+  S3RepositoryBucket:
+    Type: String
+
+  S3RepositoryFolder:
+    Type: String
+
+  BuildCentos7MirrorReposAmi:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  BuildCentos7SocaAmi:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  BuildCentos7SocaDesktopAmi:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  BuildCentos7EDAAmi:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  BuildCentos7EDADesktopAmi:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  BuildRHEL7MirrorReposAmi:
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+
+  BuildRHEL7EDAAmi:
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+
+  BuildRHEL7EDADesktopAmi:
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+
+  TerminateBuildInstanceOnFailure:
+    Type: String
+    Default: true
+    AllowedValues:
+      - true
+      - false
+
+  SnsErrorTopicArn:
+    Type: String
+    Default: ""
+
+Conditions:
+  BuildCentos7MirrorReposAmi:
+    !Equals [ !Ref BuildCentos7MirrorReposAmi, 'true' ]
+
+  BuildCentos7SocaAmi:
+    !Equals [ !Ref BuildCentos7SocaAmi, 'true' ]
+
+  BuildCentos7SocaDesktopAmi:
+    !Equals [ !Ref BuildCentos7SocaDesktopAmi, 'true' ]
+
+  BuildCentos7EDAAmi:
+    !Equals [ !Ref BuildCentos7EDAAmi, 'true' ]
+
+  BuildCentos7EDADesktopAmi:
+    !Equals [ !Ref BuildCentos7EDADesktopAmi, 'true' ]
+
+  BuildRHEL7MirrorReposAmi:
+    !Equals [ !Ref BuildRHEL7MirrorReposAmi, 'true' ]
+
+  BuildRHEL7EDAAmi:
+    !Equals [ !Ref BuildRHEL7EDAAmi, 'true' ]
+
+  BuildRHEL7EDADesktopAmi:
+    !Equals [ !Ref BuildRHEL7EDADesktopAmi, 'true' ]
+
+  TerminateBuildInstanceOnFailure:
+    !Equals [ !Ref TerminateBuildInstanceOnFailure, 'true' ]
+
+  HasClientIp:
+    !Not [ !Equals [ !Ref ClientIp, '' ] ]
+
+  HasPrefixListId:
+    !Not [ !Equals [ !Ref PrefixListId, '' ] ]
+
+Resources:
+  #============================================================================
+  # Create VPC for ImageBuilder with 1 public subnet
+  #============================================================================
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      CidrBlock: !Ref VpcCidr
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-VPC"
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: !Ref VpcCidr
+      AvailabilityZone: !Select
+        - 0
+        - !GetAZs
+          Ref: 'AWS::Region'
+      VpcId: !Ref Vpc
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Public1
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-InternetGateway
+
+  VPCIGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref Vpc
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PublicRoute
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicRouteSubnetAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  VpcFlowLogsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "${AWS::StackName}-vpc-flow-logs"
+      RetentionInDays: 3653
+
+  VpcFlowLogsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - !Sub "vpc-flow-logs.${AWS::URLSuffix}"
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: FlowLogs
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                Resource:
+                  - '*'
+
+  VpcFlowLogs:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      ResourceType: VPC
+      ResourceId: !Ref Vpc
+      TrafficType: ALL
+      MaxAggregationInterval: 60
+      LogDestinationType: cloud-watch-logs
+      LogDestination: !GetAtt VpcFlowLogsLogGroup.Arn
+      DeliverLogsPermissionArn: !GetAtt VpcFlowLogsRole.Arn
+
+  #============================================================================
+  # ImageBuilder Security Group
+  #============================================================================
+
+  ImageBuilderSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref Vpc
+      GroupDescription: SG for AMI creation
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-ImageBuilder
+        - Key: soca:ClusterId
+          Value: !Sub "${AWS::StackName}"
+
+  ImageBuilderIngressClientIpSSH:
+    Condition: HasClientIp
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      CidrIp: !Ref ClientIp
+      GroupId: !GetAtt ImageBuilderSecurityGroup.GroupId
+      Description: "Allow SSH traffic from client IP to master host"
+
+  ImageBuilderIngressPrefixListSSH:
+    Condition: HasPrefixListId
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      SourcePrefixListId: !Ref PrefixListId
+      GroupId: !GetAtt ImageBuilderSecurityGroup.GroupId
+      Description: "Allow SSH traffic from client IP to master host"
+
+  ImageBuilderEgressHttp:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+      GroupId: !GetAtt ImageBuilderSecurityGroup.GroupId
+      Description: "ImageBuilder to Internet"
+
+  ImageBuilderEgressHttps:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+      CidrIp: 0.0.0.0/0
+      GroupId: !GetAtt ImageBuilderSecurityGroup.GroupId
+      Description: "ImageBuilder to Internet"
+
+  #============================================================================
+  # EC2 Image Builder notifications lambda
+  #============================================================================
+  PipelineNotificationsLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: PipelineNotifications
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DeleteLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - !Join [ "", [ "arn:", !Ref "AWS::Partition", ":logs:", !Ref "AWS::Region", ":", !Ref  "AWS::AccountId", ":log-group:/aws/lambda/", !Ref AWS::StackName, "*"] ]
+              - Effect: Allow
+                Action:
+                  - imagebuilder:*
+                Resource:
+                  - '*'
+
+  PipelineNotificationsLambdaSnsPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt PipelineNotificationsLambda.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: 'sns.amazonaws.com'
+      SourceArn: !Ref PipelineNotificationsSns
+
+  PipelineNotificationsLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: Handle EC2 ImageBuilder pipeline notifications
+      FunctionName: !Sub "${AWS::StackName}-PipelineNotifications"
+      Handler: index.lambda_handler
+      MemorySize: 128
+      Role: !GetAtt PipelineNotificationsLambdaRole.Arn
+      Runtime: python3.7
+      Timeout: 180
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-ImageBuilderPipelineNotifications
+        - Key: soca:ClusterId
+          Value: !Ref AWS::StackName
+      Code:
+        ZipFile: !Sub |
+          import cfnresponse
+          import boto3
+          import json
+          import logging
+          from os import environ
+          import pprint
+          '''
+          Create/delete DNS entry
+          '''
+          logging.getLogger().setLevel(logging.INFO)
+          pp = pprint.PrettyPrinter(indent=4)
+          def lambda_handler(event, context):
+              try:
+                  logging.info("event: {}".format(pp.pformat(event)))
+
+                  logging.info("environ:\n{}".format(environ))
+
+                  for record in event['Records']:
+                      handle_record(record)
+              except Exception as e:
+                  logging.exception(str(e))
+
+          def handle_record(record):
+              logging.info("record:\n{}".format(pp.pformat(record)))
+
+              region = environ['AWS_REGION']
+              logging.info("region: " + region)
+
+              eventSource = record['EventSource']
+
+              snsMessage = record['Sns']['Message']
+              message = json.loads(snsMessage, strict=False)
+              logging.info("SNS message:\n{}".format(pp.pformat(message)))
+
+              pipelineArn = message['sourcePipelineArn']
+              logging.info("pipelineArn: " + pipelineArn)
+
+              state = message['state']['status']
+              logging.info("state: " + state)
+              if state in ['FAILED']:
+                  return
+              if state not in ['AVAILABLE']:
+                  return
+
+              buildVersion = message['buildVersion']
+              logging.info('buildVersion: {}'.format(buildVersion))
+
+              amis = message['outputResources']['amis']
+              for ami in amis:
+                  logging.info("ami details:\n{}".format(ami))
+                  imageRegion = ami['region']
+                  imageId = ami['image']
+                  logging.info('{} imageId: {}'.format(imageRegion, imageId))
+                  if imageRegion != region:
+                      continue
+
+                  # Register the AMI with the scheduler
+
+  #============================================================================
+  # SNS topic for EC2 Image Builder notifications
+  # Triggers the EC2 Image Builder notifications lambda
+  #============================================================================
+
+  PipelineNotificationsSns:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Protocol: lambda
+          Endpoint: !GetAtt PipelineNotificationsLambda.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PipelineNotifications
+
+  #============================================================================
+  # Lambda to run an EC2 ImageBuilder Pipeline
+  # Used in custom resources for each pipeline
+  #============================================================================
+
+  StartPipelineLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: StartPipeline
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DeleteLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - !Join [ "", [ "arn:", !Ref "AWS::Partition", ":logs:", !Ref "AWS::Region", ":", !Ref  "AWS::AccountId", ":log-group:/aws/lambda/", !Ref AWS::StackName, "*"] ]
+
+              - Effect: Allow
+                Action:
+                  - imagebuilder:StartImagePipelineExecution
+                Resource:
+                  - '*'
+
+  StartPipelineLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: Run EC2 ImageBuilder pipeline
+      FunctionName: !Sub "${AWS::StackName}-StartImagePipeline"
+      Handler: index.lambda_handler
+      MemorySize: 128
+      Role: !GetAtt StartPipelineLambdaRole.Arn
+      Runtime: python3.7
+      Timeout: 180
+      Tags:
+        - Key: soca:ClusterId
+          Value: !Ref AWS::StackName
+      Code:
+        ZipFile: !Sub |
+          import cfnresponse
+          import boto3
+          import logging
+          from os import environ
+          '''
+          Create/delete DNS entry
+          '''
+          logging.getLogger().setLevel(logging.INFO)
+          def lambda_handler(event, context):
+            try:
+              logging.info("event: {}".format(event))
+              requestType = event['RequestType']
+              if requestType in ['Delete']:
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {}, "")
+                  return
+
+              properties = event['ResourceProperties']
+              expected_properties = ['PipelineArn']
+              error_message = ""
+              for property in expected_properties:
+                try:
+                  value = event['ResourceProperties'][property]
+                except:
+                  error_message += "Missing {} property. ".format(property)
+              if error_message:
+                raise KeyError(error_message)
+
+              imagebuilder_client = boto3.client('imagebuilder')
+              response = imagebuilder_client.start_image_pipeline_execution(
+                imagePipelineArn=properties['PipelineArn'],
+              )
+              imageBuildVersionArn = response['imageBuildVersionArn']
+              imageBuildVersionUrl = "https://console.aws.amazon.com/imagebuilder/home?region={}#viewImages/{}".format(environ['AWS_REGION'], imageBuildVersionArn)
+              cfnresponse.send(event, context, cfnresponse.SUCCESS, {'imageBuildVersionArn': imageBuildVersionArn, 'imageBuildVersionUrl': imageBuildVersionUrl}, "{}".format(imageBuildVersionArn))
+            except Exception as e:
+              logging.exception(str(e))
+              cfnresponse.send(event, context, cfnresponse.FAILED, {'error': str(e)}, str(e))
+
+  #============================================================================
+  # EC2 ImageBuilder instance role
+  #============================================================================
+  ImageBuilderInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - !Sub "ec2.${AWS::URLSuffix}"
+                - !Sub "ssm.${AWS::URLSuffix}"
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore # Support for SSM
+        - arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilder # Support for EC2 Image Builder
+      Policies:
+        - PolicyName: ImageBuilderPermissions
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:ListDocuments
+                  - ssm:ListDocumentVersions
+                  - ssm:DescribeDocument
+                  - ssm:GetDocument
+                  - ssm:DescribeInstanceInformation
+                  - ssm:DescribeDocumentParameters
+                  - ssm:DescribeInstanceProperties
+                  - ssm:ListCommands
+                  - ssm:GetCommandInvocation
+                  - ssm:DescribeAutomationExecutions
+                Resource: "*"
+
+              - Effect: Allow
+                Action:
+                  - ec2:CreateImage
+                Resource: "*"
+
+              - Effect: Allow
+                Action:
+                  - ssm:PutParameter
+                Resource: "*"
+
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3ImageBuilderBucket}"
+                  - !Sub "arn:aws:s3:::${S3RepositoryBucket}"
+
+              - Effect: Allow
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3ImageBuilderBucket}/${S3ImageBuilderFolder}"
+                  - !Sub "arn:aws:s3:::${S3ImageBuilderBucket}/${S3ImageBuilderFolder}/*"
+                  - !Sub "arn:aws:s3:::${S3RepositoryBucket}/${S3RepositoryFolder}"
+                  - !Sub "arn:aws:s3:::${S3RepositoryBucket}/${S3RepositoryFolder}/*"
+
+              - Effect: Allow
+                Action:
+                  - s3:Put*
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3ImageBuilderBucket}/${S3ImageBuilderFolder}/logs"
+                  - !Sub "arn:aws:s3:::${S3ImageBuilderBucket}/${S3ImageBuilderFolder}/logs/*"
+                  - !Sub "arn:aws:s3:::${S3RepositoryBucket}/${S3RepositoryFolder}"
+                  - !Sub "arn:aws:s3:::${S3RepositoryBucket}/${S3RepositoryFolder}/*"
+
+              - Effect: Allow
+                Action:
+                  - 'ssm:PutParameter'
+                Resource:
+                  - '*'
+
+              - Effect: Allow
+                Action:
+                  - 'ec2:DescribeVolumes'
+                Resource:
+                  - '*'
+
+              - Effect: Allow
+                Action:
+                  - 'ec2:CreateSnapshot'
+                Resource:
+                  - '*'
+
+  ImageBuilderInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref ImageBuilderInstanceRole
+
+  ImageBuilderInfrastructure:
+    Type: AWS::ImageBuilder::InfrastructureConfiguration
+    Properties:
+      Name: !Sub ${AWS::StackName}-ImageBuilderInfrastructure
+      InstanceProfileName: !Ref ImageBuilderInstanceProfile
+      InstanceTypes:
+        - m5.4xlarge
+      KeyPair: !Ref SSHKeyPair
+      SubnetId: !Ref PublicSubnet1
+      SecurityGroupIds:
+        - !GetAtt ImageBuilderSecurityGroup.GroupId
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+      ResourceTags:
+        'soca:ClusterId': !Ref AWS::StackName
+      TerminateInstanceOnFailure: !Ref TerminateBuildInstanceOnFailure
+      SnsTopicArn: !Ref PipelineNotificationsSns
+      Logging:
+        S3Logs:
+          S3BucketName: !Sub "${S3ImageBuilderBucket}"
+          S3KeyPrefix: !Sub "${S3ImageBuilderFolder}/logs"
+
+  InitComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-InitComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-InitComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: Configure-Centos-7
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: initial-configuration
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderInitComponent) 2>&1
+
+                      touch /root/patch-hold
+
+  FinalComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-FinalComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-FinalComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: Configure-Centos-7
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: initial-configuration
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderInitComponent) 2>&1
+
+                      rm -f /root/patch-hold
+
+  CpScriptsComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-CpScriptsComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-CpScriptsComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: Configure-Centos-7
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: initial-configuration
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderCpScriptsComponent) 2>&1
+
+                      if grep -q 'Amazon Linux release 2' /etc/system-release; then
+                          BASE_OS=amazonlinux2
+                      elif grep -q 'CentOS Linux release 7' /etc/system-release; then
+                          BASE_OS=centos7
+                      else
+                          BASE_OS=rhel7
+                      fi
+
+                      echo export "AWS_DEFAULT_REGION=${AWS::Region}" >> /etc/environment
+                      echo export "SOCA_BASE_OS=$BASE_OS" >> /etc/environment
+                      echo export "SOCA_CLOUDFORMATION_STACK=${AWS::StackName}" >> /etc/environment
+                      echo export "IMAGE_BUILDER_WORKDIR=/tmp/soca/${AWS::StackName}" >> /etc/environment
+                      echo export "SNS_ERROR_TOPIC_ARN=${SnsErrorTopicArn}" >> /etc/environment
+                      echo export "SOCA_INSTALL_BUCKET=${S3ImageBuilderBucket}" >> /etc/environment
+                      echo export "SOCA_INSTALL_BUCKET_FOLDER=${S3ImageBuilderFolder}" >> /etc/environment
+                      echo export "SOCA_REPOSITORY_BUCKET=${S3RepositoryBucket}" >> /etc/environment
+                      echo export "SOCA_REPOSITORY_FOLDER=${S3RepositoryFolder}" >> /etc/environment
+                      source /etc/environment
+
+                      # AWS CLI should have already been installed
+
+                      mkdir -p $IMAGE_BUILDER_WORKDIR
+                      cd $IMAGE_BUILDER_WORKDIR
+                      aws s3 cp --quiet --recursive s3://${S3ImageBuilderBucket}/${S3ImageBuilderFolder}/ $IMAGE_BUILDER_WORKDIR/
+                      chmod -R +x scripts soca/source/scripts
+
+  MirrorReposComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-MirrorReposComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-MirrorReposComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: Mirror repos
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: initial-configuration
+                action: ExecuteBash
+                timeoutSeconds: 28800 # 8 hours
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Notify user of errors
+                      function on_exit {
+                          rc=$?
+                          set +e
+                          if [[ $rc -ne 0 ]] && [[ ":$SNS_ERROR_TOPIC_ARN" != ":" ]]; then
+                              tmpfile=$(mktemp)
+                              echo "See log files for more info:
+                          /var/lib/amazon/toe/TOE_*
+                          grep ImageBuilderMirrorRepos /var/log/messages | less" > $tmpfile
+                              aws --region $AWS_DEFAULT_REGION sns publish --topic-arn $SNS_ERROR_TOPIC_ARN --subject "${AWS::StackId} MirrorReposComponent failed" --message file://$tmpfile
+                              rm $tmpfile
+                          fi
+                      }
+                      trap on_exit EXIT
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderMirrorRepos) 2>&1
+
+                      source /etc/environment
+
+                      # AWS CLI should have already been installed
+
+                      cd $IMAGE_BUILDER_WORKDIR
+                      ./scripts/MirrorRepos.sh
+
+  SOCAComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-SOCAComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-SOCAComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: Configure-Centos-7
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: initial-configuration
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Notify user of errors
+                      function on_exit {
+                          rc=$?
+                          set +e
+                          if [[ $rc -ne 0 ]] && [[ ":$SNS_ERROR_TOPIC_ARN" != ":" ]]; then
+                              tmpfile=$(mktemp)
+                              echo "See log files for more info:
+                          /var/lib/amazon/toe/TOE_*
+                          grep ImageBuilderSOCAComponent /var/log/messages | less" > $tmpfile
+                              aws --region $AWS_DEFAULT_REGION sns publish --topic-arn $SNS_ERROR_TOPIC_ARN --subject "${AWS::StackId} SOCAComponent failed" --message file://$tmpfile
+                              rm $tmpfile
+                          fi
+                      }
+                      trap on_exit EXIT
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderSOCAComponent) 2>&1
+
+                      source /etc/environment
+
+                      # AWS CLI should have already been installed
+
+                      cd $IMAGE_BUILDER_WORKDIR
+                      ./scripts/configure-soca.sh
+
+  EDAComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-EDAComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-EDAComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: install-eda-packages
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: install-eda-packages
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Notify user of errors
+                      function on_exit {
+                          rc=$?
+                          set +e
+                          if [[ $rc -ne 0 ]] && [[ ":$SNS_ERROR_TOPIC_ARN" != ":" ]]; then
+                              tmpfile=$(mktemp)
+                              echo "See log files for more info:
+                          /var/lib/amazon/toe/TOE_*
+                          grep ImageBuilderEDAComponent /var/log/messages | less" > $tmpfile
+                              aws --region $AWS_DEFAULT_REGION sns publish --topic-arn $SNS_ERROR_TOPIC_ARN --subject "${AWS::StackId} EDAComponent failed" --message file://$tmpfile
+                              rm $tmpfile
+                          fi
+                      }
+                      trap on_exit EXIT
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderEDAComponent) 2>&1
+
+                      source /etc/environment
+
+                      cd $IMAGE_BUILDER_WORKDIR
+                      ./scripts/configure-eda.sh
+
+  DesktopComponent:
+    Type: AWS::ImageBuilder::Component
+    Properties:
+      Name: !Sub "${AWS::StackName}-DesktopComponent"
+      Platform: Linux
+      Version: 1.0.0
+      Tags:
+        Name: !Sub ${AWS::StackName}-DesktopComponent
+        'soca:ClusterId': !Ref AWS::StackName
+      Data: !Sub |
+        name: install-desktop-packages
+        description: Install packages
+        schemaVersion: 1.0
+
+        phases:
+          - name: build
+            steps:
+              - name: install-desktop-packages
+                action: ExecuteBash
+                inputs:
+                  commands:
+                    - |
+                      set -ex
+
+                      # Notify user of errors
+                      function on_exit {
+                          rc=$?
+                          set +e
+                          if [[ $rc -ne 0 ]] && [[ ":$SNS_ERROR_TOPIC_ARN" != ":" ]]; then
+                              tmpfile=$(mktemp)
+                              echo "See log files for more info:
+                          /var/lib/amazon/toe/TOE_*
+                          grep ImageBuilderDesktopComponent /var/log/messages | less" > $tmpfile
+                              aws --region $AWS_DEFAULT_REGION sns publish --topic-arn $SNS_ERROR_TOPIC_ARN --subject "${AWS::StackId} DesktopComponent failed" --message file://$tmpfile
+                              rm $tmpfile
+                          fi
+                      }
+                      trap on_exit EXIT
+
+                      # Redirect all IO to /var/log/messages and then echo to stderr
+                      exec 1> >(logger -s -t ImageBuilderDesktopComponent) 2>&1
+
+                      source /etc/environment
+
+                      cd $IMAGE_BUILDER_WORKDIR
+                      ./scripts/configure-desktop.sh
+
+  #============================================================================
+  # Centos7 MirrorRepos AMI
+  #============================================================================
+
+  Centos7MirrorReposImageRecipe:
+    Condition: BuildCentos7MirrorReposAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7MirrorReposImageRecipe"
+      Version: 1.0.0
+      Description: Mirror yum and other code repos required by SOCA
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref MirrorReposComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+        - DeviceName: "/dev/sdf"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            VolumeSize: 128
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7MirrorReposDistributionConfiguration:
+    Condition: BuildCentos7MirrorReposAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7MirrorRepos-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-Centos7-MirrorRepos-{{ imagebuilder:buildDate }}'
+            Description: "Centos7 repo mirrors"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-Centos7-MirrorRepos-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-Centos7MirrorRepos
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7MirrorReposPipeline:
+    Condition: BuildCentos7MirrorReposAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7MirrorReposPipeline"
+      ImageRecipeArn: !Ref Centos7MirrorReposImageRecipe
+      DistributionConfigurationArn: !Ref Centos7MirrorReposDistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      #   #ScheduleExpression: '0 0 * * *'
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7MirrorReposPipelineExecution:
+    Condition: BuildCentos7MirrorReposAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref Centos7MirrorReposPipeline
+
+  #============================================================================
+  # RHEL7 MirrorRepos AMI
+  #============================================================================
+
+  RHEL7MirrorReposImageRecipe:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7MirrorReposImageRecipe"
+      Version: 1.0.0
+      Description: Mirror yum and other code repos required by SOCA
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref MirrorReposComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+        - DeviceName: "/dev/sdf"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            # 128 GB disk filled up
+            VolumeSize: 512
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7MirrorReposDistributionConfiguration:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7MirrorRepos-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-RHEL7-MirrorRepos-{{ imagebuilder:buildDate }}'
+            Description: "RHEL7 repo mirrors"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-RHEL7-MirrorRepos-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-RHEL7MirrorRepos
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7MirrorReposPipeline:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7MirrorReposPipeline"
+      ImageRecipeArn: !Ref RHEL7MirrorReposImageRecipe
+      DistributionConfigurationArn: !Ref RHEL7MirrorReposDistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      #   #ScheduleExpression: '0 0 * * *'
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7MirrorReposPipelineExecution:
+    Condition: BuildRHEL7MirrorReposAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref RHEL7MirrorReposPipeline
+
+  #============================================================================
+  # SOCA AMI
+  #============================================================================
+
+  Centos7SOCAImageRecipe:
+    Condition: BuildCentos7SocaAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7SOCAImageRecipe"
+      Version: 1.0.0
+      Description: Configure Centos 7 AMI for SOCA Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            # VolumeSize: 10
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCADistributionConfiguration:
+    Condition: BuildCentos7SocaAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7-SOCA-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-Centos7-SOCA-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-Centos7-SOCA-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCAPipeline:
+    Condition: BuildCentos7SocaAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7SOCAPipeline"
+      ImageRecipeArn: !Ref Centos7SOCAImageRecipe
+      DistributionConfigurationArn: !Ref Centos7SOCADistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      #   #ScheduleExpression: '0 0 * * *'
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCAPipelineExecution:
+    Condition: BuildCentos7SocaAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref Centos7SOCAPipeline
+
+  #============================================================================
+  # SOCA Desktop AMI
+  #============================================================================
+
+  Centos7SOCADesktopImageRecipe:
+    Condition: BuildCentos7SocaDesktopAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7SOCADesktopImageRecipe"
+      Version: 1.0.0
+      Description: Configure Centos 7 AMI for SOCA Desktop Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref DesktopComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            #VolumeSize: 10
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCADesktopDistributionConfiguration:
+    Condition: BuildCentos7SocaDesktopAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7-SOCA-Desktop-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-Centos7-SOCA-Desktop-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA Desktop execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-Centos7-SOCA-Desktop-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-SOCA-Desktop-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCADesktopPipeline:
+    Condition: BuildCentos7SocaDesktopAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7SOCADesktopPipeline"
+      ImageRecipeArn: !Ref Centos7SOCADesktopImageRecipe
+      DistributionConfigurationArn: !Ref Centos7SOCADesktopDistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7SOCADesktopPipelineExecution:
+    Condition: BuildCentos7SocaDesktopAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref Centos7SOCADesktopPipeline
+
+  #============================================================================
+  # SOCA EDA AMI
+  #============================================================================
+
+  Centos7EDAImageRecipe:
+    Condition: BuildCentos7EDAAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7EDAImageRecipe"
+      Version: 1.0.0
+      Description: Configure Centos 7 AMI for SOCA EDA Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref EDAComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            #VolumeSize: 15
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDADistributionConfiguration:
+    Condition: BuildCentos7EDAAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7-EDA-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-Centos7-EDA-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA EDA execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-Centos7-EDA-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDAPipeline:
+    Condition: BuildCentos7EDAAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7EDAPipeline"
+      ImageRecipeArn: !Ref Centos7EDAImageRecipe
+      DistributionConfigurationArn: !Ref Centos7EDADistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDAPipelineExecution:
+    Condition: BuildCentos7EDAAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref Centos7EDAPipeline
+
+  #============================================================================
+  # SOCA EDA Desktop AMI
+  #============================================================================
+
+  Centos7EDADesktopImageRecipe:
+    Condition: BuildCentos7EDADesktopAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7EDADesktopImageRecipe"
+      Version: 1.0.0
+      Description: Configure Centos 7 AMI for SOCA EDA Desktop Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref EDAComponent
+        - ComponentArn: !Ref DesktopComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            VolumeSize: 10
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDADesktopDistributionConfiguration:
+    Condition: BuildCentos7EDADesktopAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7-EDA-Desktop-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-Centos7-EDA-Desktop-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA EDA Desktop execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-Centos7-EDA-Desktop-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDADesktopPipeline:
+    Condition: BuildCentos7EDADesktopAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-Centos7EDADesktopPipeline"
+      ImageRecipeArn: !Ref Centos7EDADesktopImageRecipe
+      DistributionConfigurationArn: !Ref Centos7EDADesktopDistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  Centos7EDADesktopPipelineExecution:
+    Condition: BuildCentos7EDADesktopAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref Centos7EDADesktopPipeline
+
+  #============================================================================
+  # RHEL7 EDA AMI
+  #============================================================================
+
+  RHEL7EDAImageRecipe:
+    #Condition: BuildRHEL7EDAAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7EDAImageRecipe"
+      Version: 1.0.0
+      Description: Configure Redhat 7 AMI for SOCA EDA Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref EDAComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            VolumeSize: 10
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDADistributionConfiguration:
+    #Condition: BuildRHEL7EDAAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7-EDA-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-RHEL7-EDA-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA EDA execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-RHEL7-EDA-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDAPipeline:
+    #Condition: BuildRHEL7EDAAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7EDAPipeline"
+      ImageRecipeArn: !Ref RHEL7EDAImageRecipe
+      ImageTestsConfiguration:
+        ImageTestsEnabled: true
+      DistributionConfigurationArn: !Ref RHEL7EDADistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDAPipelineExecution:
+    Condition: BuildRHEL7EDAAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref RHEL7EDAPipeline
+
+  #============================================================================
+  # RHEL7 EDA Desktop AMI
+  #============================================================================
+
+  RHEL7EDADesktopImageRecipe:
+    #Condition: BuildRHEL7EDADesktopAmi
+    Type: AWS::ImageBuilder::ImageRecipe
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7EDADesktopImageRecipe"
+      Version: 1.0.0
+      Description: Configure Redhat 7 AMI for SOCA EDA Desktop Node
+      ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
+      Components:
+        - ComponentArn: !Ref InitComponent
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
+        - ComponentArn: !Ref CpScriptsComponent
+        - ComponentArn: !Ref SOCAComponent
+        - ComponentArn: !Ref EDAComponent
+        - ComponentArn: !Ref DesktopComponent
+        - ComponentArn: !Ref FinalComponent
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sda1"
+          Ebs:
+            Encrypted: true
+            DeleteOnTermination: true
+            #VolumeSize: 15
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDADesktopDistributionConfiguration:
+    #Condition: BuildRHEL7EDADesktopAmi
+    Type: AWS::ImageBuilder::DistributionConfiguration
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7-EDA-Desktop-Distr-Config"
+      Distributions:
+        - Region: !Ref "AWS::Region"
+          AmiDistributionConfiguration:
+            Name: !Sub '${AWS::StackName}-RHEL7-EDA-Desktop-{{ imagebuilder:buildDate }}'
+            Description: "Preconfigured SOCA EDA Desktop execution node"
+            AmiTags:
+              Name: !Sub '${AWS::StackName}-RHEL7-EDA-Desktop-{{ imagebuilder:buildDate }}'
+              'soca:ClusterId': !Ref AWS::StackName
+      Tags:
+        Name: !Sub ${AWS::StackName}-ImageBuilderImage
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDADesktopPipeline:
+    #Condition: BuildRHEL7EDADesktopAmi
+    Type: AWS::ImageBuilder::ImagePipeline
+    Properties:
+      Name: !Sub "${AWS::StackName}-RHEL7EDADesktopPipeline"
+      ImageRecipeArn: !Ref RHEL7EDADesktopImageRecipe
+      ImageTestsConfiguration:
+        ImageTestsEnabled: true
+      DistributionConfigurationArn: !Ref RHEL7EDADesktopDistributionConfiguration
+      EnhancedImageMetadataEnabled: true
+      InfrastructureConfigurationArn: !Ref ImageBuilderInfrastructure
+      Status: ENABLED
+      # Schedule:
+      #   PipelineExecutionStartCondition: EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE
+      Tags:
+        'soca:ClusterId': !Ref AWS::StackName
+
+  RHEL7EDADesktopPipelineExecution:
+    Condition: BuildRHEL7EDADesktopAmi
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt StartPipelineLambda.Arn
+      PipelineArn: !Ref RHEL7EDADesktopPipeline
+
+#============================================================================
+# Outputs
+#============================================================================
+
+Outputs:
+  Centos7MirrorReposImagePipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${Centos7MirrorReposPipeline}"
+  Centos7MirrorReposImageRunPipelineCommand:
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${Centos7MirrorReposPipeline}"
+  Centos7MirrorReposImageBuildUrl:
+    Value: !If [BuildCentos7SocaAmi, !GetAtt Centos7MirrorReposPipelineExecution.imageBuildVersionUrl, Skipped]
+  Centos7MirrorRepositoryBucketParameter:
+    Value: !Sub "${AWS::StackName}/repositories/centos7/latest/RepositoryBucket"
+  Centos7MirrorRepositoryFolderParameter:
+    Value: !Sub "${AWS::StackName}/repositories/centos7/latest/RepositoryFolder"
+
+  Centos7SOCAImagePipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${Centos7SOCAPipeline}"
+  Centos7SOCAImageRunPipelineCommand:
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${Centos7SOCAPipeline}"
+  Centos7SOCAImageBuildUrl:
+    Value: !If [BuildCentos7SocaAmi, !GetAtt Centos7SOCAPipelineExecution.imageBuildVersionUrl, Skipped]
+
+  Centos7SOCADesktopImagePipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${Centos7SOCADesktopPipeline}"
+  Centos7SOCADesktopImageRunPipelineCommand:
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${Centos7SOCADesktopPipeline}"
+  Centos7SOCADesktopImageBuildUrl:
+    Value: !If [BuildCentos7SocaDesktopAmi, !GetAtt Centos7SOCADesktopPipelineExecution.imageBuildVersionUrl, Skipped]
+
+  Centos7EDAImagePipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${Centos7EDAPipeline}"
+  Centos7EDAImageRunPipelineCommand:
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${Centos7EDAPipeline}"
+  Centos7EDAImageBuildUrl:
+    Value: !If [BuildCentos7EDAAmi, !GetAtt Centos7EDAPipelineExecution.imageBuildVersionUrl, Skipped]
+
+  Centos7EDADesktopImagePipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${Centos7EDADesktopPipeline}"
+  Centos7EDADesktopImageRunPipelineCommand:
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${Centos7EDADesktopPipeline}"
+  Centos7EDADesktopImageBuildUrl:
+    Value: !If [BuildCentos7EDADesktopAmi, !GetAtt Centos7EDADesktopPipelineExecution.imageBuildVersionUrl, Skipped]
+
+  RHEL7MirrorReposImagePipelineUrl:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${RHEL7MirrorReposPipeline}"
+  RHEL7MirrorReposImageRunPipelineCommand:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${RHEL7MirrorReposPipeline}"
+  RHEL7MirrorReposImageBuildUrl:
+    Condition: BuildRHEL7MirrorReposAmi
+    Value: !If [BuildRHEL7MirrorReposAmi, !GetAtt RHEL7MirrorReposPipelineExecution.imageBuildVersionUrl, Skipped]
+  RHEL7MirrorRepositoryBucketParameter:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Value: !Sub "${AWS::StackName}/repositories/rhel7/latest/RepositoryBucket"
+  RHEL7MirrorRepositoryFolderParameter:
+    #Condition: BuildRHEL7MirrorReposAmi
+    Value: !Sub "${AWS::StackName}/repositories/rhel7/latest/RepositoryFolder"
+
+  RHEL7EDAImagePipelineUrl:
+    #Condition: BuildRHEL7EDAAmi
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${RHEL7EDAPipeline}"
+  RHEL7EDAImageRunPipelineCommand:
+    #Condition: BuildRHEL7EDAAmi
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${RHEL7EDAPipeline}"
+  RHEL7EDAImageBuildUrl:
+    Condition: BuildRHEL7EDAAmi
+    Value: !If [BuildRHEL7EDAAmi, !GetAtt RHEL7EDAPipelineExecution.imageBuildVersionUrl, Skipped]
+
+  RHEL7EDADesktopImagePipelineUrl:
+    #Condition: BuildRHEL7EDADesktopAmi
+    Value: !Sub "https://console.aws.amazon.com/imagebuilder/home?region=${AWS::Region}#viewPipeline/${RHEL7EDADesktopPipeline}"
+  RHEL7EDADesktopImageRunPipelineCommand:
+    #Condition: BuildRHEL7EDADesktopAmi
+    Value: !Sub "aws imagebuilder start-image-pipeline-execution --image-pipeline-arn ${RHEL7EDADesktopPipeline}"
+  RHEL7EDADesktopImageBuildUrl:
+    Condition: BuildRHEL7EDADesktopAmi
+    Value: !If [BuildRHEL7EDADesktopAmi, !GetAtt RHEL7EDADesktopPipelineExecution.imageBuildVersionUrl, Skipped]

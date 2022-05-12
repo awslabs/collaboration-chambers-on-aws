@@ -1,0 +1,12 @@
+---
+# tasks file for proxy
+
+- name: Create /usr/local/bin/mount-fsx.py
+  template:
+    src:   usr/local/bin/mount-fsx.py
+    dest: /usr/local/bin/mount-fsx.py
+    backup: yes
+    mode: 0755
+    owner: root
+    group: root
+    force: yes

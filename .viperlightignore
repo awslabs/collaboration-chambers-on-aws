@@ -1,0 +1,44 @@
+# Blacklist
+deployment/regional-s3-assets/
+deployment/global-s3-assets/
+^source/dist/
+^source/templates/
+^source/solution-for-scale-out-computing-on-aws.template
+^source/soca/cluster_web_ui/static/*
+^.idea/
+CODE_OF_CONDUCT.md:4
+CONTRIBUTING.md:50
+
+# Docs
+docs/tutorials/install-soca-cluster.md:24
+docs/security/integrate-cognito-sso.md:19
+docs/security/integrate-cognito-sso.md:34
+docs/tutorials/job-licenses-flexlm.md:79
+docs/tutorials/job-start-stop-email-notification.md:102
+docs/tutorials/job-start-stop-email-notification.md:129
+docs/web-interface/submit-hpc-jobs-web-based-interface.md:32
+docs/web-interface/submit-hpc-jobs-web-based-interface.md:61
+docs/web-interface/create-virtual-desktops-images.md
+
+# False Positive
+source/MirrorRepos/yum-s3-iam/s3iam.py:34
+source/soca/cluster_web_ui/static/vendor/jquery/jquery.js:7476
+source/soca/cluster_web_ui/static/vendor/jquery/jquery.slim.js:6683
+source/soca/cluster_analytics/cluster_nodes_tracking.py:41
+source/soca/cluster_analytics/job_tracking.py:152
+source/soca/cluster_web_ui/app.py:108
+source/solution-for-scale-out-computing-on-aws.yml:166
+source/soca/cluster_web_ui/templates/common/horizontal_menu_bar.html:5
+source/soca/cluster_hooks/job_notifications.py:54
+source/scripts/config.cfg:23
+source/soca/cluster_web_ui/config.py:92
+tests/test_web_api.py
+tests/get_latest_ami.py
+
+
+# Python Bandit
+source/soca/cluster_hooks/execjob_begin/soca_aws_infos.py
+source/soca/cluster_manager/ldap_manager.py
+source/soca/cluster_web_ui/generic/dcv.py
+source/soca/cluster_web_ui/app.py
+source/soca/cluster_web_ui/manual_build.py

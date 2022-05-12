@@ -1,0 +1,36 @@
+---
+# tasks file for mount-efs
+
+- name: Create /apps
+  file:
+    path: /apps
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create /data
+  file:
+    path: /data
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Mount /apps
+  mount:
+    backup: yes
+    fstype: nfs4
+    opts: nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
+    path: /apps
+    src: '{{EFS_APPS}}:/'
+    state: mounted
+
+- name: Mount /data
+  mount:
+    backup: yes
+    fstype: nfs4
+    opts: nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
+    path: /data
+    src: '{{EFS_DATA}}:/'
+    state: mounted

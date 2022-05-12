@@ -1,0 +1,229 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: (SOCA) - Deploy master host.
+Parameters:
+  PublicVpc:
+    Type: String
+
+  SocaLocalDomain:
+    Type: String
+
+  HostedZoneId:
+    Type: AWS::Route53::HostedZone::Id
+
+  UpdateDnsLambdaArn:
+    Type: String
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+
+  SecurityGroupId:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Description: For security reason, limit SSH to known networks
+
+  SSHKeyPair:
+    Type: AWS::EC2::KeyPair::KeyName
+
+  ProxyPrivateDnsName:
+    Type: String
+
+  NoProxy:
+    Type: String
+
+  ProxyCACertParameterName:
+    Type: String
+
+  RepositoryBucket:
+    Type: String
+
+  RepositoryFolder:
+    Type: String
+
+  SchedulerInstanceType:
+    Type: String
+
+  SchedulerIAMInstanceProfile:
+    Type: String
+
+  S3InstallBucket:
+    Type: String
+
+  S3InstallFolder:
+    Type: String
+
+  ClusterId:
+    Type: String
+
+  EFSAppsDns:
+    Type: String
+
+  EFSDataDns:
+    Type: String
+
+  AL2ImageId:
+    Type: AWS::EC2::Image::Id
+
+  ComputeNodeCustomAMI:
+    Type: AWS::EC2::Image::Id
+
+  ComputeNodeBaseOS:
+    Type: String
+
+  Version:
+    Type: String
+
+  UserName:
+    Type: String
+
+  UserPassword:
+    Type: AWS::SSM::Parameter::Value<String>
+
+  ErrorSnsTopicArn:
+    Type: String
+
+Resources:
+  SchedulerEC2Host:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AL2ImageId
+      DisableApiTermination: false
+      InstanceType: !Ref SchedulerInstanceType
+      IamInstanceProfile:
+        Ref: SchedulerIAMInstanceProfile
+      BlockDeviceMappings:
+        - DeviceName: "/dev/xvda"
+          Ebs:
+            VolumeSize: 150
+            VolumeType: gp3
+            Encrypted: true
+
+      KeyName: !Ref SSHKeyPair
+      SecurityGroupIds: !Ref SecurityGroupId
+      SubnetId: !Ref SubnetId
+
+      Tags:
+        - Key: Name
+          Value: !Sub ${ClusterId}-Scheduler
+        - Key: soca:KeepForever
+          Value: true
+        - Key: soca:ClusterId
+          Value: !Sub ${ClusterId}
+        - Key: soca:NodeType
+          Value: scheduler
+        - Key: soca:BackupPlan
+          Value: !Sub ${ClusterId}
+
+      UserData:
+          "Fn::Base64": !Sub |
+            #!/bin/bash -xe
+
+            # Notify user of errors
+            function on_exit {
+                rc=$?
+                set +e
+                if [[ $rc -ne 0 ]]; then
+                    aws --region ${AWS::Region} sns publish --topic-arn ${ErrorSnsTopicArn} --subject "${ClusterId} Scheduler UserData failed" --message "See /var/log/cloud-init.log or grep cloud-init /var/log/messages | less for more info."
+                fi
+
+                # Make sure that security patches that require a reboot are applied
+                if ! needs-restarting -r; then
+                    reboot
+                fi
+            }
+            trap on_exit EXIT
+
+            touch /root/patch-hold
+
+            # Update to latest ssm agent
+            if yum install -y https://s3.${AWS::Region}.amazonaws.com/amazon-ssm-${AWS::Region}/latest/linux_amd64/amazon-ssm-agent.rpm; then
+                systemctl restart amazon-ssm-agent
+            fi
+
+            echo export "AWS_DEFAULT_REGION=${AWS::Region}" >> /etc/environment
+            echo export "NO_PROXY=${NoProxy}" >> /etc/environment
+            echo export "SOCA_CLOUDFORMATION_STACK=${AWS::StackName}" >> /etc/environment
+            echo export "SOCA_COMPUTE_NODE_BASE_OS=${ComputeNodeBaseOS}" >> /etc/environment
+            echo export "SOCA_CONFIGURATION=${ClusterId}" >> /etc/environment
+            echo export "SOCA_HOSTED_ZONE_ID=${HostedZoneId}" >> /etc/environment
+            echo export "SOCA_INSTALL_AMI=${ComputeNodeCustomAMI}" >> /etc/environment
+            echo export "SOCA_INSTALL_BUCKET=${S3InstallBucket}" >> /etc/environment
+            echo export "SOCA_INSTALL_BUCKET_FOLDER=${S3InstallFolder}" >> /etc/environment
+            echo export "SOCA_LOCAL_DOMAIN=${SocaLocalDomain}" >> /etc/environment
+            echo export "SOCA_REPOSITORY_BUCKET=${RepositoryBucket}" >> /etc/environment
+            echo export "SOCA_REPOSITORY_FOLDER=${RepositoryFolder}" >> /etc/environment
+            echo export "SOCA_VERSION=${Version}" >> /etc/environment
+
+            source /etc/environment
+
+            # Configure using ansible
+            # This can be done before configuring the proxy because S3 is accessed using the S3 VPC endpoint
+            amazon-linux-extras enable ansible2
+            yum -y install ansible
+            rm -rf /root/playbooks
+            aws s3 cp --recursive s3://${S3InstallBucket}/${S3InstallFolder}/playbooks/ /root/playbooks/
+            cd /root/playbooks
+            ansible-playbook scheduler.yml -e Region=${!AWS_DEFAULT_REGION} -e RepositoryBucket=${!SOCA_REPOSITORY_BUCKET} -e RepositoryFolder=${!SOCA_REPOSITORY_FOLDER} -e Domain=${!SOCA_LOCAL_DOMAIN} -e S3InstallBucket=${!SOCA_INSTALL_BUCKET} -e S3InstallFolder=${!SOCA_INSTALL_BUCKET_FOLDER} -e RepositoryBucket=${!SOCA_REPOSITORY_BUCKET} -e RepositoryFolder=${!SOCA_REPOSITORY_FOLDER} -e ClusterId=${ClusterId} -e PublicVpc=${PublicVpc} -e ProxyCACertParameterName=${ProxyCACertParameterName} -e NoProxy=${NoProxy} -e EFS_APPS=${EFSAppsDns} -e EFS_DATA=${EFSDataDns} -e NodeType=scheduler
+
+            if [ -e /etc/profile.d/proxy.sh ]; then
+                source /etc/profile.d/proxy.sh
+            fi
+
+            export PATH=$PATH:/usr/local/bin
+
+            # If anything goes wrong then this prevents us from connecting via ssh and debugging.
+            # Deactivate shell to make sure users won't access the cluster if it's not ready
+            #echo '
+            #************* SOCA FIRST TIME CONFIGURATION *************
+            #Hold on, cluster is not ready yet.
+            #Please wait ~30 minutes as SOCA is being installed.
+            #Once cluster is ready to use, this message will be replaced automatically and you will be able to SSH.
+            #*********************************************************' > /etc/nologin
+
+            #usermod --shell /usr/sbin/nologin ec2-user
+
+            # Disable automatic motd update if using ALI
+            /usr/sbin/update-motd --disable
+            rm -f /etc/cron.d/update-motd
+            rm -f /etc/update-motd.d/*
+
+            AWS=$(which aws)
+
+            # Tag EBS disks manually as CFN ASG does not support it
+            AWS_AVAIL_ZONE=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
+            AWS_REGION="`echo \"$AWS_AVAIL_ZONE\" | sed "s/[a-z]$//"`"
+            AWS_INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+            EBS_IDS=$(aws ec2 describe-volumes --filters Name=attachment.instance-id,Values="$AWS_INSTANCE_ID" --region $AWS_REGION --query "Volumes[*].[VolumeId]" --out text | tr "\n" " ")
+            $AWS ec2 create-tags --resources $EBS_IDS --region $AWS_REGION --tags Key=Name,Value="${ClusterId} Root Disk" "Key=soca:ClusterId,Value=${ClusterId}"
+
+            # Tag Network Adapter for the Scheduler
+            ENI_IDS=$(aws ec2 describe-network-interfaces --filters Name=attachment.instance-id,Values="$AWS_INSTANCE_ID" --region $AWS_REGION --query "NetworkInterfaces[*].[NetworkInterfaceId]" --out text | tr "\n" " ")
+            $AWS ec2 create-tags --resources $ENI_IDS --region $AWS_REGION --tags Key=Name,Value="${ClusterId} Scheduler Network Adapter" "Key=soca:ClusterId,Value=${ClusterId}"
+
+            # Save parameters in a script so they aren't exposed in /var/log/messages
+            echo "/root/SchedulerPostReboot.sh ${S3InstallBucket} ${S3InstallFolder} ${UserName} '${UserPassword}' ${ErrorSnsTopicArn}" > /root/call-SchedulerPostReboot.sh
+            chmod 0700 /root/call-SchedulerPostReboot.sh
+            echo "@reboot $AWS s3 cp s3://${S3InstallBucket}/${S3InstallFolder}/scripts/SchedulerPostReboot.sh /root && chmod +x /root/SchedulerPostReboot.sh && /root/call-SchedulerPostReboot.sh >> /root/PostRebootConfig.log 2>&1" | crontab -
+            $AWS s3 cp s3://${S3InstallBucket}/${S3InstallFolder}/scripts/config.cfg /root/
+            $AWS s3 cp s3://${S3InstallBucket}/${S3InstallFolder}/scripts/requirements.txt /root/
+            $AWS s3 cp s3://${S3InstallBucket}/${S3InstallFolder}/scripts/Scheduler.sh /root/
+            $AWS s3 cp s3://${S3InstallBucket}/${S3InstallFolder}/scripts/SchedulerPostReboot.sh /root/
+            chmod +x /root/Scheduler.sh
+            chmod +x /root/SchedulerPostReboot.sh
+            /root/Scheduler.sh ${EFSDataDns} ${EFSAppsDns} ${ErrorSnsTopicArn} >> /root/Scheduler.sh.log 2>&1
+
+  SchedulerDnsRecord:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !Ref UpdateDnsLambdaArn
+      Hostname: "scheduler"
+      Domain: !Ref SocaLocalDomain
+      HostedZoneId: !Ref HostedZoneId
+      Type: 'A'
+      Value: !GetAtt SchedulerEC2Host.PrivateIp
+
+Outputs:
+  SchedulerInstanceId:
+    Value: !Ref SchedulerEC2Host
+  SchedulerPrivateIP:
+    Value: !GetAtt SchedulerEC2Host.PrivateIp
+  SchedulerPrivateDnsName:
+    Value: !GetAtt SchedulerEC2Host.PrivateDnsName

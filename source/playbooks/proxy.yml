@@ -1,0 +1,11 @@
+---
+- name: Configure proxy server
+  hosts: 127.0.0.1
+  become_user: root
+  become: yes
+  roles:
+    #- configure-repo-mirror
+    - common
+    - proxy
+
+  # aws ssm send-command --document-name "AWS-ApplyAnsiblePlaybooks" --document-version "1" --targets '[{"Key":"InstanceIds","Values":["i-06e76029421fc01af"]}]' --parameters '{"SourceType":["S3"],"SourceInfo":["{\"path\": \"https://cartalla-soca-us-east-1.s3.us-east-1.amazonaws.com/soca-installer-a5p4/playbooks/\"}"],"InstallDependencies":["True"],"PlaybookFile":["proxy.yml"],"ExtraVariables":["SSM=True Domain=soca.local.net"],"Check":["False"],"Verbose":["-v"]}' --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --output-s3-bucket-name "cartalla-soca-us-east-1" --output-s3-key-prefix "soca-installer-a5p4/playbooks/logs" --cloud-watch-output-config '{"CloudWatchOutputEnabled":true,"CloudWatchLogGroupName":"/Soca-test-proxy18/ansible"}' --region us-east-1

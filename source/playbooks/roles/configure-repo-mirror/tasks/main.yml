@@ -1,0 +1,391 @@
+---
+# tasks file for configure-repo role
+
+- name: Set default variable for RepositoryBucket
+  when: RepositoryBucket is not defined
+  set_fact:
+    RepositoryBucket: ""
+
+- name: Set default variable for RepositoryBucketSSMParameter
+  when: RepositoryBucketSSMParameter is not defined
+  set_fact:
+    RepositoryBucketSSMParameter: ""
+
+- name: Set default variable for RepositoryFolder
+  when: RepositoryFolder is not defined
+  set_fact:
+    RepositoryFolder: ""
+
+- name: Set default variable for RepositoryFolderSSMParameter
+  when: RepositoryFolderSSMParameter is not defined
+  set_fact:
+    RepositoryFolderSSMParameter: ""
+
+- name: Set default variable for RepositoryS3Path
+  when: RepositoryS3Path is not defined
+  set_fact:
+    RepositoryS3Path: ""
+
+- name: Set default variable for RepositoryDir
+  when: RepositoryDir is not defined
+  set_fact:
+    RepositoryDir: ""
+
+- name: Get RepositoryBucket
+  when: RepositoryBucketSSMParameter != ''
+  register: result
+  shell:
+    cmd: |
+      value=$(aws ssm get-parameter --name {{RepositoryBucketSSMParameter}} --query 'Parameter.Value' --output text)
+      echo $value
+- name: Set RepositoryBucket
+  when: result['changed']
+  set_fact:
+    RepositoryBucket: "{{result['stdout_lines'][0]}}"
+- name: Print RepositoryBucket
+  debug:
+    var: RepositoryBucket
+
+- name: Get RepositoryFolder
+  when: RepositoryFolderSSMParameter != ''
+  register: result
+  shell:
+    cmd: |
+      value=$(aws ssm get-parameter --name {{RepositoryFolderSSMParameter}} --query 'Parameter.Value' --output text)
+      echo $value
+- name: Set RepositoryFolder
+  when: result['changed']
+  set_fact:
+    RepositoryFolder: "{{result['stdout_lines'][0]}}"
+- name: Print RepositoryFolder
+  debug:
+    var: RepositoryFolder
+
+- name: Set RepositoryS3BasePath
+  when: (RepositoryBucket != '' and RepositoryFolder != '')
+  set_fact:
+    RepositoryS3BasePath: "s3://{{RepositoryBucket}}/{{RepositoryFolder}}"
+- name: Print RepositoryS3BasePath
+  debug:
+    var: RepositoryS3BasePath
+
+- name: Set RepositoryYumBaseUrl
+  when: (RepositoryBucket != '' and RepositoryFolder != '')
+  set_fact:
+    s3_enabled: "1"
+    RepositoryYumBaseUrl: "https://{{RepositoryBucket}}.s3-{{Region}}.amazonaws.com/{{RepositoryFolder}}/yum/centos7"
+- name: Set RepositoryYumBaseUrl
+  when: RepositoryDir != ''
+  set_fact:
+    s3_enabled: "1"
+    RepositoryYumBaseUrl: "file://{{RepositoryDir}}/yum/centos7"
+- name: Print RepositoryYumBaseUrl
+  debug:
+    var: RepositoryYumBaseUrl
+
+- name: Install yum-plugin-s3-iam
+  when: (RepositoryBucket != '' and RepositoryFolder != '')
+  register: plugin_results
+  shell:
+    creates: /etc/yum/pluginconf.d/s3iam.conf
+    cmd: |
+      set -ex
+      aws s3 cp s3://{{RepositoryBucket}}/{{RepositoryFolder}}/yum/yum-plugin-s3-iam-1.2.2-1.noarch.rpm /tmp/yum-plugin-s3-iam-1.2.2-1.noarch.rpm
+      yum install -y /tmp/yum-plugin-s3-iam-1.2.2-1.noarch.rpm
+      rm -f /tmp/yum-plugin-s3-iam-1.2.2-1.noarch.rpm
+
+- name: Install epel gpg key from S3
+  when: (RepositoryBucket != '' and RepositoryFolder != '')
+  shell:
+    creates: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+    cmd: |
+      set -ex
+      cd /tmp
+      rm -rf rpm-gpg
+      mkdir -p rpm-gpg
+      aws s3 sync {{RepositoryS3BasePath}}/rpm-gpg/ rpm-gpg/
+      rpm --import rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+- name: Install epel gpg key from nfs
+  when: RepositoryDir != ''
+  shell:
+    creates: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+    cmd: |
+      set -ex
+      rpm --import {{RepositoryDir}}/rpm-gpg/RPM-GPG-KEY-EPEL-7
+
+- name: Disable fastestmirror yum plugin
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum/pluginconf.d/fastestmirror.conf
+    dest: /etc/yum/pluginconf.d/fastestmirror.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/aws-fsx.repo
+  register: aws_fsx_repo
+  when: ansible_facts['distribution'] in ['CentOS', 'RedHat'] and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/aws-fsx.repo
+    dest: /etc/yum.repos.d/aws-fsx.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-Base.repo
+  register: c7_base_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-Base.repo
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-CR.repo
+  register: c7_cr_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-CR.repo
+    dest: /etc/yum.repos.d/CentOS-CR.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-Debuginfo.repo
+  register: c7_debuginfo_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-Debuginfo.repo
+    dest: /etc/yum.repos.d/CentOS-Debuginfo.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-fasttrack.repo
+  register: c7_fasttrack_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-fasttrack.repo
+    dest: /etc/yum.repos.d/CentOS-fasttrack.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-Sources.repo
+  register: c7_sources_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-Sources.repo
+    dest: /etc/yum.repos.d/CentOS-Sources.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/CentOS-x86_64-kernel.repo
+  register: c7_x86_64_kernel_results
+  when: ansible_facts['distribution'] == 'CentOS' and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/CentOS-x86_64-kernel.repo
+    dest: /etc/yum.repos.d/CentOS-x86_64-kernel.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/epel.repo
+  register: epel_repo
+  when: ansible_facts['distribution'] in ['CentOS', 'RedHat', 'Amazon'] and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/epel.repo
+    dest: /etc/yum.repos.d/epel.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/yum.repos.d/epel-testing.repo
+  register: epel_testing_repo
+  when: ansible_facts['distribution'] in ['CentOS', 'RedHat', 'Amazon'] and ((RepositoryBucket != '' and RepositoryFolder != '') or (RepositoryDir != ''))
+  template:
+    src:   etc/yum.repos.d/epel-testing.repo
+    dest: /etc/yum.repos.d/epel-testing.repo
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Clean yum
+  register: yum_clean
+  when: plugin_results['changed'] or aws_fsx_repo['changed'] or c7_base_results['changed'] or c7_cr_results['changed'] or c7_debuginfo_results['changed'] or c7_fasttrack_results['changed'] or c7_sources_results['changed'] or c7_x86_64_kernel_results['changed'] or epel_repo['changed'] or epel_testing_repo['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      yum clean all
+
+- name: Test aws-fsx
+  when: aws_fsx_repo['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo aws-fsx
+
+- name: Test aws-fsx-src
+  when: aws_fsx_repo['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo aws-fsx-src
+
+- name: Test base
+  when: c7_base_results['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo base
+      timeout -k 1 60 yum remove -y wget
+      timeout -k 1 60 yum install -y wget
+
+- name: Test updates
+  when: c7_base_results['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo updates
+
+- name: Test extras
+  when: c7_base_results['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo extras
+
+# - name: Test centosplus
+#   when: c7_base_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo centosplus
+
+# - name: Test cr
+#   when: c7_cr_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo cr
+
+# - name: Test base-debuginfo
+#   when: c7_debuginfo_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo base-debuginfo
+
+# - name: Test fasttrack
+#   when: c7_fasttrack_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo fasttrack
+
+# - name: Test base-source
+#   when: c7_sources_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo base-source
+
+# - name: Test updates-source
+#   when: c7_sources_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo updates-source
+
+# - name: Test extras-source
+#   when: c7_sources_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo extras-source
+
+# - name: Test centosplus-source
+#   when: c7_sources_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo centosplus-source
+
+# - name: Test centos-kernel
+#   when: c7_x86_64_kernel_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo centos-kernel
+
+# - name: Test centos-kernel-experimental
+#   when: c7_x86_64_kernel_results['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo centos-kernel-experimental
+
+- name: Test epel
+  when: epel_repo['changed']
+  shell:
+    warn: false # Disable warning about using yum module
+    cmd: |
+      timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel
+
+# - name: Test epel-debuginfo
+#   when: epel_repo['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel-debuginfo
+
+# - name: Test epel-source
+#   when: epel_repo['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel-source
+
+# - name: Test epel-testing
+#   when: epel_testing_repo['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel-testing
+
+# - name: Test epel-testing-debuginfo
+#   when: epel_testing_repo['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel-testing-debuginfo
+
+# - name: Test epel-testing-source
+#   when: epel_testing_repo['changed']
+#   shell:
+#     warn: false # Disable warning about using yum module
+#     cmd: |
+#       timeout -k 1 60 yum list all --disablerepo '*' --enablerepo epel-testing-source

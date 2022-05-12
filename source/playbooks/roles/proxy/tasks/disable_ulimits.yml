@@ -1,0 +1,17 @@
+---
+
+- name: Disable ulimit
+  pam_limits:
+    domain: '*'
+    limit_item: memlock
+    limit_type: hard
+    value: unlimited
+    backup: yes
+
+- name: Disable ulimit
+  pam_limits:
+    domain: '*'
+    limit_item: memlock
+    limit_type: soft
+    value: unlimited
+    backup: yes

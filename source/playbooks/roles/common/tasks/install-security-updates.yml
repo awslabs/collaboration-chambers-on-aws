@@ -1,0 +1,17 @@
+---
+
+- name: Install security updates on Amazon Linux or Redhat
+  when: ansible_facts['distribution'] in ['Amazon', 'RedHat']
+  yum:
+    bugfix: yes
+    security: yes
+    state: latest
+    update_cache: yes
+    name: '*'
+
+# - name: Install security updates on CentOS
+#   when: ansible_facts['distribution'] == 'CentOS'
+#   yum:
+#     state: latest
+#     update_cache: yes
+#     name: '*'

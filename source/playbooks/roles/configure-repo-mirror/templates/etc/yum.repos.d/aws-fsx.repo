@@ -1,0 +1,12 @@
+[aws-fsx]
+name=AWS FSx Packages  - $basearch
+baseurl={{RepositoryYumBaseUrl}}/aws-fsx/
+s3_enabled={{s3_enabled}}
+enabled=1
+gpgcheck=1
+
+[aws-fsx-src]
+name=AWS FSx Source  - $basearch
+baseurl={{RepositoryYumBaseUrl}}/aws-fsx-src/
+s3_enabled={{s3_enabled}}
+gpgcheck=1

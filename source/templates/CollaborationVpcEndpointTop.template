@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: (SOCA) - Add SOCA Collaboration VPC endpoint to SOCA cluster.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Parameters
+        Parameters:
+          - SocaStackname
+          - CollaborationSocaStackname
+
+    ParameterLabels:
+      SocaStackname:
+        default: SocaStackname
+      CollaborationSocaStackname:
+        default: CollaborationSocaStackname
+
+Parameters:
+  SocaStackname:
+    Type: String
+    Description: Stack name of the SOCA cluster that will access the collaboration chamber.
+    Default: primary
+
+  CollaborationSocaStackname:
+    Type: String
+    Description: Stack name of the collaboration chamber.
+    Default: collab
+
+Resources:
+
+  CollaborationVpcEndpoint:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        SocaStackname: !Ref  SocaStackname
+        CollaborationHostname: !Ref CollaborationSocaStackname
+        CollaborationEndpointServiceName: !ImportValue 
+          'Fn::Sub': "${CollaborationSocaStackname}-CollaborationEndpointServiceName"
+      TemplateURL: !Join
+        - "/"
+        - - !Sub "https://s3.${AWS::URLSuffix}"
+          - !ImportValue
+            'Fn::Sub': "${SocaStackname}-S3InstallBucket"
+          - !ImportValue
+            'Fn::Sub': "${SocaStackname}-S3InstallFolder"
+          - "templates/CollaborationVpcEndpointNested.template"
+      TimeoutInMinutes: 10
+      NotificationARNs:
+        - !ImportValue
+          'Fn::Sub': "${SocaStackname}-CloudFormationSnsTopic"
+
+#============================================================================
+# Outputs
+#============================================================================
+Outputs:
+  CollaborationURL:
+    Description: Disable the proxy in firefox and open this URL to access the collaboration chamber.
+    Value: !GetAtt CollaborationVpcEndpoint.Outputs.CollaborationURL

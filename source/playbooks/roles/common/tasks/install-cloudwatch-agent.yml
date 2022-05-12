@@ -1,0 +1,75 @@
+---
+# tasks file to install amazon-cloudwatch-agent
+
+# Uncomment to display all of the collected facts for all instances.
+#- debug: var=ansible_facts
+
+- name: Install amazon-cloudwatch-agent on Amazon Linux
+  when: ansible_facts['distribution'] == 'Amazon'
+  yum:
+    state: present
+    name: amazon-cloudwatch-agent
+
+- name: Install amazon-cloudwatch-agent on CentOS
+  when: ansible_facts['distribution'] == 'CentOS'
+  yum:
+    state: present
+    name: https://s3.{{Region}}.amazonaws.com/amazoncloudwatch-agent-{{Region}}/centos/amd64/latest/amazon-cloudwatch-agent.rpm
+
+- name: Install amazon-cloudwatch-agent on Redhat
+  when: ansible_facts['distribution'] == 'Redhat'
+  yum:
+    state: present
+    name: https://s3.{{Region}}.amazonaws.com/amazoncloudwatch-agent-{{Region}}/redhat/amd64/latest/amazon-cloudwatch-agent.rpm
+
+- name: Install epel
+  include_tasks: install-epel.yml
+
+- name: Install collectd on Amazon Linux
+  when: ansible_facts['distribution'] == 'Amazon'
+  shell:
+    cmd: amazon-linux-extras install -y collectd
+
+- name: Install collectd
+  yum:
+    state: present
+    enablerepo: epel
+    update_cache: yes
+    name:
+      - collectd
+
+- name: Create /root/cw-agent-config
+  file:
+    path: /root/cw-agent-config
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create /root/cw-agent-config/cw-agent-config-{{NodeType}}.json
+  register: cw_agent_config_json
+  template:
+    src:   root/cw-agent-config/cw-agent-config-{{NodeType}}.json
+    dest: /root/cw-agent-config/cw-agent-config-{{NodeType}}.json
+    backup: yes
+    mode: 0600
+    owner: root
+    group: root
+    force: yes
+
+- name: Configure amazon-cloudwatch-agent
+  when: cw_agent_config_json['changed']
+  register: cw_agent_configured
+  shell:
+    cmd: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a fetch-config /root/cw-agent-config/{{NodeType}}.json
+
+- name: Start amazon-cloudwatch-agent
+  when: cw_agent_configured['changed']
+  shell:
+    cmd: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a start
+
+- name: Run amazon-cloudwatch-agent
+  service:
+    name: amazon-cloudwatch-agent
+    enabled: yes
+    state: started

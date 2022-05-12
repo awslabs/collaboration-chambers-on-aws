@@ -1,0 +1,43 @@
+---
+# tasks file to install common things that all instances need
+
+# Uncomment to display all of the collected facts for all instances.
+#- debug: var=ansible_facts
+
+# Install ssm agent first so can debug
+- name: install ssm agent
+  include_tasks: install-ssm-agent.yml
+
+- name: install security updates
+  include_tasks: install-security-updates.yml
+
+- name: Install amazon-cloudwatch-agent
+  include_tasks: install-cloudwatch-agent.yml
+
+- name: Install chrony
+  include_tasks: install-chrony.yml
+
+- name: Disable automatic motd update
+  shell:
+    cmd: |
+      /usr/sbin/update-motd --disable
+      rm -f /etc/cron.d/update-motd
+      rm -f /etc/update-motd.d/*
+
+- name: Create /root/bin
+  file:
+    path: /root/bin
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Create /root/bin/get-base-os.sh
+  template:
+    src:   root/bin/get-base-os.sh
+    dest: /root/bin/get-base-os.sh
+    backup: yes
+    mode: 0755
+    owner: root
+    group: root
+    force: yes

@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: (SOCA) - Add SOCA Collaboration VPC endpoint to SOCA cluster.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: SOCA Stack
+        Parameters:
+          - SocaStackname
+          
+      - Label:
+          default: Collaboration Chamber Parameters
+        Parameters:
+          - CollaborationHostname
+          - CollaborationEndpointServiceName
+
+    ParameterLabels:
+      SocaStackname:
+        default: SocaStackname
+      CollaborationHostname:
+        CollaborationHostname
+      CollaborationEndpointServiceName:
+        default: CollaborationEndpointServiceName
+
+Parameters:
+  SocaStackname:
+    Type: String
+    Description: Stack name of the SOCA cluster that will access the collaboration chamber.
+    Default: primary
+
+  CollaborationHostname:
+    Type: String
+    Description: Hostname for collaboration VPC endpoint. Must be all lower case and 16 characters or less.
+    Default: collab
+    AllowedPattern: '[a-z0-9]+'
+    ConstraintDescription: Must be all lower case and 16 characters or less
+
+  CollaborationEndpointServiceName:
+    Type: String
+
+Resources:
+
+  #============================================================================
+  # VPC Endpoints
+  #============================================================================
+
+  CollaborationVpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Ref CollaborationEndpointServiceName
+      VpcEndpointType: Interface
+      VpcId: !ImportValue
+        'Fn::Sub': "${SocaStackname}-VpcId"
+      SecurityGroupIds:
+        - !ImportValue
+            'Fn::Sub': "${SocaStackname}-VpcEndpointSecurityGroup"
+      SubnetIds:
+        - !ImportValue
+            'Fn::Sub': "${SocaStackname}-PrivateSubnet1"
+        - !ImportValue
+            'Fn::Sub': "${SocaStackname}-PrivateSubnet2"
+        - !ImportValue
+            'Fn::Sub': "${SocaStackname}-PrivateSubnet3"
+
+  CloudformationVpcEndpointTag:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken:
+        'Fn::ImportValue':
+          'Fn::Sub': "${SocaStackname}-TagEC2ResourceLambdaArn"
+      ResourceId: !Ref CollaborationVpcEndpoint
+      Tags:
+        - Key: Name
+          Value: !Sub "${SocaStackname}-${CollaborationHostname}-vpc-endpoint"
+        - Key: soca:ClusterId
+          Value:
+            'Fn::ImportValue':
+              'Fn::Sub': "${SocaStackname}-ClusterId"
+
+  CollaborationDnsRecord:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !ImportValue
+        'Fn::Sub': "${SocaStackname}-UpdateDnsLambdaArn"
+      Hostname: !Ref CollaborationHostname
+      Domain: !ImportValue
+        'Fn::Sub': "${SocaStackname}-SocaLocalDomain"
+      HostedZoneId: !ImportValue
+        'Fn::Sub': "${SocaStackname}-HostedZoneId"
+      Type: 'CNAME'
+      Value: !Select [1, !Split [ ':' ,!Select [0, !GetAtt CollaborationVpcEndpoint.DnsEntries] ] ]
+
+#============================================================================
+# Outputs
+#============================================================================
+Outputs:
+  CollaborationURL:
+    Description: Disable the proxy in firefox and open this URL to access the collaboration chamber.
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !Ref CollaborationHostname
+        - "."
+        - !ImportValue
+            'Fn::Sub': "${SocaStackname}-SocaLocalDomain"

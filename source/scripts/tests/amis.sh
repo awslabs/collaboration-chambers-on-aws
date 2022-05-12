@@ -1,0 +1,3 @@
+
+export SOCA_AMAZON_LINUX_2_AMI=
+export SOCA_CENTOS7_AMI=

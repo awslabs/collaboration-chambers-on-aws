@@ -1,0 +1,8 @@
+---
+# This is necessary to configure the proxy before running playbooks that require the proxy to be configured
+- name: Configure proxied instance to use proxy server
+  hosts: 127.0.0.1
+  become_user: root
+  become: yes
+  roles:
+    - proxied

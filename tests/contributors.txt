@@ -1,0 +1,32 @@
+Git clone https://code.amazon.com/packages/Solution-for-scale-out-computing-on-aws/
+
+
+1 - Create your own branch
+2 - Configure your pipeline (http://contribute.awssolutionsbuilder.com/getting-started.html)
+3 - When ready (validate with the pipeline) merge your change to mainline
+git checkout mainline
+git merge <your_branch>
+git push
+
+mainline pipeline is hosted on SolBuilder
+
+4- When ready, merge your change to release/v1.0.0
+git checkout release/v1.0.0
+git merge mainline
+git push
+
+mainline pipeline is hosted on SolBuilder
+
+
+# Documentation
+
+Clone this repo
+cd to source
+run mkdocs gh-deploy
+This command will deploy the revision to gh-branch
+
+
+
+
+Test Endpoint: https://solutions-test-reference.s3.amazonaws.com/scale-out-computing-on-aws/v1.1.0/scale-out-computing-on-aws.template
+Prod Endpoint:

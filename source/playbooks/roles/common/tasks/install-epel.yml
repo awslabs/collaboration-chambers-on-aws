@@ -1,0 +1,17 @@
+---
+
+# Not using amazon-linux-extras because it's missing packages like figlet
+- name: Install epel-release on Amazon Linux
+  when: ansible_facts['distribution'] == 'Amazon'
+  shell:
+    creates: /etc/yum.repos.d/epel.repo
+    cmd: |
+      amazon-linux-extras install -y epel
+      #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+- name: Install epel-release on non-Amazon Linux
+  when: ansible_facts['distribution'] != 'Amazon'
+  yum:
+    state: present
+    name:
+      - epel-release

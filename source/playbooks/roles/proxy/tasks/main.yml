@@ -1,0 +1,214 @@
+---
+# tasks file for proxy
+
+- name: Install security updates
+  yum:
+    bugfix: yes
+    security: yes
+    state: latest
+    update_cache: yes
+    name: '*'
+
+- name: Create /root/bin
+  file:
+    path: /root/bin
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- { include: disable_ulimits.yml }
+
+- name: Create /root/bin/add-dns-entry.sh
+  template:
+    src:   root/bin/add-dns-entry.sh
+    dest: /root/bin/add-dns-entry.sh
+    backup: yes
+    mode: 0700
+    owner: root
+    group: root
+    force: yes
+
+- name: Run /root/bin/add-dns-entry.sh
+  shell:
+    cmd: /root/bin/add-dns-entry.sh
+
+- name: Install squid
+  shell:
+    creates: /etc/squid/squid.conf
+    cmd: amazon-linux-extras install -y squid4
+
+- name: Create /usr/local/bin/proxy_monitor.sh
+  template:
+    src:   usr/local/bin/proxy_monitor.sh
+    dest: /usr/local/bin/proxy_monitor.sh
+    backup: yes
+    mode: 0755
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/systemd/system/proxy_monitor.timer
+  template:
+    src:   etc/systemd/system/proxy_monitor.timer
+    dest: /etc/systemd/system/proxy_monitor.timer
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/systemd/system/proxy_monitor.service
+  template:
+    src:   etc/systemd/system/proxy_monitor.service
+    dest: /etc/systemd/system/proxy_monitor.service
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/squid/squid.conf
+  template:
+    src:   etc/squid/squid.conf
+    dest: /etc/squid/squid.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+  register: squid_conf_result
+
+- name: Create /etc/squid/soca.conf
+  template:
+    src:   etc/squid/soca.conf
+    dest: /etc/squid/soca.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+  register: soca_conf_result
+
+- name: Create /root/bin/create_proxyCA_pem.sh
+  template:
+    src:   root/bin/create_proxyCA_pem.sh
+    dest: /root/bin/create_proxyCA_pem.sh
+    mode: 0700
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/pki/ca-trust/source/anchors/proxyCA.pem
+  shell:
+    creates: /etc/pki/ca-trust/source/anchors/proxyCA.pem
+    cmd: /root/bin/create_proxyCA_pem.sh
+      
+- name: Create /root/bin/create_proxyCA_der.sh
+  template:
+    src:   root/bin/create_proxyCA_der.sh
+    dest: /root/bin/create_proxyCA_der.sh
+    mode: 0700
+    owner: root
+    group: root
+    force: yes
+
+- name: Create /etc/pki/ca-trust/source/anchors/proxyCA.der
+  shell:
+    creates: /etc/squid/ssl_cert/proxyCA.der
+    cmd: /root/bin/create_proxyCA_der.sh
+  
+- name: Get squid version
+  shell:
+    cmd: |
+      squid -v|grep Version|awk '{print $4}'
+  register: squid_version
+    
+- name: Get squid major version
+  shell:
+    cmd: |
+      squid -v|grep Version|awk '{print $4}'|tr '.' ' '|awk '{print $1}'
+  register: squid_major_version
+  
+- debug: var=squid_version
+
+- debug: var=squid_major_version
+
+- name: Create /var/lib/ssl_db/certs using ssl_crtd (squid version 3)
+  when: squid_major_version.stdout == '3'
+  shell:
+    creates: /var/lib/ssl_db/certs
+    cmd: |
+      set -xe
+      
+      if [ -e /var/lib/ssl_db ]; then
+        mv /var/lib/ssl_db /var/lib/ssl_db.back$(date +%Y%m%d-%H%M%S)
+      fi
+      ssl_crtd=$(find /usr -type f -name ssl_crtd)
+      $ssl_crtd -c -s /var/lib/ssl_db -M 4MB
+      chown -R squid:squid /var/lib/ssl_db
+    
+- name: Create /var/lib/ssl_db/certs using security_file_certgen (squid version 4)
+  when: squid_major_version.stdout == '4'
+  shell:
+    creates: /var/lib/ssl_db/certs
+    cmd: |
+      set -xe
+      
+      if [ -e /var/lib/ssl_db ]; then
+        mv /var/lib/ssl_db /var/lib/ssl_db.back$(date +%Y%m%d-%H%M%S)
+      fi
+      security_file_certgen=$(find /usr -type f -name security_file_certgen)
+      $security_file_certgen -c -s /var/lib/ssl_db -M 4MB
+      chown -R squid:squid /var/lib/ssl_db
+    
+- name: Get service facts
+  service_facts:
+
+- name: Restart squid
+  when: ansible_facts.services['squid.service']['state'] == 'running' and (squid_conf_result.changed or soca_conf_result.changed)
+  systemd:
+    name: squid
+    enabled: yes
+    state: restarted
+  register: squid_restarted
+
+- name: Start squid
+  service:
+    name: squid
+    enabled: yes
+    state: started
+  register: squid_started
+
+- name: Enable proxy_monitor.timer
+  systemd:
+    name: proxy_monitor.timer
+    daemon_reload: yes
+    enabled: yes
+
+- name: Start proxy_monitor.service
+  systemd:
+    name: proxy_monitor.service
+    daemon_reload: yes
+    state: started
+
+- name: Create /root/bin/update_proxy_rules.sh
+  template:
+    src:   root/bin/update_proxy_rules.sh
+    dest: /root/bin/update_proxy_rules.sh
+    backup: yes
+    mode: 0700
+    owner: root
+    group: root
+    force: yes
+
+- name: Create crontab to update proxy rules
+  cron:
+    name: 'update_proxy_rules'
+    state: present
+    minute: '*/5'
+    hour: '*'
+    weekday: '*'
+    day: '*'
+    month: '*'
+    job: /root/bin/update_proxy_rules.sh

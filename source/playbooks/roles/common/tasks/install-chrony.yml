@@ -1,0 +1,27 @@
+---
+
+- name: Create /etc/chrony.conf
+  template:
+    src:   etc/chrony.conf
+    dest: /etc/chrony.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+    force: yes
+
+- name: Remove ntp
+  yum:
+    state: removed
+    name: ntp
+
+- name: Install chrony
+  yum:
+    state: present
+    name: chrony
+
+- name: Run chrony
+  service:
+    name: chronyd
+    enabled: yes
+    state: started

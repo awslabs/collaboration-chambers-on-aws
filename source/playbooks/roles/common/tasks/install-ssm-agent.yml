@@ -1,0 +1,23 @@
+---
+# tasks file to install amazon-ssm-agent
+
+# Uncomment to display all of the collected facts for all instances.
+#- debug: var=ansible_facts
+
+- name: Install amazon-ssm-agent
+  when: ansible_facts['distribution'] == 'Amazon'
+  yum:
+    state: present
+    name: amazon-ssm-agent
+
+- name: Install amazon-ssm-agent
+  when: ansible_facts['distribution'] != 'Amazon'
+  yum:
+    state: present
+    name: https://s3.{{Region}}.amazonaws.com/amazon-ssm-{{Region}}/latest/linux_amd64/amazon-ssm-agent.rpm
+
+- name: Run amazon-ssm-agent
+  service:
+    name: amazon-ssm-agent
+    enabled: yes
+    state: started

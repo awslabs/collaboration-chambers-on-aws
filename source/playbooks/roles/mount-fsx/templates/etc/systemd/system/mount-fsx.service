@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount FSX Lustre file systems
+After=network.target
+
+[Service]
+Environment=HTTPS_PROXY=http://proxy.{{Domain}}:3128/
+Environment=REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+Environment=NO_PROXY="{{NoProxy}}"
+
+ExecStart=/usr/local/bin/mount-fsx.py
+
+[Install]
+WantedBy=multi-user.target

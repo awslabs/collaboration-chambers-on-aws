@@ -1,0 +1,45 @@
+---
+# tasks file for scheduler
+
+- name: Install security updates
+  yum:
+    security: yes
+    state: latest
+
+- name: Install unzip
+  yum:
+    name: unzip
+
+- name: Create /apps/soca/{{ClusterId}}/cluster_node_bootstrap
+  file:
+    path: /apps/soca/{{ClusterId}}/cluster_node_bootstrap
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: Get awscli installation package from AWS
+  # Used to bootstrap compute nodes
+  when: RepositoryBucket == '' or RepositoryFolder == ''
+  shell:
+    creates: /apps/soca/{{ClusterId}}/cluster_node_bootstrap/awscli-exe-linux-x86_64.zip
+    cmd: |
+      cd /apps/soca/{{ClusterId}}/cluster_node_bootstrap
+      wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+
+- name: Get awscli installation package from Repository Bucket
+  # Used to bootstrap compute nodes
+  when: RepositoryBucket != '' and RepositoryFolder != ''
+  shell:
+    creates: /apps/soca/{{ClusterId}}/cluster_node_bootstrap/awscli-exe-linux-x86_64.zip
+    cmd: |
+      cd /apps/soca/{{ClusterId}}/cluster_node_bootstrap
+      aws s3 cp s3://{{RepositoryBucket}}/{{RepositoryFolder}}/source/awscli-exe-linux-x86_64.zip awscli-exe-linux-x86_64.zip
+
+- name: Unzip awscli installation package on EFS
+  # Used to bootstrap compute nodes
+  shell:
+    creates: /apps/soca/{{ClusterId}}/cluster_node_bootstrap/aws/install
+    cmd: |
+      cd /apps/soca/{{ClusterId}}/cluster_node_bootstrap
+      unzip -q awscli-exe-linux-x86_64.zip

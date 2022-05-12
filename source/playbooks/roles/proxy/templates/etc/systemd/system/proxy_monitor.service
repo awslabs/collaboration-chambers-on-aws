@@ -1,0 +1,14 @@
+[Unit]
+Description=Checks health of proxyserver
+Wants=proxy_monitor.timer
+[Service]
+Environment=NO_PROXY=169.254.169.254,169.254.170.2,/var/run/docker.sock,.{{Domain}}
+Environment=HTTPS_PROXY=http://localhost:3128/
+Environment=HTTP_PROXY=http://localhost:3128/
+Environment=no_proxy=169.254.169.254,169.254.170.2,/var/run/docker.sock,.{{Domain}}
+Environment=https_proxy=http://localhost:3128/
+Environment=http_proxy=http://localhost:3128/
+Environment=REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ExecStart=/usr/local/bin/proxy_monitor.sh
+[Install]
+WantedBy=multi-user.target

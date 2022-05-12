@@ -1,0 +1,38 @@
+### Name: ELRepo.org Community Enterprise Linux Repository for el7
+### URL: https://elrepo.org/
+
+[elrepo]
+name=ELRepo.org Community Enterprise Linux Repository - el7
+baseurl={{RepositoryYumBaseUrl}}/elrepo/
+s3_enabled={{s3_enabled}}
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+
+[elrepo-testing]
+name=ELRepo.org Community Enterprise Linux Testing Repository - el7
+baseurl={{RepositoryYumBaseUrl}}/elrepo-testing/
+s3_enabled={{s3_enabled}}
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+
+[elrepo-kernel]
+name=ELRepo.org Community Enterprise Linux Kernel Repository - el7
+baseurl={{RepositoryYumBaseUrl}}/elrepo-kernel/
+s3_enabled={{s3_enabled}}
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+
+[elrepo-extras]
+name=ELRepo.org Community Enterprise Linux Extras Repository - el7
+baseurl={{RepositoryYumBaseUrl}}/elrepo-extras/
+s3_enabled={{s3_enabled}}
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
