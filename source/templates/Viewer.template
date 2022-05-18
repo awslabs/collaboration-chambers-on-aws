@@ -183,7 +183,7 @@ Resources:
       Handler: index.generate_cert
       MemorySize: 128
       Role: !Ref LambdaACMIAMRoleArn
-      Runtime: python3.6
+      Runtime: python3.7
       Timeout: 60
       Tags:
         - Key: soca:ClusterId
