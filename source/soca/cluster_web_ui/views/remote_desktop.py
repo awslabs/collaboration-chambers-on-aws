@@ -279,7 +279,7 @@ def create():
     if parameters['subnet_id'] is not False:
         subnet_id = parameters['subnet_id']
     else:
-        soca_private_subnets = [soca_configuration["PrivateSubnet1"]],
+        soca_private_subnets = [soca_configuration["PrivateSubnet1"]]
         if soca_configuration["PrivateSubnet2"]:
             soca_private_subnets.append(soca_configuration["PrivateSubnet2"])
         if soca_configuration["PrivateSubnet3"]:
