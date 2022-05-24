@@ -174,6 +174,7 @@ class Config(object):
         }
     ]
 
+    SESSION_COOKIE_SECURE = True
     SCHEDULER_API_ENABLED = True
     SESSION_SQLALCHEMY = SQLAlchemy(app)
 
@@ -246,5 +247,3 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run()
-
-
