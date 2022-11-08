@@ -201,7 +201,7 @@ def index():
         if session_state == "pending" and session_host_private_dns is not False:
             check_dcv_state = get('https://' + read_secretmanager.get_soca_configuration()['LoadBalancerDNSName'] + '/' + session_host_private_dns + '/',
                                   allow_redirects=False,
-                                  verify=False)
+                                  verify=False) # nosec
 
             logger.info("Checking {} for {} and received status {} ".format('https://' + read_secretmanager.get_soca_configuration()['LoadBalancerDNSName'] + '/' + session_host_private_dns + '/',
                                                                             session_info,
