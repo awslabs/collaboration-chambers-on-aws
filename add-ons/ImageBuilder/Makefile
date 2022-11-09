@@ -11,6 +11,9 @@ endif
 ifeq ($(strip ${S3_REPOSITORY_FOLDER}),)
 $(error Must define S3_REPOSITORY_FOLDER)
 endif
+ifeq ($(strip ${SSH_KEY_PAIR}),)
+$(error Must define SSH_KEY_PAIR)
+endif
 ifneq ($(or $(findstring create,${MAKECMDGOALS}), $(findstring update,${MAKECMDGOALS})),)
   ifeq ($(strip ${STACK_NAME}),)
     $(error Must define STACK_NAME)

@@ -734,8 +734,8 @@ Resources:
         Name: !Sub ${AWS::StackName}-InitComponent
         'soca:ClusterId': !Ref AWS::StackName
       Data: !Sub |
-        name: Configure-Centos-7
-        description: Install packages
+        name: Initialize-instance
+        description: Initialize instance
         schemaVersion: 1.0
 
         phases:
@@ -763,14 +763,14 @@ Resources:
         Name: !Sub ${AWS::StackName}-FinalComponent
         'soca:ClusterId': !Ref AWS::StackName
       Data: !Sub |
-        name: Configure-Centos-7
-        description: Install packages
+        name: Finalize-image-build
+        description: Finalize image build
         schemaVersion: 1.0
 
         phases:
           - name: build
             steps:
-              - name: initial-configuration
+              - name: final-component
                 action: ExecuteBash
                 inputs:
                   commands:
@@ -778,7 +778,7 @@ Resources:
                       set -ex
 
                       # Redirect all IO to /var/log/messages and then echo to stderr
-                      exec 1> >(logger -s -t ImageBuilderInitComponent) 2>&1
+                      exec 1> >(logger -s -t ImageBuilderFinalComponent) 2>&1
 
                       rm -f /root/patch-hold
 
@@ -1042,8 +1042,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref MirrorReposComponent
@@ -1115,8 +1115,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref MirrorReposComponent
@@ -1189,8 +1189,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
@@ -1258,8 +1258,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
@@ -1327,8 +1327,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
@@ -1396,8 +1396,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/centos-linux-7-minimal-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
@@ -1466,8 +1466,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
@@ -1537,8 +1537,8 @@ Resources:
       ParentImage: !Sub 'arn:aws:imagebuilder:${AWS::Region}:aws:image/red-hat-enterprise-linux-7-x86/x.x.x'
       Components:
         - ComponentArn: !Ref InitComponent
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/1.0.0"
-        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/1.0.0"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/aws-cli-version-2-linux/x.x.x"
+        - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/amazon-cloudwatch-agent-linux/x.x.x"
         - ComponentArn: !Sub "arn:aws:imagebuilder:${AWS::Region}:aws:component/python-3-linux/1.0.2"
         - ComponentArn: !Ref CpScriptsComponent
         - ComponentArn: !Ref SOCAComponent
