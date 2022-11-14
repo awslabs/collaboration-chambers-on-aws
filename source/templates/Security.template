@@ -1838,6 +1838,22 @@ Resources:
       GroupId: !GetAtt ProxySecurityGroup.GroupId
       Description: Internet
 
+  ProxyEgressInternetHTTPIpv6:
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5 # Security Groups found with cidr open to world on egress
+            reason: "Requires internet access"
+    Condition: PublicVpc
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIpv6: '::/0'
+      GroupId: !GetAtt ProxySecurityGroup.GroupId
+      Description: Internet
+
   ProxyEgressInternetHTTPS:
     Metadata:
       cfn_nag:
@@ -1851,6 +1867,22 @@ Resources:
       FromPort: 443
       ToPort: 443
       CidrIp: 0.0.0.0/0
+      GroupId: !GetAtt ProxySecurityGroup.GroupId
+      Description: Internet
+
+  ProxyEgressInternetHTTPSIpv6:
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5 # Security Groups found with cidr open to world on egress
+            reason: "Requires internet access"
+    Condition: PublicVpc
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+      CidrIpv6: '::/0'
       GroupId: !GetAtt ProxySecurityGroup.GroupId
       Description: Internet
 
