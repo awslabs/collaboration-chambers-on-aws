@@ -345,7 +345,7 @@ def create():
             logger.info("Checking in {} support Hibernation : {}".format(instance_type, check_hibernation_support))
             if len(check_hibernation_support["InstanceTypes"]) == 0:
                 if config.Config.DCV_FORCE_INSTANCE_HIBERNATE_SUPPORT is True:
-                    flash("Sorry your administrator limited <a href='https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/Hibernate.html#hibernating-prerequisites' target='_blank'>DCV to instances that support hibernation mode</a> <br> Please choose a different type of instance.")
+                    flash("Sorry your administrator limited <a href='https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/Hibernate.html#hibernating-prerequisites' target="_blank" rel="noopener,noreferrer">DCV to instances that support hibernation mode</a> <br> Please choose a different type of instance.")
                     return redirect("/remote_desktop_windows")
                 else:
                     flash("Sorry you have selected {} with hibernation support, but this instance type does not support it. Either disable hibernation support or pick a different instance type".format(instance_type), "error")

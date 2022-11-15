@@ -42,7 +42,7 @@ def index():
         flash("Unable to query Elastic Search indices. Make sure this host has permission to query: {}".format(job_index), "error")
 
     if index_id is False:
-        flash("Unable to retrieve index ID for {}. To do the initial setup, follow instructions available on <a href='https://awslabs.github.io/scale-out-computing-on-aws/analytics/monitor-cluster-activity/' target='_blank'>https://awslabs.github.io/scale-out-computing-on-aws/analytics/monitor-cluster-activity/</a>".format(config.Config.KIBANA_JOB_INDEX))
+        flash("Unable to retrieve index ID for {}. To do the initial setup, follow instructions available on <a href='https://awslabs.github.io/scale-out-computing-on-aws/analytics/monitor-cluster-activity/' target="_blank" rel="noopener,noreferrer">https://awslabs.github.io/scale-out-computing-on-aws/analytics/monitor-cluster-activity/</a>".format(config.Config.KIBANA_JOB_INDEX))
         user_kibana_url = "https://" + loadbalancer_dns_name + "/_plugin/kibana/"
     else:
         user_kibana_url = "https://"+loadbalancer_dns_name+"/_plugin/kibana/app/kibana#/discover?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:'"+start+"T00:00:00.000Z',to:'"+end+"T23:59:59.000Z'))&_a=(columns:!(_source),filters:!(),index:'"+index_id+"',interval:auto,query:(language:kuery,query:'user:"+user+"'),sort:!(!(start_iso,desc)))"

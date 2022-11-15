@@ -371,8 +371,8 @@
                                               {% endif %}
 
                                           {% elif session_data.session_state == 'running' %}
-                                              <h6>Option1: Browser access</h6>
-                                              <a target="_blank" href="{{ session_data.url }}?authToken={{ session_data.session_authentication_token }}#{{ session_data.session_id }}" class="btn btn-success btn-icon-split">
+                                              <h6>Optiona1: Browser access</h6>
+                                              <a target="_blank" rel="noopener,noreferrer" href="{{ session_data.url }}?authToken={{ session_data.session_authentication_token }}#{{ session_data.session_id }}" class="btn btn-success btn-icon-split">
                                                   <span class="icon text-white-50">
                                                       <i class="fas fa-check"></i>
                                                   </span>
@@ -381,9 +381,9 @@
                                               <br><br>
                                               <h6>Option2: Use Native Application (best performance)</h6>
                                               <div class="alert alert-primary" role="alert">
-                                                  Download your client <strong><a href="https://download.nice-dcv.com/" target="_blank"> here</a></strong>
+                                                  Download your client <strong><a href="https://download.nice-dcv.com/" target="_blank" rel="noopener,noreferrer"> here</a></strong>
                                               </div>
-                                              <a target="_blank" href="/remote_desktop/client?session={{ n }}" class="btn btn-success btn-icon-split">
+                                              <a target="_blank" rel="noopener,noreferrer" href="/remote_desktop/client?session={{ n }}" class="btn btn-success btn-icon-split">
                                                 <span class="icon text-white-50">
                                                   <i class="fas fa-check"></i>
                                                 </span>
@@ -427,7 +427,7 @@
                                                   <div class="modal-dialog modal-lg" role="document">
                                                       <div class="modal-content">
                                                           <div class="modal-header">
-                                                              <h5 class="modal-title" id="exampleModalLabel">Hibernate session {{ session_data.session_name }} <small><a href="https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/Hibernate.html" target="_blank"> Documentation</a> </small></h5>
+                                                              <h5 class="modal-title" id="exampleModalLabel">Hibernate session {{ session_data.session_name }} <small><a href="https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/Hibernate.html" target="_blank" rel="noopener,noreferrer"> Documentation</a> </small></h5>
                                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                   <span aria-hidden="true">&times;</span>
                                                               </button>
