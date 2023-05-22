@@ -37,7 +37,7 @@ python-ldap==3.4.0
 python-pam==1.8.4
 pytz==2019.1
 PyYAML==5.4
-requests==2.23.0
+requests==2.31.0
 requests-aws4auth==0.9
 rsa==4.7
 s3transfer==0.3.3
