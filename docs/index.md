@@ -1,123 +1,106 @@
 ---
-title: What is Scale-Out Computing on AWS ?
+title: Intro
 ---
 
-<p align="center">
-<img src="imgs/soca_logo_rev2.png" style="height: 150px;">
-</p>
+# What is a Collaboration Chamber
 
-Scale-Out Computing on AWS is a solution that helps customers more easily deploy and operate a multiuser environment for computationally intensive workflows. The solution features a large selection of compute resources; fast network backbone; unlimited storage; and budget and cost management directly integrated within AWS. The solution also deploys a user interface (UI) and automation tools that allows you to create your own queues, scheduler resources, Amazon Machine Images (AMIs), software, and libraries. 
-This solution is designed to provide a production ready reference implementation to be a starting point for deploying an AWS environment to run scale-out workloads, allowing you to focus on running simulations designed to solve complex computational problems.  
-____
-## Easy installation
-[Installation of your Scale-Out Computing on AWS cluster](tutorials/install-soca-cluster/) is fully automated and managed by CloudFormation 
+A collaboration chamber is a multi-user engineering environment configured to allow collaboration with third parties and secure
+the IP inside the environment so that it can only be accessed by approved parties and so that the IP can be
+secured from egress from the environment.
+An example would be a fabless semiconductor company that finds a bug in an EDA tool that needs to create a secure environment
+where the EDA tool ISV can debug the bug and validate bug fixes using the customer's IP.
 
-!!!info "Did you know?"
-    - You can have multiple Scale-Out Computing on AWS clusters on the same AWS account
-    - Scale-Out Computing on AWS comes with a list of unique tags, making resource tracking easy for AWS Administrators
+This implementation is based on [Scale Out Computing on AWS](https://github.com/awslabs/scale-out-computing-on-aws), an official AWS solution.
+It adds additional security features required to enable secure collaboration.
+Some of the key security changes include:
 
-## Access your cluster in 1 click
-You can [access your Scale-Out Computing on AWS cluster](tutorials/access-soca-cluster/) either using DCV (Desktop Cloud Visualization)[^1] or through SSH.
+* Block user ssh access to the VPC.
+* Require all internet access to go through a proxy.
+* Use AWS VPC endpoints for all service access
+* Enable a completely private VPC with no internet access
+* Add egress rules to all security groups
 
-[^1]: [DCV](https://docs.aws.amazon.com/dcv/latest/adminguide/what-is-dcv.html) is a remote visualization technology that enables users to easily and securely connect to graphic-intensive 3D applications hosted on a remote high-performance server.*
+## Deployment
 
-## Simple Job Submission
-Scale-Out Computing on AWS [supports a list of parameters designed to simplify your job submission on AWS](tutorials/integration-ec2-job-parameters/). Advanced users can either manually choose compute/storage/network configuration for their job or simply ignore these parameters and let Scale-Out Computing on AWS picks the most optimal hardware (defined by the HPC administrator)
+If your account is new, then you may need to go to the Service Quotas console
+and increase the limits for your on-demand general purpose EC2 instances.
 
-~~~bash
-# Advanced Configuration
-user@host$ qsub -l instance_type=c5n.18xlarge \
-    -l instance_ami=ami-123abcde
-    -l nodes=2 
-    -l scratch_size=300 
-    -l efa_support=true
-    -l spot_price=1.55 myscript.sh
+Clone this repository.
 
-# Basic Configuration
-user@host$ qsub myscript.sh
-~~~
+Configure your AWS credentials.
+The installer uses the AWS API to deploy infrastructure on AWS using CloudFormation.
+This requires administrative credentials to create all of the required AWS resources.
 
-!!!info
-    - [Check our Web-Based utility to generate you submission command](tutorials/job-configuration-generator/)
-    - [Refer to this page for tutorial and examples](tutorials/launch-your-first-job/)
-    - [Refer to this page to list all supported parameters](tutorials/integration-ec2-job-parameters/)
-    - Jobs can also be submitted [via HTTP API](web-interface/control-hpc-job-with-http-web-rest-api/) or [via web interface](web-interface/submit-hpc-jobs-web-based-interface/)
+Create an S3 bucket that will be used for deployment.
 
-## OS agnostic and support for custom AMI
-Customers can integrate their Centos7/Rhel7/AmazonLinux2 AMI automatically by simply using ==-l instance_ami=<ami_id\>== at job submission. There is no limitation in term of AMI numbers (you can have 10 jobs running simultaneously using 10 different AMIs). SOCA supports heterogeneous environment, so you can have concurrent jobs running different operating system on the same cluster. 
+Create a prefix list that contains the CIDRs that should have access to the collaboration chamber.
 
-!!!danger "AMI using OS different than the scheduler"
-    In case your AMI is different than your scheduler host, you can specify the OS manually to ensure packages will be installed based on the node distribution.
+Create a Systems Managers Parameter Store parameter with the password of the admin user.
 
-    In this example, we assume your Scale-Out Computing on AWS deployment was done using AmazonLinux2, but you want to submit a job on your personal RHEL7 AMI
- 
-    ~~~bash
-    user@host$ qsub -l instance_ami=<ami_id> -l base_os=rhel7 myscript.sh
-    ~~~
-    
-    _____
+```
+cd source
+stack_name=STACK_NAME
+./manual_build.py \
+    --stack-name $stack_name \
+    --id stack_name \
+    --region REGION \
+    --bucket BUCKET \
+    --prefix-list-id PREFIX_LIST_ID \
+    --ssh-keypair SSH_KEYPAIR \
+    --username USERNAME \
+    --password-parameter PASSWORD_PARAMETER \
+    --create
+```
 
-!!!info "Scale-Out Computing on AWS AMI requirements"
-    When you use a custom AMI, just make sure that your AMI does not use /apps, /scratch or /data partitions as Scale-Out Computing on AWS will need to use these locations during the deployment. [Read this page for AMI creation best practices](tutorials/reduce-compute-node-launch-time-with-custom-ami/)
+This will create a collaboration chamber with a public endpoint for the Web UI.
 
-## Web User Interface
-Scale-Out Computing on AWS includes a simple web ui designed to simplify user interactions such as:
+To create a collaboration chamber with no public access you will need to first create an S3 repository
+that contains all of the software and also has an S3 yum repository for installing packages.
+This is done my the ImageBuilder add on.
 
-- [Start/Stop DCV sessions in 1 click](tutorials/access-soca-cluster/#graphical-access-using-dcv)
-- [Download private key in both PEM or PPK format](tutorials/access-soca-cluster/#ssh-access)
-- [Check the queue and job status in real-time](web-interface/manage-ldap-users/)
-- [Add/Remove LDAP users ](web-interface/manage-ldap-users/)
-- [Access the analytic dashboard](web-interface/my-activity/)
-- [Access your filesystem](web-interface/my-files/)
-- [Understand why your jobs are stuck in the queue](web-interface/my-job-queue/#understand-why-your-job-cannot-start)
-- [Create Application profiles and let your users submit job directly via the web interface](web-interface/submit-hpc-jobs-web-based-interface/)
+First edit collaboration-chambers-on-aws/add-ons/ImageBuilder/config.sh and set the values of all of the
+variables.
 
-## HTTP Rest API
-Users can submit/retrieve/delete jobs [remotely via an HTTP REST API](web-interface/control-hpc-job-with-http-web-rest-api/)
+```
+export STACK_NAME=SocaImageBuilder
 
-## Budgets and Cost Management
-You can [review your HPC costs](budget/review-hpc-costs/) filtered by user/team/project/queue very easily using AWS Cost Explorer. 
+export AWS_DEFAULT_REGION=us-east-1
+export SSH_KEY_PAIR=admin-us-east-1
+export TerminateBuildInstanceOnFailure=false
+#export TerminateBuildInstanceOnFailure=true
+#export SNS_ERROR_TOPIC_ARN=""
 
-Scale-Out Computing on AWS also supports AWS Budget and [let you create budgets](budget/set-up-budget-project/) assigned to user/team/project or queue. To prevent over-spend, Scale-Out Computing on AWS includes hooks to restrict job submission when customer-defined budget has expired.
+export S3_IMAGE_BUILDER_BUCKET=my-bucket-${AWS_DEFAULT_REGION}
+export S3_IMAGE_BUILDER_FOLDER=ImageBuilder/${STACK_NAME}
+export S3_REPOSITORY_BUCKET=${S3_IMAGE_BUILDER_BUCKET}
+export S3_REPOSITORY_FOLDER=repositories
+```
 
-Lastly, Scale-Out Computing on AWS let you create queue ACLs or instance restriction at a queue level. [Refer to this link for all best practices in order to control your HPC cost on AWS and prevent overspend](budget/prevent-overspend-hpc-cost-on-aws-soca/).
+```
+cd collaboration-chambers-on-aws/add-ons/ImageBuilder
+./create.sh
+```
 
-## Detailed Cluster Analytics 
-Scale-Out Computing on AWS [includes ElasticSearch and automatically ingest job and hosts data](analytics/monitor-cluster-activity/) in real-time for accurate visualization of your cluster activity.
+This will create a CloudFormation stack that will create a VPC that is used by EC2 ImageBuilder to build AMIs for SOCA and also
+to create the repositories.
+The outputs of the stack contain links to the image builder pipelines and builds.
 
-!!!success "Don't know where to start?"
-    Scale-Out Computing on AWS [includes dashboard examples](analytics/build-kibana-dashboards/) if you are not familiar with ElasticSearch or Kibana.
-    
-## 100% Customizable
-Scale-Out Computing on AWS is built entirely on top of AWS and can be customized by users as needed. Most of the logic is based of CloudFormation templates, shell scripts and python code.
-More importantly, the entire Scale-Out Computing on AWS codebase is open-source and [available on Github](https://github.com/awslabs/scale-out-computing-on-aws).
+A new collaboration chamber can now be created that doesn't have a public vpc.
 
-## Persistent and Unlimited Storage
-Scale-Out Computing on AWS includes two unlimited EFS storage (/apps and /data). Customers also have the ability to deploy high-speed SSD EBS disks or FSx for Lustre as scratch location on their compute nodes. [Refer to this page to learn more about the various storage options](storage/backend-storage-options/) offered by Scale-Out Computing on AWS
-
-## Centralized user-management
-Customers [can create unlimited LDAP users and groups](web-interface/manage-ldap-users/). By default Scale-Out Computing on AWS includes a default LDAP account provisioned during installation as well as a "Sudoers" LDAP group which manage SUDO permission on the cluster.
-
-## Automatic backup
-Scale-Out Computing on AWS [automatically backup your data](security/backup-restore-your-cluster/) with no additional effort required on your side.
-
-## Support for network licenses
-Scale-Out Computing on AWS [includes a FlexLM-enabled script which calculate the number of licenses](tutorials/job-licenses-flexlm) for a given features and only start the job/provision the capacity when enough licenses are available. 
-
-## Automatic Errors Handling
-Scale-Out Computing on AWS performs various dry run checks before provisioning the capacity. However, it may happen than AWS can't fullfill all requests (eg: need 5 instances but only 3 can be provisioned due to capacity shortage within a placement group). In this case, Scale-Out Computing on AWS will try to provision the capacity for 30 minutes. After 30 minutes, and if the capacity is still not available, Scale-Out Computing on AWS will automatically reset the request and try to provision capacity in a different availability zone.
-[To simplify troubleshooting, all these errors are reported on the web interface](web-interface/my-job-queue/#understand-why-your-job-cannot-start)
-
-## Custom fair-share
-Each user is given a score which vary based on:
-
-- Number of job in the queue
-- Time each job is queued
-- Priority of each job
-- Type of instance
-
-Job that belong to the user with the highest score will start next. Fair Share is is configured at the queue level (so you can have one queue using FIFO and another one Fair Share)
-
-## And more ...
-
-Refer to the various sections (tutorial/security/analytics ...) to learn more about this solution
+```
+cd source
+stack_name=STACK_NAME
+./manual_build.py \
+    --stack-name $stack_name \
+    --id stack_name \
+    --region REGION \
+    --bucket BUCKET \
+    --prefix-list-id PREFIX_LIST_ID \
+    --ssh-keypair SSH_KEYPAIR \
+    --username USERNAME \
+    --password-parameter PASSWORD_PARAMETER \
+    --public-vpc false \
+    --RepositoryBucket REPOSITORYBUCKET \
+    --RepositoryFolder REPOSITORYFOLDER \
+    --create
+```
