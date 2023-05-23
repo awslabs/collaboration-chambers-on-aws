@@ -9,24 +9,24 @@
       
       
       
-        <link rel="prev" href="../backend-storage-options/">
+        <link rel="prev" href="../web-interface/submit-hpc-jobs-web-based-interface/">
       
       
-        <link rel="next" href="../../tutorials/">
+        <link rel="next" href="../workshops/">
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
-        <title>Launch a job with FSx for Lustre - SOCA Collaboration Chamber on AWS Knowledge Base</title>
+        <title>What is Scale-Out Computing on AWS ? - SOCA Collaboration Chamber on AWS Knowledge Base</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -42,9 +42,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/css/custom.css">
+      <link rel="stylesheet" href="../assets/css/custom.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -69,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#what-is-fsx" class="md-skip">
+        <a href="#easy-installation" class="md-skip">
           Skip to content
         </a>
       
@@ -83,7 +83,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-header__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+    <a href=".." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-header__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Launch a job with FSx for Lustre
+              What is Scale-Out Computing on AWS ?
             
           </span>
         </div>
@@ -179,7 +179,7 @@
 
 
   <li class="md-tabs__item">
-    <a href="../.." class="md-tabs__link">
+    <a href=".." class="md-tabs__link">
       What is a Collaboration Chamber ?
     </a>
   </li>
@@ -194,7 +194,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../Custom-AMIs/" class="md-tabs__link">
+      <a href="../Custom-AMIs/" class="md-tabs__link">
         Custom AMIs
       </a>
     </li>
@@ -210,7 +210,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../FAQ/" class="md-tabs__link">
+      <a href="../FAQ/" class="md-tabs__link">
         FAQ
       </a>
     </li>
@@ -226,7 +226,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../analytics/" class="md-tabs__link">
+      <a href="../analytics/" class="md-tabs__link">
         Analytics
       </a>
     </li>
@@ -242,7 +242,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../budget/" class="md-tabs__link">
+      <a href="../budget/" class="md-tabs__link">
         Budget
       </a>
     </li>
@@ -258,7 +258,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../debug/" class="md-tabs__link">
+      <a href="../debug/" class="md-tabs__link">
         Debug
       </a>
     </li>
@@ -274,8 +274,56 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../security/" class="md-tabs__link">
+      <a href="../security/" class="md-tabs__link">
         Security
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../storage/" class="md-tabs__link">
+        Storage
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../web-interface/" class="md-tabs__link">
+        Web interface
       </a>
     </li>
   
@@ -292,55 +340,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../" class="md-tabs__link md-tabs__link--active">
-        Storage
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../tutorials/" class="md-tabs__link">
-        Tutorials
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../web-interface/" class="md-tabs__link">
-        Web interface
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../what-is-soca/" class="md-tabs__link">
+      <a href="./" class="md-tabs__link md-tabs__link--active">
         What is soca
       </a>
     </li>
@@ -356,7 +356,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../workshops/" class="md-tabs__link">
+      <a href="../workshops/" class="md-tabs__link">
         Workshops
       </a>
     </li>
@@ -384,7 +384,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-nav__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+    <a href=".." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-nav__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -415,7 +415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         What is a Collaboration Chamber ?
       </a>
     </li>
@@ -457,7 +457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Custom-AMIs/" class="md-nav__link">
+      <a href="../Custom-AMIs/" class="md-nav__link">
         About
       </a>
     </li>
@@ -471,7 +471,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Custom-AMIs/image-builder/" class="md-nav__link">
+      <a href="../Custom-AMIs/image-builder/" class="md-nav__link">
         EC2 Image Builder
       </a>
     </li>
@@ -520,7 +520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../FAQ/" class="md-nav__link">
+      <a href="../FAQ/" class="md-nav__link">
         Knowledge Base - List all Errors
       </a>
     </li>
@@ -569,7 +569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../analytics/" class="md-nav__link">
+      <a href="../analytics/" class="md-nav__link">
         About
       </a>
     </li>
@@ -583,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../analytics/build-kibana-dashboards/" class="md-nav__link">
+      <a href="../analytics/build-kibana-dashboards/" class="md-nav__link">
         Create your own analytics dashboard
       </a>
     </li>
@@ -597,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../analytics/monitor-cluster-activity/" class="md-nav__link">
+      <a href="../analytics/monitor-cluster-activity/" class="md-nav__link">
         Monitor your cluster and job activity
       </a>
     </li>
@@ -611,7 +611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../analytics/monitor-system-with-metricbeat/" class="md-nav__link">
+      <a href="../analytics/monitor-system-with-metricbeat/" class="md-nav__link">
         Monitor Nodes with MetricBeat
       </a>
     </li>
@@ -660,7 +660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../budget/" class="md-nav__link">
+      <a href="../budget/" class="md-nav__link">
         About
       </a>
     </li>
@@ -674,7 +674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../budget/prevent-overspend-hpc-cost-on-aws-soca/" class="md-nav__link">
+      <a href="../budget/prevent-overspend-hpc-cost-on-aws-soca/" class="md-nav__link">
         Keep control of your HPC cost on AWS
       </a>
     </li>
@@ -688,7 +688,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../budget/review-hpc-costs/" class="md-nav__link">
+      <a href="../budget/review-hpc-costs/" class="md-nav__link">
         Review your HPC costs
       </a>
     </li>
@@ -702,7 +702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../budget/set-up-budget-project/" class="md-nav__link">
+      <a href="../budget/set-up-budget-project/" class="md-nav__link">
         Set up budget per project
       </a>
     </li>
@@ -751,7 +751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../debug/" class="md-nav__link">
+      <a href="../debug/" class="md-nav__link">
         About
       </a>
     </li>
@@ -765,7 +765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../debug/desktop-instance/" class="md-nav__link">
+      <a href="../debug/desktop-instance/" class="md-nav__link">
         Desktop Instance Debug
       </a>
     </li>
@@ -779,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../debug/web-interface/" class="md-nav__link">
+      <a href="../debug/web-interface/" class="md-nav__link">
         Web Interface Debug
       </a>
     </li>
@@ -828,7 +828,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/" class="md-nav__link">
+      <a href="../security/" class="md-nav__link">
         About
       </a>
     </li>
@@ -842,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/backup-restore-your-cluster/" class="md-nav__link">
+      <a href="../security/backup-restore-your-cluster/" class="md-nav__link">
         Backup your entire cluster automatically
       </a>
     </li>
@@ -856,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/instance_access/" class="md-nav__link">
+      <a href="../security/instance_access/" class="md-nav__link">
         Instance Access
       </a>
     </li>
@@ -870,7 +870,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/integrate-cognito-sso/" class="md-nav__link">
+      <a href="../security/integrate-cognito-sso/" class="md-nav__link">
         Enable Oauth2 authentication with Cognito
       </a>
     </li>
@@ -884,7 +884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/internet-proxy/" class="md-nav__link">
+      <a href="../security/internet-proxy/" class="md-nav__link">
         Internet Proxy
       </a>
     </li>
@@ -898,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/limit-concurrent-job-and-instances/" class="md-nav__link">
+      <a href="../security/limit-concurrent-job-and-instances/" class="md-nav__link">
         Restrict number of concurrent jobs and/or instances
       </a>
     </li>
@@ -912,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/manage-queue-acls/" class="md-nav__link">
+      <a href="../security/manage-queue-acls/" class="md-nav__link">
         Manage Access Lists at queue level
       </a>
     </li>
@@ -926,7 +926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/manage-queue-instance-types/" class="md-nav__link">
+      <a href="../security/manage-queue-instance-types/" class="md-nav__link">
         Restrict provisioning of specific instance type
       </a>
     </li>
@@ -940,7 +940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/manage-queue-restricted-parameters/" class="md-nav__link">
+      <a href="../security/manage-queue-restricted-parameters/" class="md-nav__link">
         Prevent user to change specific parameters
       </a>
     </li>
@@ -954,7 +954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/network-debug/" class="md-nav__link">
+      <a href="../security/network-debug/" class="md-nav__link">
         Network Debug
       </a>
     </li>
@@ -968,7 +968,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/update-soca-dns-ssl-certificate/" class="md-nav__link">
+      <a href="../security/update-soca-dns-ssl-certificate/" class="md-nav__link">
         Change your DNS name and SSL certificate
       </a>
     </li>
@@ -982,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/yum_repo_mirror/" class="md-nav__link">
+      <a href="../security/yum_repo_mirror/" class="md-nav__link">
         Create Private Yum Repos
       </a>
     </li>
@@ -1002,16 +1002,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
       
       
       
@@ -1020,7 +1018,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Storage
@@ -1033,7 +1031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../storage/" class="md-nav__link">
         About
       </a>
     </li>
@@ -1047,7 +1045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../backend-storage-options/" class="md-nav__link">
+      <a href="../storage/backend-storage-options/" class="md-nav__link">
         Understand backend storage
       </a>
     </li>
@@ -1059,117 +1057,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Launch a job with FSx for Lustre
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../storage/launch-job-with-fsx/" class="md-nav__link">
         Launch a job with FSx for Lustre
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-fsx" class="md-nav__link">
-    What is FSx
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-provision-an-ephemeral-fsx" class="md-nav__link">
-    How to provision an ephemeral FSx
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-provision-an-ephemeral-fsx-with-s3-backend" class="md-nav__link">
-    How to provision an ephemeral FSx with S3 backend
-  </a>
-  
-    <nav class="md-nav" aria-label="How to provision an ephemeral FSx with S3 backend">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisite" class="md-nav__link">
-    Pre-requisite
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-connect-to-a-permanentexisting-fsx" class="md-nav__link">
-    How to connect to a permanent/existing FSx
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#change-fsx-capacity" class="md-nav__link">
-    Change FSx capacity
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-change-the-mountpoint" class="md-nav__link">
-    How to change the mountpoint
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#learn-about-the-other-storage-options-on-scale-out-computing-on-aws" class="md-nav__link">
-    Learn about the other storage options on Scale-Out Computing on AWS
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting-and-most-common-errors" class="md-nav__link">
-    Troubleshooting and most common errors
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1216,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/" class="md-nav__link">
+      <a href="../tutorials/" class="md-nav__link">
         About
       </a>
     </li>
@@ -1230,7 +1122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/access-soca-cluster/" class="md-nav__link">
+      <a href="../tutorials/access-soca-cluster/" class="md-nav__link">
         How to access Scale-Out Computing on AWS
       </a>
     </li>
@@ -1244,7 +1136,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/install-soca-cluster/" class="md-nav__link">
+      <a href="../tutorials/install-soca-cluster/" class="md-nav__link">
         Install your Scale-Out Computing on AWS cluster
       </a>
     </li>
@@ -1258,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/integration-ec2-job-parameters/" class="md-nav__link">
+      <a href="../tutorials/integration-ec2-job-parameters/" class="md-nav__link">
         Job customization for EC2
       </a>
     </li>
@@ -1272,7 +1164,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/job-configuration-generator/" class="md-nav__link">
+      <a href="../tutorials/job-configuration-generator/" class="md-nav__link">
         Job Submission Generator
       </a>
     </li>
@@ -1286,7 +1178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/job-licenses-flexlm/" class="md-nav__link">
+      <a href="../tutorials/job-licenses-flexlm/" class="md-nav__link">
         Job with FlexLM licenses requirements
       </a>
     </li>
@@ -1300,7 +1192,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/job-start-stop-email-notification/" class="md-nav__link">
+      <a href="../tutorials/job-start-stop-email-notification/" class="md-nav__link">
         Automatic emails when your job start/stop
       </a>
     </li>
@@ -1314,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/launch-always-on-instances/" class="md-nav__link">
+      <a href="../tutorials/launch-always-on-instances/" class="md-nav__link">
         Launch AlwaysOn nodes
       </a>
     </li>
@@ -1328,7 +1220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/launch-your-first-job/" class="md-nav__link">
+      <a href="../tutorials/launch-your-first-job/" class="md-nav__link">
         Launch your first job
       </a>
     </li>
@@ -1342,7 +1234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/reduce-compute-node-launch-time-with-custom-ami/" class="md-nav__link">
+      <a href="../tutorials/reduce-compute-node-launch-time-with-custom-ami/" class="md-nav__link">
         Import custom AMI to provision capacity faster
       </a>
     </li>
@@ -1356,7 +1248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/troubleshoot-job-queue/" class="md-nav__link">
+      <a href="../tutorials/troubleshoot-job-queue/" class="md-nav__link">
         Debug why your jobs are not starting
       </a>
     </li>
@@ -1405,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/" class="md-nav__link">
+      <a href="../web-interface/" class="md-nav__link">
         About
       </a>
     </li>
@@ -1419,7 +1311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/control-hpc-job-with-http-web-rest-api/" class="md-nav__link">
+      <a href="../web-interface/control-hpc-job-with-http-web-rest-api/" class="md-nav__link">
         Control your job with HTTP/REST API
       </a>
     </li>
@@ -1433,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/create-virtual-desktops-images/" class="md-nav__link">
+      <a href="../web-interface/create-virtual-desktops-images/" class="md-nav__link">
         Create Virtual Desktop Images for Windows/Linux
       </a>
     </li>
@@ -1447,7 +1339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/create-virtual-desktops/" class="md-nav__link">
+      <a href="../web-interface/create-virtual-desktops/" class="md-nav__link">
         Create Virtual Desktops (Windows/Linux)
       </a>
     </li>
@@ -1461,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/create-your-own-queue/" class="md-nav__link">
+      <a href="../web-interface/create-your-own-queue/" class="md-nav__link">
         Create your own queue
       </a>
     </li>
@@ -1475,7 +1367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/disable-api/" class="md-nav__link">
+      <a href="../web-interface/disable-api/" class="md-nav__link">
         Disable API
       </a>
     </li>
@@ -1489,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/import-export-application-profiles/" class="md-nav__link">
+      <a href="../web-interface/import-export-application-profiles/" class="md-nav__link">
         Import/Export application profiles
       </a>
     </li>
@@ -1503,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/manage-ldap-users/" class="md-nav__link">
+      <a href="../web-interface/manage-ldap-users/" class="md-nav__link">
         Centralized user/group management
       </a>
     </li>
@@ -1517,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/my-activity/" class="md-nav__link">
+      <a href="../web-interface/my-activity/" class="md-nav__link">
         My Activity
       </a>
     </li>
@@ -1531,7 +1423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/my-files/" class="md-nav__link">
+      <a href="../web-interface/my-files/" class="md-nav__link">
         My Files
       </a>
     </li>
@@ -1545,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/my-job-queue/" class="md-nav__link">
+      <a href="../web-interface/my-job-queue/" class="md-nav__link">
         My Job Queue
       </a>
     </li>
@@ -1559,7 +1451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/share-data-windows-sessions/" class="md-nav__link">
+      <a href="../web-interface/share-data-windows-sessions/" class="md-nav__link">
         How to easily share data with your virtual desktops
       </a>
     </li>
@@ -1573,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../web-interface/submit-hpc-jobs-web-based-interface/" class="md-nav__link">
+      <a href="../web-interface/submit-hpc-jobs-web-based-interface/" class="md-nav__link">
         Submit your HPC job via a custom web interface
       </a>
     </li>
@@ -1593,14 +1485,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
       
       
       
@@ -1609,7 +1503,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_11">
           <span class="md-nav__icon md-icon"></span>
           What is soca
@@ -1620,11 +1514,153 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../what-is-soca/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          What is Scale-Out Computing on AWS ?
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         What is Scale-Out Computing on AWS ?
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#easy-installation" class="md-nav__link">
+    Easy installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-your-cluster-in-1-click" class="md-nav__link">
+    Access your cluster in 1 click
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-job-submission" class="md-nav__link">
+    Simple Job Submission
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#os-agnostic-and-support-for-custom-ami" class="md-nav__link">
+    OS agnostic and support for custom AMI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-user-interface" class="md-nav__link">
+    Web User Interface
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-rest-api" class="md-nav__link">
+    HTTP Rest API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#budgets-and-cost-management" class="md-nav__link">
+    Budgets and Cost Management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-cluster-analytics" class="md-nav__link">
+    Detailed Cluster Analytics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-customizable" class="md-nav__link">
+    100% Customizable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistent-and-unlimited-storage" class="md-nav__link">
+    Persistent and Unlimited Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#centralized-user-management" class="md-nav__link">
+    Centralized user-management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-backup" class="md-nav__link">
+    Automatic backup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support-for-network-licenses" class="md-nav__link">
+    Support for network licenses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-errors-handling" class="md-nav__link">
+    Automatic Errors Handling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-fair-share" class="md-nav__link">
+    Custom fair-share
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#and-more" class="md-nav__link">
+    And more ...
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1671,7 +1707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/" class="md-nav__link">
+      <a href="../workshops/" class="md-nav__link">
         About
       </a>
     </li>
@@ -1714,7 +1750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/" class="md-nav__link">
+      <a href="../workshops/DVCon/" class="md-nav__link">
         DVCon Workshop Overview
       </a>
     </li>
@@ -1728,7 +1764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/getting-started/" class="md-nav__link">
+      <a href="../workshops/DVCon/getting-started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -1769,7 +1805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/01-deploy-env/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/01-deploy-env/" class="md-nav__link">
         Lab 1: Deploy Environment
       </a>
     </li>
@@ -1783,7 +1819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/02-web-login/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/02-web-login/" class="md-nav__link">
         Lab 2: Login to SOCA Console and Launch Remote Desktop Session
       </a>
     </li>
@@ -1797,7 +1833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/03-login-compile/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/03-login-compile/" class="md-nav__link">
         Lab 3: Login to Remote Desktop and Compile Design
       </a>
     </li>
@@ -1811,7 +1847,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/04-submit-batch/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/04-submit-batch/" class="md-nav__link">
         Lab 4: Submit Batch Jobs
       </a>
     </li>
@@ -1825,7 +1861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/05-load-verdi/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/05-load-verdi/" class="md-nav__link">
         Lab 5: Bring up Verdi
       </a>
     </li>
@@ -1839,7 +1875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/06-analytics/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/06-analytics/" class="md-nav__link">
         Lab 6: Explore Analytics Dashboard
       </a>
     </li>
@@ -1853,7 +1889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/DVCon/modules/09-wrap-up/" class="md-nav__link">
+      <a href="../workshops/DVCon/modules/09-wrap-up/" class="md-nav__link">
         Wrap-up
       </a>
     </li>
@@ -1910,7 +1946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/" class="md-nav__link">
         Scaling EDA with Vivado Workshop Overview
       </a>
     </li>
@@ -1924,7 +1960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/getting-started/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/getting-started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -1965,7 +2001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/02-deploy-env/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/02-deploy-env/" class="md-nav__link">
         Lab 1: Deploy Environment
       </a>
     </li>
@@ -1979,7 +2015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/03-configure-desktop/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/03-configure-desktop/" class="md-nav__link">
         Lab 2: Configure Remote Desktop
       </a>
     </li>
@@ -1993,7 +2029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/04-web-login/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/04-web-login/" class="md-nav__link">
         Lab 3: Launch Remote Desktop Session
       </a>
     </li>
@@ -2007,7 +2043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/06-launch-vivado/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/06-launch-vivado/" class="md-nav__link">
         Lab 4: Launch Vivado GUI
       </a>
     </li>
@@ -2021,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/07-submit-batch/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/07-submit-batch/" class="md-nav__link">
         Lab 5: Submit Batch Workloads
       </a>
     </li>
@@ -2035,7 +2071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/071-budgets/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/071-budgets/" class="md-nav__link">
         Lab 6: Configure Budgets
       </a>
     </li>
@@ -2049,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/08-analytics/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/08-analytics/" class="md-nav__link">
         Lab 7: Explore Analytics Dashboard
       </a>
     </li>
@@ -2063,7 +2099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/TKO-Scale-Out-Computing/modules/09-wrap-up/" class="md-nav__link">
+      <a href="../workshops/TKO-Scale-Out-Computing/modules/09-wrap-up/" class="md-nav__link">
         Wrap-up
       </a>
     </li>
@@ -2120,7 +2156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/" class="md-nav__link">
         MFG405 Workshop Overview
       </a>
     </li>
@@ -2134,7 +2170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/getting-started/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/getting-started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -2175,7 +2211,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/02-deploy-env/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/02-deploy-env/" class="md-nav__link">
         Lab 1: Deploy Environment
       </a>
     </li>
@@ -2189,7 +2225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/03-configure-desktop/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/03-configure-desktop/" class="md-nav__link">
         Lab 2: Configure Remote Desktop
       </a>
     </li>
@@ -2203,7 +2239,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/04-web-login/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/04-web-login/" class="md-nav__link">
         Lab 3: Launch Remote Desktop Session
       </a>
     </li>
@@ -2217,7 +2253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/06-launch-vivado/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/06-launch-vivado/" class="md-nav__link">
         Lab 4: Launch Vivado GUI
       </a>
     </li>
@@ -2231,7 +2267,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/07-submit-batch/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/07-submit-batch/" class="md-nav__link">
         Lab 5: Submit Batch Workloads
       </a>
     </li>
@@ -2245,7 +2281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/08-analytics/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/08-analytics/" class="md-nav__link">
         Lab 6: Explore Analytics Dashboard
       </a>
     </li>
@@ -2259,7 +2295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/09-wrap-up/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/09-wrap-up/" class="md-nav__link">
         Wrap-up
       </a>
     </li>
@@ -2273,7 +2309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../workshops/reinvent19-MFG405/modules/z-budgets/" class="md-nav__link">
+      <a href="../workshops/reinvent19-MFG405/modules/z-budgets/" class="md-nav__link">
         .
       </a>
     </li>
@@ -2326,77 +2362,113 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-fsx" class="md-nav__link">
-    What is FSx
+  <a href="#easy-installation" class="md-nav__link">
+    Easy installation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-provision-an-ephemeral-fsx" class="md-nav__link">
-    How to provision an ephemeral FSx
+  <a href="#access-your-cluster-in-1-click" class="md-nav__link">
+    Access your cluster in 1 click
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-provision-an-ephemeral-fsx-with-s3-backend" class="md-nav__link">
-    How to provision an ephemeral FSx with S3 backend
-  </a>
-  
-    <nav class="md-nav" aria-label="How to provision an ephemeral FSx with S3 backend">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisite" class="md-nav__link">
-    Pre-requisite
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-connect-to-a-permanentexisting-fsx" class="md-nav__link">
-    How to connect to a permanent/existing FSx
+  <a href="#simple-job-submission" class="md-nav__link">
+    Simple Job Submission
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#change-fsx-capacity" class="md-nav__link">
-    Change FSx capacity
+  <a href="#os-agnostic-and-support-for-custom-ami" class="md-nav__link">
+    OS agnostic and support for custom AMI
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-change-the-mountpoint" class="md-nav__link">
-    How to change the mountpoint
+  <a href="#web-user-interface" class="md-nav__link">
+    Web User Interface
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#learn-about-the-other-storage-options-on-scale-out-computing-on-aws" class="md-nav__link">
-    Learn about the other storage options on Scale-Out Computing on AWS
+  <a href="#http-rest-api" class="md-nav__link">
+    HTTP Rest API
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting-and-most-common-errors" class="md-nav__link">
-    Troubleshooting and most common errors
+  <a href="#budgets-and-cost-management" class="md-nav__link">
+    Budgets and Cost Management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-cluster-analytics" class="md-nav__link">
+    Detailed Cluster Analytics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-customizable" class="md-nav__link">
+    100% Customizable
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistent-and-unlimited-storage" class="md-nav__link">
+    Persistent and Unlimited Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#centralized-user-management" class="md-nav__link">
+    Centralized user-management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-backup" class="md-nav__link">
+    Automatic backup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support-for-network-licenses" class="md-nav__link">
+    Support for network licenses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-errors-handling" class="md-nav__link">
+    Automatic Errors Handling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-fair-share" class="md-nav__link">
+    Custom fair-share
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#and-more" class="md-nav__link">
+    And more ...
   </a>
   
 </li>
@@ -2419,143 +2491,119 @@
   
 
 
-  <h1>Launch a job with FSx for Lustre</h1>
+  <h1>What is Scale-Out Computing on AWS ?</h1>
 
-<h2 id="what-is-fsx">What is FSx<a class="headerlink" href="#what-is-fsx" title="Permanent link">&para;</a></h2>
-<p><a href="https://aws.amazon.com/fsx/">Amazon FSx</a> provides you with the native compatibility of third-party file systems with feature sets for workloads such as high-performance computing (HPC), machine learning and electronic design automation (EDA). You don’t have to worry about managing file servers and storage, as Amazon FSx automates the time-consuming administration tasks such as hardware provisioning, software configuration, patching, and backups.
-Amazon FSx provides FSx for Lustre for compute-intensive workloads. </p>
+<p align="center">
+<img src="imgs/soca_logo_rev2.png" style="height: 150px;">
+</p>
+
+<p>Scale-Out Computing on AWS is a solution that helps customers more easily deploy and operate a multiuser environment for computationally intensive workflows. The solution features a large selection of compute resources; fast network backbone; unlimited storage; and budget and cost management directly integrated within AWS. The solution also deploys a user interface (UI) and automation tools that allows you to create your own queues, scheduler resources, Amazon Machine Images (AMIs), software, and libraries.
+This solution is designed to provide a production ready reference implementation to be a starting point for deploying an AWS environment to run scale-out workloads, allowing you to focus on running simulations designed to solve complex computational problems.</p>
+<hr />
+<h2 id="easy-installation">Easy installation<a class="headerlink" href="#easy-installation" title="Permanent link">&para;</a></h2>
+<p><a href="tutorials/install-soca-cluster/">Installation of your Scale-Out Computing on AWS cluster</a> is fully automated and managed by CloudFormation</p>
 <div class="admonition info">
-<p class="admonition-title">Please note the following when using FSx on Scale-Out Computing on AWS</p>
+<p class="admonition-title">Did you know?</p>
 <ul>
-<li>FSx is supported natively (Linux clients, security groups and backend configuration is automatically managed by Scale-Out Computing on AWS)</li>
-<li>You can launch an ephemeral FSx filesystem for your job</li>
-<li>You can connect to an existing FSx filesystem</li>
-<li>You can dynamically adjust the storage capacity of your FSx filesystem</li>
-<li>Exported files (if any) from FSx to S3 will be stored under <code>s3://&lt;YOUR_BUCKET_NAME&gt;/&lt;CLUSTER_ID&gt;-fsxoutput/job-&lt;JOB_ID&gt;/</code> by default (you can change it if needed)</li>
+<li>You can have multiple Scale-Out Computing on AWS clusters on the same AWS account</li>
+<li>Scale-Out Computing on AWS comes with a list of unique tags, making resource tracking easy for AWS Administrators</li>
 </ul>
 </div>
-<p>Scale-Out automatically determines the actions to be taken based on the <code>fsx_lustre</code> value you specified during job submission</p>
-<ul>
-<li>
-<p>If value is <code>yes/true/on</code>, a standard FSx for Lustre will be provisioned</p>
-</li>
-<li>
-<p>If value starts with <code>s3://</code> or is a string, SOCA will try to mount the S3 bucket automatically as part of the FSx deployment</p>
-</li>
-<li>
-<p>If value starts with <code>fs-xxx</code>, SOCA will try to mount an existing FSx automatically</p>
-</li>
-</ul>
-<h2 id="how-to-provision-an-ephemeral-fsx">How to provision an ephemeral FSx<a class="headerlink" href="#how-to-provision-an-ephemeral-fsx" title="Permanent link">&para;</a></h2>
-<p>To provision an FSx for Lustre without S3 backend, simply specify <code>-l fsx_lustre=True</code> at job submission.</p>
-<p>If <code>-l fsx_lustre_capacity</code> is not set, the default storage provisioned will be 1.2 TB. The FSx will be mounted under "/fsx" by default, you can change this value by referring at the section at the end of this doc.</p>
-<h2 id="how-to-provision-an-ephemeral-fsx-with-s3-backend">How to provision an ephemeral FSx with S3 backend<a class="headerlink" href="#how-to-provision-an-ephemeral-fsx-with-s3-backend" title="Permanent link">&para;</a></h2>
-<h3 id="pre-requisite">Pre-requisite<a class="headerlink" href="#pre-requisite" title="Permanent link">&para;</a></h3>
+<h2 id="access-your-cluster-in-1-click">Access your cluster in 1 click<a class="headerlink" href="#access-your-cluster-in-1-click" title="Permanent link">&para;</a></h2>
+<p>You can <a href="tutorials/access-soca-cluster/">access your Scale-Out Computing on AWS cluster</a> either using DCV (Desktop Cloud Visualization)<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> or through SSH.</p>
+<h2 id="simple-job-submission">Simple Job Submission<a class="headerlink" href="#simple-job-submission" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS <a href="tutorials/integration-ec2-job-parameters/">supports a list of parameters designed to simplify your job submission on AWS</a>. Advanced users can either manually choose compute/storage/network configuration for their job or simply ignore these parameters and let Scale-Out Computing on AWS picks the most optimal hardware (defined by the HPC administrator)</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Advanced Configuration</span>
+user@host$<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">instance_type</span><span class="o">=</span>c5n.18xlarge<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-l<span class="w"> </span><span class="nv">instance_ami</span><span class="o">=</span>ami-123abcde
+<span class="w">    </span>-l<span class="w"> </span><span class="nv">nodes</span><span class="o">=</span><span class="m">2</span>
+<span class="w">    </span>-l<span class="w"> </span><span class="nv">scratch_size</span><span class="o">=</span><span class="m">300</span>
+<span class="w">    </span>-l<span class="w"> </span><span class="nv">efa_support</span><span class="o">=</span><span class="nb">true</span>
+<span class="w">    </span>-l<span class="w"> </span><span class="nv">spot_price</span><span class="o">=</span><span class="m">1</span>.55<span class="w"> </span>myscript.sh
+
+<span class="c1"># Basic Configuration</span>
+user@host$<span class="w"> </span>qsub<span class="w"> </span>myscript.sh
+</code></pre></div>
 <div class="admonition info">
-<p class="admonition-title">S3 Backend</p>
-<p>This section is only required if you are planning to use S3 as a data backend for FSx</p>
-</div>
-<p>You need to give Scale-Out Computing on AWS the permission to map the S3 bucket you want to mount on FSx. To do that, add a new inline policy to the <strong>scheduler IAM role</strong>. The Scheduler IAM role can be found on the IAM bash and is named <code>&lt;SOCA_AWS_STACK_NAME&gt;-Security-&lt;UUID&gt;-SchedulerIAMRole-&lt;UUID&gt;</code>.
-To create an inline policy, select your IAM role, click "Add Inline Policy":</p>
-<p><img alt="" src="../../imgs/fsx-4.png" /></p>
-<p>Select "JSON" tab</p>
-<p><img alt="" src="../../imgs/fsx-5.png" /></p>
-<p>Finally copy/paste the JSON policy listed below (make sure to adjust to your bucket name), click "Review" and "Create Policy".
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AllowAccessFSxtoS3&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:*&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::&lt;YOUR_BUCKET_NAME&gt;&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::&lt;YOUR_BUCKET_NAME&gt;/*&quot;</span>
-<span class="w">            </span><span class="p">]</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div></p>
-<p>To validate your policy is effective, access the scheduler host and run the following commmand:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">## Example when IAM policy is not correct</span>
-user@host:<span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;YOUR_BUCKET_NAME&gt;
-
-An<span class="w"> </span>error<span class="w"> </span>occurred<span class="w"> </span><span class="o">(</span>AccessDenied<span class="o">)</span><span class="w"> </span>when<span class="w"> </span>calling<span class="w"> </span>the<span class="w"> </span>ListObjectsV2<span class="w"> </span>operation:<span class="w"> </span>Access<span class="w"> </span>Denied
-
-<span class="c1">## Example when IAM policy is valid (output will list content of your bucket)</span>
-user@host:<span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;YOUR_BUCKET_NAME&gt;
-<span class="m">2019</span>-11-02<span class="w"> </span><span class="m">04</span>:26:27<span class="w">       </span><span class="m">2209</span><span class="w"> </span>dataset1.txt
-<span class="m">2019</span>-11-02<span class="w"> </span><span class="m">04</span>:26:39<span class="w">      </span><span class="m">10285</span><span class="w"> </span>dataset2.csv
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This permission will give scheduler host access to your S3 bucket, therefore you want to limit access to this host to approved users only.
-DCV sessions or other compute nodes <strong> will not </strong> have access to the S3 bucket.</p>
-</div>
-<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
-<p>For this example, let's say I have my dataset available on S3 and I want to access them for my simulation.
-Submit a job using <code>-l fsx_lustre=s3://&lt;YOUR_BUCKET_NAME&gt;</code>. The bucket will then be mounted on all nodes provisioned for the job under <code>/fsx</code> mountpoint.</p>
-<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">fsx_lustre</span><span class="o">=</span>s3://&lt;YOUR_BUCKET_NAME&gt;<span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
-</code></pre></div>
-<p>This command will provision a new 1200 GB (smallest capacity available) FSx filesystem for your job:</p>
-<p><img alt="" src="../../imgs/fsx-1.png" /></p>
-<p>Your job will automatically start as soon as both your FSx filesystem and compute nodes are available. Your filesystem will be available on all nodes allocated to your job under <code>/fsx</code></p>
-<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span>/fsx
-Filesystem<span class="w">             </span>Size<span class="w">  </span>Used<span class="w"> </span>Avail<span class="w"> </span>Use%<span class="w"> </span>Mounted<span class="w"> </span>on
-<span class="m">200</span>.0.170.60@tcp:/fsx<span class="w">  </span><span class="m">1</span>.1T<span class="w">  </span><span class="m">4</span>.4M<span class="w">  </span><span class="m">1</span>.1T<span class="w">   </span><span class="m">1</span>%<span class="w"> </span>/fsx
-
-<span class="c1">## Verify the content of your bucket is accessible</span>
-user@host:<span class="w"> </span>ls<span class="w"> </span>-ltr<span class="w"> </span>/fsx
-total<span class="w"> </span><span class="m">1</span>
--rwxr-xr-x<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>root<span class="w">  </span><span class="m">2209</span><span class="w"> </span>Nov<span class="w">  </span><span class="m">2</span><span class="w"> </span><span class="m">04</span>:26<span class="w"> </span>dataset1.txt
--rwxr-xr-x<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>root<span class="w"> </span><span class="m">10285</span><span class="w"> </span>Nov<span class="w">  </span><span class="m">2</span><span class="w"> </span><span class="m">04</span>:26<span class="w"> </span>dataset2.csv
-</code></pre></div>
-<p>You can change the ImportPath / ExportPath by using the following syntax: <code>-l fsx_lustre=&lt;BUCKET&gt;+&lt;EXPORT_PATH&gt;+&lt;IMPORT_PATH&gt;</code>.</p>
-<p>If <code>&lt;IMPORT_PATH&gt;</code> is not set, value defaults to the bucket root level. </p>
-<p>The default <code>&lt;EXPORT_PATH&gt;</code> is <code>&lt;BUCKET&gt;/&lt;CLUSTER_ID&gt;-fsxoutput/&lt;JOBID&gt;</code></p>
-<p>Your FSx filesystem will automatically be terminated when your job complete. <a href="https://docs.aws.amazon.com/fsx/latest/LustreGuide/fsx-data-repositories.html">Refer to this link</a> to learn how to interact with FSx data repositories. </p>
-<h2 id="how-to-connect-to-a-permanentexisting-fsx">How to connect to a permanent/existing FSx<a class="headerlink" href="#how-to-connect-to-a-permanentexisting-fsx" title="Permanent link">&para;</a></h2>
-<p>If you already have a running FSx, you can mount it using <code>-l fsx_lustre</code> variable.</p>
-<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">fsx_lustre</span><span class="o">=</span>&lt;MY_FSX_DNS&gt;<span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">60</span>
-</code></pre></div>
-<p>To retrieve your FSx DNS, select your filesystem and select "Network &amp; Security"</p>
-<p><img alt="" src="../../imgs/fsx-3.png" /></p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<p class="admonition-title">Info</p>
 <ul>
-<li>Make sure your FSx is running on the same VPC as Scale-Out Computing on AWS</li></li>
-<li>Make sure your FSx security group allow traffic from/to Scale-Out Computing on AWS ComputeNodes SG</li></li>
-<li>If you specify both "fsx_lustre" and "fsx_lustre", only "fsx_lustre" will be mounted.</li></li>
+<li><a href="tutorials/job-configuration-generator/">Check our Web-Based utility to generate you submission command</a></li>
+<li><a href="tutorials/launch-your-first-job/">Refer to this page for tutorial and examples</a></li>
+<li><a href="tutorials/integration-ec2-job-parameters/">Refer to this page to list all supported parameters</a></li>
+<li>Jobs can also be submitted <a href="web-interface/control-hpc-job-with-http-web-rest-api/">via HTTP API</a> or <a href="web-interface/submit-hpc-jobs-web-based-interface/">via web interface</a></li>
 </ul>
 </div>
-<h2 id="change-fsx-capacity">Change FSx capacity<a class="headerlink" href="#change-fsx-capacity" title="Permanent link">&para;</a></h2>
-<p>Use <code>-l fsx_lustre_size=&lt;SIZE_IN_GB&gt;</code> to specify the size of your FSx filesystem. Please note the following informations:
-- If not specified, Scale-Out Computing on AWS deploy the smallest possible capacity (1200GB)
-- Valid sizes (in GB) are 1200, 2400, 3600 and increments of 3600</p>
-<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w">  </span>-l<span class="w"> </span><span class="nv">fsx_lustre_size</span><span class="o">=</span><span class="m">3600</span><span class="w"> </span>-l<span class="w"> </span><span class="nv">fsx_lustre</span><span class="o">=</span>s3://&lt;YOUR_S3_BUCKET&gt;<span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+<h2 id="os-agnostic-and-support-for-custom-ami">OS agnostic and support for custom AMI<a class="headerlink" href="#os-agnostic-and-support-for-custom-ami" title="Permanent link">&para;</a></h2>
+<p>Customers can integrate their Centos7/Rhel7/AmazonLinux2 AMI automatically by simply using <mark>-l instance_ami=&lt;ami_id></mark> at job submission. There is no limitation in term of AMI numbers (you can have 10 jobs running simultaneously using 10 different AMIs). SOCA supports heterogeneous environment, so you can have concurrent jobs running different operating system on the same cluster.</p>
+<div class="admonition danger">
+<p class="admonition-title">AMI using OS different than the scheduler</p>
+<p>In case your AMI is different than your scheduler host, you can specify the OS manually to ensure packages will be installed based on the node distribution.</p>
+<p>In this example, we assume your Scale-Out Computing on AWS deployment was done using AmazonLinux2, but you want to submit a job on your personal RHEL7 AMI</p>
+<div class="highlight"><pre><span></span><code>user@host$<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">instance_ami</span><span class="o">=</span>&lt;ami_id&gt;<span class="w"> </span>-l<span class="w"> </span><span class="nv">base_os</span><span class="o">=</span>rhel7<span class="w"> </span>myscript.sh
 </code></pre></div>
-<p>This command will mount a 3.6TB FSx filesystem on all nodes provisioned for your simulation.</p>
-<p><img alt="" src="../../imgs/fsx-2.png" /></p>
-<h2 id="how-to-change-the-mountpoint">How to change the mountpoint<a class="headerlink" href="#how-to-change-the-mountpoint" title="Permanent link">&para;</a></h2>
-<p>By default Scale-Out Computing on AWS mounts fsx on <code>/fsx</code>. If you need to change this value, edit <code>scripts/ComputeNode.sh</code> update the value of <code>FSX_MOUNTPOINT</code>.</p>
-<div class="highlight"><pre><span></span><code>...
-<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$SOCA_AWS_fsx_lustre</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s1">&#39;false&#39;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;FSx request detected, installing FSX Lustre client ... &quot;</span>
-<span class="hll"><span class="w">    </span><span class="nv">FSX_MOUNTPOINT</span><span class="o">=</span><span class="s2">&quot;/fsx&quot;</span><span class="w"> </span><span class="c1">## &lt;-- Update mountpoint here</span>
-</span><span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$FSX_MOUNTPOINT</span>
-<span class="w">    </span>...
-</code></pre></div>
-<h2 id="learn-about-the-other-storage-options-on-scale-out-computing-on-aws">Learn about the other storage options on Scale-Out Computing on AWS<a class="headerlink" href="#learn-about-the-other-storage-options-on-scale-out-computing-on-aws" title="Permanent link">&para;</a></h2>
-<p><a href="../../storage/backend-storage-options/">Click here to learn about the other storage options</a> offered by Scale-Out Computing on AWS.</p>
-<h2 id="troubleshooting-and-most-common-errors">Troubleshooting and most common errors<a class="headerlink" href="#troubleshooting-and-most-common-errors" title="Permanent link">&para;</a></h2>
-<p>Like any other parameter, FSx options can be debugged using <code>/apps/soca/$SOCA_CONFIGURATION/cluster_manager/logs/&lt;QUEUE_NAME&gt;.log</code></p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span>Error<span class="w"> </span><span class="k">while</span><span class="w"> </span>trying<span class="w"> </span>to<span class="w"> </span>create<span class="w"> </span>ASG:<span class="w"> </span>Scale-Out<span class="w"> </span>Computing<span class="w"> </span>on<span class="w"> </span>AWS<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>have<span class="w"> </span>access<span class="w"> </span>to<span class="w"> </span>this<span class="w"> </span>bucket.<span class="w"> </span>
-Update<span class="w"> </span>IAM<span class="w"> </span>policy<span class="w"> </span>as<span class="w"> </span>described<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>documentation<span class="o">]</span>
-</code></pre></div>
-<p><strong>Resolution</strong>: Scale-Out Computing on AWS does not have access to this S3 bucket. Update your IAM role with the policy listed above</p>
-<p><div class="highlight"><pre><span></span><code><span class="o">[</span>Error<span class="w"> </span><span class="k">while</span><span class="w"> </span>trying<span class="w"> </span>to<span class="w"> </span>create<span class="w"> </span>ASG:<span class="w"> </span>fsx_lustre_size<span class="w"> </span>must<span class="w"> </span>be:<span class="w"> </span><span class="m">1200</span>,<span class="w"> </span><span class="m">2400</span>,<span class="w"> </span><span class="m">3600</span>,<span class="w"> </span><span class="m">7200</span>,<span class="w"> </span><span class="m">10800</span><span class="o">]</span>
-</code></pre></div>
-<strong>Resolution</strong>: fsx_lustre_size must be 1200, 2400, 3600 and increments of 3600</p>
+<hr />
+</div>
+<div class="admonition info">
+<p class="admonition-title">Scale-Out Computing on AWS AMI requirements</p>
+<p>When you use a custom AMI, just make sure that your AMI does not use /apps, /scratch or /data partitions as Scale-Out Computing on AWS will need to use these locations during the deployment. <a href="tutorials/reduce-compute-node-launch-time-with-custom-ami/">Read this page for AMI creation best practices</a></p>
+</div>
+<h2 id="web-user-interface">Web User Interface<a class="headerlink" href="#web-user-interface" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS includes a simple web ui designed to simplify user interactions such as:</p>
+<ul>
+<li><a href="tutorials/access-soca-cluster/#graphical-access-using-dcv">Start/Stop DCV sessions in 1 click</a></li>
+<li><a href="tutorials/access-soca-cluster/#ssh-access">Download private key in both PEM or PPK format</a></li>
+<li><a href="web-interface/manage-ldap-users/">Check the queue and job status in real-time</a></li>
+<li><a href="web-interface/manage-ldap-users/">Add/Remove LDAP users </a></li>
+<li><a href="web-interface/my-activity/">Access the analytic dashboard</a></li>
+<li><a href="web-interface/my-files/">Access your filesystem</a></li>
+<li><a href="web-interface/my-job-queue/#understand-why-your-job-cannot-start">Understand why your jobs are stuck in the queue</a></li>
+<li><a href="web-interface/submit-hpc-jobs-web-based-interface/">Create Application profiles and let your users submit job directly via the web interface</a></li>
+</ul>
+<h2 id="http-rest-api">HTTP Rest API<a class="headerlink" href="#http-rest-api" title="Permanent link">&para;</a></h2>
+<p>Users can submit/retrieve/delete jobs <a href="web-interface/control-hpc-job-with-http-web-rest-api/">remotely via an HTTP REST API</a></p>
+<h2 id="budgets-and-cost-management">Budgets and Cost Management<a class="headerlink" href="#budgets-and-cost-management" title="Permanent link">&para;</a></h2>
+<p>You can <a href="budget/review-hpc-costs/">review your HPC costs</a> filtered by user/team/project/queue very easily using AWS Cost Explorer.</p>
+<p>Scale-Out Computing on AWS also supports AWS Budget and <a href="budget/set-up-budget-project/">let you create budgets</a> assigned to user/team/project or queue. To prevent over-spend, Scale-Out Computing on AWS includes hooks to restrict job submission when customer-defined budget has expired.</p>
+<p>Lastly, Scale-Out Computing on AWS let you create queue ACLs or instance restriction at a queue level. <a href="budget/prevent-overspend-hpc-cost-on-aws-soca/">Refer to this link for all best practices in order to control your HPC cost on AWS and prevent overspend</a>.</p>
+<h2 id="detailed-cluster-analytics">Detailed Cluster Analytics<a class="headerlink" href="#detailed-cluster-analytics" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS <a href="analytics/monitor-cluster-activity/">includes ElasticSearch and automatically ingest job and hosts data</a> in real-time for accurate visualization of your cluster activity.</p>
+<div class="admonition success">
+<p class="admonition-title">Don't know where to start?</p>
+<p>Scale-Out Computing on AWS <a href="analytics/build-kibana-dashboards/">includes dashboard examples</a> if you are not familiar with ElasticSearch or Kibana.</p>
+</div>
+<h2 id="100-customizable">100% Customizable<a class="headerlink" href="#100-customizable" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS is built entirely on top of AWS and can be customized by users as needed. Most of the logic is based of CloudFormation templates, shell scripts and python code.
+More importantly, the entire Scale-Out Computing on AWS codebase is open-source and <a href="https://github.com/awslabs/scale-out-computing-on-aws">available on Github</a>.</p>
+<h2 id="persistent-and-unlimited-storage">Persistent and Unlimited Storage<a class="headerlink" href="#persistent-and-unlimited-storage" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS includes two unlimited EFS storage (/apps and /data). Customers also have the ability to deploy high-speed SSD EBS disks or FSx for Lustre as scratch location on their compute nodes. <a href="storage/backend-storage-options/">Refer to this page to learn more about the various storage options</a> offered by Scale-Out Computing on AWS</p>
+<h2 id="centralized-user-management">Centralized user-management<a class="headerlink" href="#centralized-user-management" title="Permanent link">&para;</a></h2>
+<p>Customers <a href="web-interface/manage-ldap-users/">can create unlimited LDAP users and groups</a>. By default Scale-Out Computing on AWS includes a default LDAP account provisioned during installation as well as a "Sudoers" LDAP group which manage SUDO permission on the cluster.</p>
+<h2 id="automatic-backup">Automatic backup<a class="headerlink" href="#automatic-backup" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS <a href="security/backup-restore-your-cluster/">automatically backup your data</a> with no additional effort required on your side.</p>
+<h2 id="support-for-network-licenses">Support for network licenses<a class="headerlink" href="#support-for-network-licenses" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS <a href="tutorials/job-licenses-flexlm">includes a FlexLM-enabled script which calculate the number of licenses</a> for a given features and only start the job/provision the capacity when enough licenses are available.</p>
+<h2 id="automatic-errors-handling">Automatic Errors Handling<a class="headerlink" href="#automatic-errors-handling" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS performs various dry run checks before provisioning the capacity. However, it may happen than AWS can't fullfill all requests (eg: need 5 instances but only 3 can be provisioned due to capacity shortage within a placement group). In this case, Scale-Out Computing on AWS will try to provision the capacity for 30 minutes. After 30 minutes, and if the capacity is still not available, Scale-Out Computing on AWS will automatically reset the request and try to provision capacity in a different availability zone.
+<a href="web-interface/my-job-queue/#understand-why-your-job-cannot-start">To simplify troubleshooting, all these errors are reported on the web interface</a></p>
+<h2 id="custom-fair-share">Custom fair-share<a class="headerlink" href="#custom-fair-share" title="Permanent link">&para;</a></h2>
+<p>Each user is given a score which vary based on:</p>
+<ul>
+<li>Number of job in the queue</li>
+<li>Time each job is queued</li>
+<li>Priority of each job</li>
+<li>Type of instance</li>
+</ul>
+<p>Job that belong to the user with the highest score will start next. Fair Share is is configured at the queue level (so you can have one queue using FIFO and another one Fair Share)</p>
+<h2 id="and-more">And more ...<a class="headerlink" href="#and-more" title="Permanent link">&para;</a></h2>
+<p>Refer to the various sections (tutorial/security/analytics ...) to learn more about this solution</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="https://docs.aws.amazon.com/dcv/latest/adminguide/what-is-dcv.html">DCV</a> is a remote visualization technology that enables users to easily and securely connect to graphic-intensive 3D applications hosted on a remote high-performance server.*&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -2575,7 +2623,7 @@ Update<span class="w"> </span>IAM<span class="w"> </span>policy<span class="w"> 
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="">
         
-          <a href="../backend-storage-options/" title="Understand backend storage" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../web-interface/submit-hpc-jobs-web-based-interface/" title="Submit your HPC job via a custom web interface" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -2584,13 +2632,13 @@ Update<span class="w"> </span>IAM<span class="w"> </span>policy<span class="w"> 
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Understand backend storage
+                Submit your HPC job via a custom web interface
               </div>
             </div>
           </a>
         
         
-          <a href="../../tutorials/" title="About" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../workshops/" title="About" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
@@ -2623,10 +2671,10 @@ Update<span class="w"> </span>IAM<span class="w"> </span>policy<span class="w"> 
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tracking", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tracking", "navigation.sections"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
