@@ -1,8 +1,19 @@
 # Collaboration Chambers on AWS
 
-A collaboration chamber is a compute environment configured to allow collaboration with third parties and secure
+## Documentation
+
+Detailed documentation is found at the following link.
+It includes all of the documention for SOCA plus supplemental documentation about the changes made for secure collaboration.
+
+[https://awslabs.github.io/collaboration-chambers-on-aws/](https://awslabs.github.io/collaboration-chambers-on-aws/)
+
+## Introduction
+
+A collaboration chamber is a multi-user engineering environment configured to allow collaboration with third parties and secure
 the IP inside the environment so that it can only be accessed by approved parties and so that the IP can be
 secured from egress from the environment.
+An example would be a fabless semiconductor company that finds a bug in an EDA tool that needs to create a secure environment
+where the EDA tool ISV can debug the bug and validate bug fixes using the customer's IP.
 
 This implementation is based on [Scale Out Computing on AWS](https://github.com/awslabs/scale-out-computing-on-aws), an official AWS solution.
 It adds additional security features required to enable secure collaboration.
@@ -98,9 +109,6 @@ stack_name=STACK_NAME
     --RepositoryFolder REPOSITORYFOLDER \
     --create
 ```
-
-
-
 
 ## Security
 

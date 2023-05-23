@@ -6,7 +6,7 @@
 # For more information: https://www.mkdocs.org/
 
 
-site_name: Scale-Out Computing on AWS Knowledge Base
+site_name: SOCA Collaboration Chamber on AWS Knowledge Base
 theme:
   name: 'material'
   palette:
@@ -19,8 +19,8 @@ theme:
 
 
 # Repository
-repo_name: 'awslabs/scale-out-computing-on-aws'
-repo_url: 'https://github.com/awslabs/scale-out-computing-on-aws'
+repo_name: 'awslabs/collaboration-chambers-on-aws'
+repo_url: 'https://github.com/awslabs/collaboration-chambers-on-aws'
 extra_css:
   - 'assets/css/custom.css'
 
