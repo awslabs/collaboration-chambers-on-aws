@@ -1,0 +1,3240 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../install-soca-cluster/">
+      
+      
+        <link rel="next" href="../job-configuration-generator/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
+    
+    
+      
+        <title>Job customization for EC2 - SOCA Collaboration Chamber on AWS Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#compute" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-header__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SOCA Collaboration Chamber on AWS Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Job customization for EC2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      What is Scale-Out Computing on AWS ?
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Custom-AMIs/" class="md-tabs__link">
+        Custom AMIs
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ/" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../analytics/" class="md-tabs__link">
+        Analytics
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../budget/" class="md-tabs__link">
+        Budget
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../debug/" class="md-tabs__link">
+        Debug
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        Security
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../storage/" class="md-tabs__link">
+        Storage
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../web-interface/" class="md-tabs__link">
+        Web interface
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../workshops/" class="md-tabs__link">
+        Workshops
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-nav__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SOCA Collaboration Chamber on AWS Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        What is Scale-Out Computing on AWS ?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Custom AMIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Custom AMIs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/image-builder/" class="md-nav__link">
+        EC2 Image Builder
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          FAQ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ/" class="md-nav__link">
+        Knowledge Base - List all Errors
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Analytics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Analytics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/build-kibana-dashboards/" class="md-nav__link">
+        Create your own analytics dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-cluster-activity/" class="md-nav__link">
+        Monitor your cluster and job activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-system-with-metricbeat/" class="md-nav__link">
+        Monitor Nodes with MetricBeat
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Budget
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Budget
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/prevent-overspend-hpc-cost-on-aws-soca/" class="md-nav__link">
+        Keep control of your HPC cost on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/review-hpc-costs/" class="md-nav__link">
+        Review your HPC costs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/set-up-budget-project/" class="md-nav__link">
+        Set up budget per project
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Debug
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Debug
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/desktop-instance/" class="md-nav__link">
+        Desktop Instance Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/web-interface/" class="md-nav__link">
+        Web Interface Debug
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Security
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Security
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/backup-restore-your-cluster/" class="md-nav__link">
+        Backup your entire cluster automatically
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/instance_access/" class="md-nav__link">
+        Instance Access
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/integrate-cognito-sso/" class="md-nav__link">
+        Enable Oauth2 authentication with Cognito
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/internet-proxy/" class="md-nav__link">
+        Internet Proxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/limit-concurrent-job-and-instances/" class="md-nav__link">
+        Restrict number of concurrent jobs and/or instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-acls/" class="md-nav__link">
+        Manage Access Lists at queue level
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-instance-types/" class="md-nav__link">
+        Restrict provisioning of specific instance type
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-restricted-parameters/" class="md-nav__link">
+        Prevent user to change specific parameters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/network-debug/" class="md-nav__link">
+        Network Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/update-soca-dns-ssl-certificate/" class="md-nav__link">
+        Change your DNS name and SSL certificate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/yum_repo_mirror/" class="md-nav__link">
+        Create Private Yum Repos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Storage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Storage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/backend-storage-options/" class="md-nav__link">
+        Understand backend storage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/launch-job-with-fsx/" class="md-nav__link">
+        Launch a job with FSx for Lustre
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../access-soca-cluster/" class="md-nav__link">
+        How to access Scale-Out Computing on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-soca-cluster/" class="md-nav__link">
+        Install your Scale-Out Computing on AWS cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Job customization for EC2
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Job customization for EC2
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compute" class="md-nav__link">
+    Compute
+  </a>
+  
+    <nav class="md-nav" aria-label="Compute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base_os" class="md-nav__link">
+    base_os
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ht_support" class="md-nav__link">
+    ht_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_ami" class="md-nav__link">
+    instance_ami
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_type" class="md-nav__link">
+    instance_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodes" class="md-nav__link">
+    nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force_ri" class="md-nav__link">
+    force_ri
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_allocation_count" class="md-nav__link">
+    spot_allocation_count
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_allocation_strategy" class="md-nav__link">
+    spot_allocation_strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_price" class="md-nav__link">
+    spot_price
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subnet_id" class="md-nav__link">
+    subnet_id
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ebs" class="md-nav__link">
+    EBS
+  </a>
+  
+    <nav class="md-nav" aria-label="EBS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep_ebs" class="md-nav__link">
+    keep_ebs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root_size" class="md-nav__link">
+    root_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch_size" class="md-nav__link">
+    scratch_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_store" class="md-nav__link">
+    instance_store
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch_iops" class="md-nav__link">
+    scratch_iops
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx-for-lustre" class="md-nav__link">
+    FSx for Lustre
+  </a>
+  
+    <nav class="md-nav" aria-label="FSx for Lustre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre" class="md-nav__link">
+    fsx_lustre
+  </a>
+  
+    <nav class="md-nav" aria-label="fsx_lustre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-no-s3-backend" class="md-nav__link">
+    With no S3 backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-s3-backend" class="md-nav__link">
+    With S3 backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mount-existing-fsx" class="md-nav__link">
+    Mount existing FSx
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_size" class="md-nav__link">
+    fsx_lustre_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_deployment_type" class="md-nav__link">
+    fsx_lustre_deployment_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_per_unit_throughput" class="md-nav__link">
+    fsx_lustre_per_unit_throughput
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    Network
+  </a>
+  
+    <nav class="md-nav" aria-label="Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#efa_support" class="md-nav__link">
+    efa_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ht_support_1" class="md-nav__link">
+    ht_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#placement_group" class="md-nav__link">
+    placement_group
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#others" class="md-nav__link">
+    Others
+  </a>
+  
+    <nav class="md-nav" aria-label="Others">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system_metrics" class="md-nav__link">
+    system_metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anonymous_metrics" class="md-nav__link">
+    anonymous_metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-custom-parameters" class="md-nav__link">
+    How to use custom parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="How to use custom parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-a-single-job" class="md-nav__link">
+    For a single job
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-an-entire-queue" class="md-nav__link">
+    For an entire queue
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#view-examples" class="md-nav__link">
+    View Examples
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../job-configuration-generator/" class="md-nav__link">
+        Job Submission Generator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../job-licenses-flexlm/" class="md-nav__link">
+        Job with FlexLM licenses requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../job-start-stop-email-notification/" class="md-nav__link">
+        Automatic emails when your job start/stop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../launch-always-on-instances/" class="md-nav__link">
+        Launch AlwaysOn nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../launch-your-first-job/" class="md-nav__link">
+        Launch your first job
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reduce-compute-node-launch-time-with-custom-ami/" class="md-nav__link">
+        Import custom AMI to provision capacity faster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshoot-job-queue/" class="md-nav__link">
+        Debug why your jobs are not starting
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Web interface
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Web interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/control-hpc-job-with-http-web-rest-api/" class="md-nav__link">
+        Control your job with HTTP/REST API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-virtual-desktops-images/" class="md-nav__link">
+        Create Virtual Desktop Images for Windows/Linux
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-virtual-desktops/" class="md-nav__link">
+        Create Virtual Desktops (Windows/Linux)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-your-own-queue/" class="md-nav__link">
+        Create your own queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/disable-api/" class="md-nav__link">
+        Disable API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/import-export-application-profiles/" class="md-nav__link">
+        Import/Export application profiles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/manage-ldap-users/" class="md-nav__link">
+        Centralized user/group management
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-activity/" class="md-nav__link">
+        My Activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-files/" class="md-nav__link">
+        My Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-job-queue/" class="md-nav__link">
+        My Job Queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/share-data-windows-sessions/" class="md-nav__link">
+        How to easily share data with your virtual desktops
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/submit-hpc-jobs-web-based-interface/" class="md-nav__link">
+        Submit your HPC job via a custom web interface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          Workshops
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Workshops
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+          DVCon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2">
+          <span class="md-nav__icon md-icon"></span>
+          DVCon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/" class="md-nav__link">
+        DVCon Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2_3" id="__nav_11_2_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/01-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/02-web-login/" class="md-nav__link">
+        Lab 2: Login to SOCA Console and Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/03-login-compile/" class="md-nav__link">
+        Lab 3: Login to Remote Desktop and Compile Design
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/04-submit-batch/" class="md-nav__link">
+        Lab 4: Submit Batch Jobs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/05-load-verdi/" class="md-nav__link">
+        Lab 5: Bring up Verdi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/06-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+          TKO Scale Out Computing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3">
+          <span class="md-nav__icon md-icon"></span>
+          TKO Scale Out Computing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/" class="md-nav__link">
+        Scaling EDA with Vivado Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3_3" id="__nav_11_3_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/071-budgets/" class="md-nav__link">
+        Lab 6: Configure Budgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/08-analytics/" class="md-nav__link">
+        Lab 7: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+          reinvent19 MFG405
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4">
+          <span class="md-nav__icon md-icon"></span>
+          reinvent19 MFG405
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/" class="md-nav__link">
+        MFG405 Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4_3" id="__nav_11_4_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/08-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/z-budgets/" class="md-nav__link">
+        .
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compute" class="md-nav__link">
+    Compute
+  </a>
+  
+    <nav class="md-nav" aria-label="Compute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base_os" class="md-nav__link">
+    base_os
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ht_support" class="md-nav__link">
+    ht_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_ami" class="md-nav__link">
+    instance_ami
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_type" class="md-nav__link">
+    instance_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodes" class="md-nav__link">
+    nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force_ri" class="md-nav__link">
+    force_ri
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_allocation_count" class="md-nav__link">
+    spot_allocation_count
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_allocation_strategy" class="md-nav__link">
+    spot_allocation_strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spot_price" class="md-nav__link">
+    spot_price
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subnet_id" class="md-nav__link">
+    subnet_id
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ebs" class="md-nav__link">
+    EBS
+  </a>
+  
+    <nav class="md-nav" aria-label="EBS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#keep_ebs" class="md-nav__link">
+    keep_ebs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root_size" class="md-nav__link">
+    root_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch_size" class="md-nav__link">
+    scratch_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance_store" class="md-nav__link">
+    instance_store
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch_iops" class="md-nav__link">
+    scratch_iops
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx-for-lustre" class="md-nav__link">
+    FSx for Lustre
+  </a>
+  
+    <nav class="md-nav" aria-label="FSx for Lustre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre" class="md-nav__link">
+    fsx_lustre
+  </a>
+  
+    <nav class="md-nav" aria-label="fsx_lustre">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-no-s3-backend" class="md-nav__link">
+    With no S3 backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-s3-backend" class="md-nav__link">
+    With S3 backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mount-existing-fsx" class="md-nav__link">
+    Mount existing FSx
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_size" class="md-nav__link">
+    fsx_lustre_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_deployment_type" class="md-nav__link">
+    fsx_lustre_deployment_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsx_lustre_per_unit_throughput" class="md-nav__link">
+    fsx_lustre_per_unit_throughput
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    Network
+  </a>
+  
+    <nav class="md-nav" aria-label="Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#efa_support" class="md-nav__link">
+    efa_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ht_support_1" class="md-nav__link">
+    ht_support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#placement_group" class="md-nav__link">
+    placement_group
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#others" class="md-nav__link">
+    Others
+  </a>
+  
+    <nav class="md-nav" aria-label="Others">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system_metrics" class="md-nav__link">
+    system_metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anonymous_metrics" class="md-nav__link">
+    anonymous_metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-custom-parameters" class="md-nav__link">
+    How to use custom parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="How to use custom parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-a-single-job" class="md-nav__link">
+    For a single job
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-an-entire-queue" class="md-nav__link">
+    For an entire queue
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#view-examples" class="md-nav__link">
+    View Examples
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Job customization for EC2</h1>
+
+<p>Scale-Out Computing on AWS made <a href="../../tutorials/launch-your-first-job/">job submission on EC2 very easy</a>  and is fully integrated with EC2.
+Below is a list of parameters you can specify when you request your simulation to ensure the hardware provisioned will exactly match your simulation requirements. </p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you don't specify them, your job will use the default values configured for your queue (see <code>/apps/soca/$SOCA_CONFIGURATION/cluster_manager/settings/queue_mapping.yml</code>)</p>
+<hr />
+<p>You can use <a href="../job-configuration-generator/">the web-based simulator</a> to generate your qsub command very easily.</p>
+</div>
+<h2 id="compute">Compute<a class="headerlink" href="#compute" title="Permanent link">&para;</a></h2>
+<h4 id="base_os">base_os<a class="headerlink" href="#base_os" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Reference to the base OS of the AMI you are using</li>
+<li>Allowed Values: <code>amazonlinux2</code> <code>centos7</code> <code>rhel7</code></li>
+<li>Default: If not specified, value default to the OS of the install AMI</li>
+<li>Examples: <ul>
+<li><code>-l base_os=centos7</code>: Instances provisioned will be deployed against CentOS manifest</li>
+</ul>
+</li>
+</ul>
+<h4 id="ht_support">ht_support<a class="headerlink" href="#ht_support" title="Permanent link">&para;</a></h4>
+<p><em>Disabled by default</em></p>
+<ul>
+<li>Description: Enable support for hyper-threading</li>
+<li>Allowed Values: <code>yes</code> <code>true</code> <code>no</code> <code>false</code> (case insensitive) </li>
+<li>Examples:<ul>
+<li><code>-l ht_support=True</code>: Enable hyper-threading for all instances</li>
+<li><code>-l ht_support=False</code>: Disable hyper-threading for all instances (default)</li>
+</ul>
+</li>
+</ul>
+<h4 id="instance_ami">instance_ami<a class="headerlink" href="#instance_ami" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Reference to a custom AMI you want to use</li>
+<li>Default: If not specified, value default to the AMI specified during installation</li>
+<li>Examples:<ul>
+<li><code>-l instance_ami=ami-abcde123</code>: Capacity provisioned for the job will use the specific AMI</li>
+</ul>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If your are planning to use an AMI which is <em>not using the same OS</em> as the scheduler, you will need to specify <code>base_os</code> parameter</p>
+</div>
+<h4 id="instance_type">instance_type<a class="headerlink" href="#instance_type" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: The type of instance to provision for the simulation</li>
+<li>Examples:<ul>
+<li><code>-l instance_type=c5.large</code>: Provision a c5.large for the simulation</li>
+<li><code>-l instance_type=c5.large+m5.large</code>: Provision c5.large and m5.large (if needed) for the simulation.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can specify multiple instances type using "+" sign.
+ When using more than 1 instance type, AWS will prioritize the capacity based on the order (eg: launch c5.large first and switch to m5.large if AWS can't provision c5.large anymore)</p>
+</div>
+<h4 id="nodes">nodes<a class="headerlink" href="#nodes" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description:The number of EC2 instance to provision</li>
+<li>Examples:<ul>
+<li><code>-l nodes=5</code>: Provision 5 EC2 instances</li>
+</ul>
+</li>
+</ul>
+<h4 id="force_ri">force_ri<a class="headerlink" href="#force_ri" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Restrict a job to run on <a href="https://aws.amazon.com/ec2/pricing/reserved-instances/">Reserved Instance</a></li>
+<li>Allowed Values: <code>True</code> <code>False</code></li>
+<li>Default: <code>False</code></li>
+<li>Examples: <ul>
+<li><code>-l force_ri=False</code>: Job can use RI, On-Demand or Spot</li>
+<li><code>-l force_ri=True</code>: Job will only use Reserved Instance. Job will stay in the queue if there is not enough reserved instance available</li>
+</ul>
+</li>
+</ul>
+<h4 id="spot_allocation_count">spot_allocation_count<a class="headerlink" href="#spot_allocation_count" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Specify the number of SPOT instances to launch when provisioning both OD (On Demand) and SPOT instances</li>
+<li>Allowed Values: Integer</li>
+<li>Examples:<ul>
+<li><code>-l nodes=10 -l spot_price=auto -l spot_allocation_count=8</code>: Provision 10 instances, 2 OD and 8 SPOT with max spot price capped to OD price</li>
+<li><code>-l nodes=10 -l spot_price=1.4 -l spot_allocation_count=5</code>: Provision 10 instances, 5 OD and 5 SPOT with max spot price set to $1.4 </li>
+<li><code>-l nodes=10 -l spot_price=auto</code>: Only provision SPOT instances</li>
+<li><code>-l nodes=10</code>: Only provision OD instances</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This parameter is ignored if <code>spot_price</code> is not specified
+<code>spot_allocation_count</code> must be lower that the total number of nodes you are requesting (eg: you can not do <code>-l nodes=5 -l spot_allocation_count=15</code>)</p>
+</div>
+<h4 id="spot_allocation_strategy">spot_allocation_strategy<a class="headerlink" href="#spot_allocation_strategy" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Choose allocation strategy when using multiple SPOT instances type</li>
+<li>Allowed Valuess: <code>capacity-optimized</code> or <code>lowest-price</code> or <code>diversified</code> (only for SpotFleet deployments)</li>
+<li>Default Value: <code>lowest-price</code></li>
+<li>Examples:<ul>
+<li><code>-l spot_allocation_strategy=capacity-optimized</code>: AWS will provision compute nodes based on capacity availabilities</li>
+</ul>
+</li>
+</ul>
+<h4 id="spot_price">spot_price<a class="headerlink" href="#spot_price" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Enable support for SPOT instances</li>
+<li>Allowed Values: any float value or <code>auto</code></li>
+<li>Examples:<ul>
+<li><code>-l spot_price=auto</code>: Max price will be capped to the On-Demand price</li>
+<li><code>-l spot_price=1.4</code>: Max price you are willing to pay for this instance will be $1.4 an hour.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>spot_price</code> is capped to On-Demand price (e.g: Assuming you are provisioning a t3.medium, AWS will default spot price to 0.418 (OD price) even though you specified <code>-l spot_price=15</code>)</p>
+</div>
+<h4 id="subnet_id">subnet_id<a class="headerlink" href="#subnet_id" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Reference to a subnet ID to use</li>
+<li>Default: If not specified, value default to one of the three private subnets created during installation</li>
+<li>Examples:<ul>
+<li><code>-l subnet_id=sub-123</code>: Will provision capacity on sub-123 subnet</li>
+<li><code>-l subnet_id=sub-123+sub-456+sub-789</code>: + separated list of private subnets. Specifying more than 1 subnet is useful when requesting large number of instances</li>
+<li><code>-l subnet_id=2</code>: SOCA will provision capacity in 2 private subnets chosen randomly</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you specify more than 1 subnet and have <code>placement_group</code> set to True, SOCA will automatically provision capacity and placement group on the first subnet from the list</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capacity provisioning is limited to private subnets.</p>
+</div>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<h3 id="ebs">EBS<a class="headerlink" href="#ebs" title="Permanent link">&para;</a></h3>
+<h4 id="keep_ebs">keep_ebs<a class="headerlink" href="#keep_ebs" title="Permanent link">&para;</a></h4>
+<p><em>Disabled by default</em></p>
+<ul>
+<li>Description: Retain or not the EBS disks once the simulation is complete</li>
+<li>Allowed Values: <code>yes</code> <code>true</code> <code>false</code> <code>no</code> (case insensitive)</li>
+<li>Default Value: <code>False</code></li>
+<li>Example: <ul>
+<li><code>-l keep_ebs=False</code>: (Default) All EBS disks associated to the job will be deleted</li>
+<li><code>-l keep_ebs=True</code>: Retain EBS disks after the simulation has terminated (mostly for debugging/troubleshooting procedures)</li>
+</ul>
+</li>
+</ul>
+<h4 id="root_size">root_size<a class="headerlink" href="#root_size" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Define the size of the local root volume</li>
+<li>Unit: GB</li>
+<li>Example: <code>-l root_size=300</code>: Provision a 300 GB SSD disk for <code>/</code> (either <code>sda1</code> or <code>xvda1</code>)</li>
+</ul>
+<h4 id="scratch_size">scratch_size<a class="headerlink" href="#scratch_size" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Define the size of the local root volume</li>
+<li>Unit: GB</li>
+<li>Example: <code>-l scratch_size=500</code>: Provision a 500 GB SSD disk for <code>/scratch</code></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>scratch disk is automatically mounted on all nodes associated to the simulation under <code>/scratch</code></p>
+</div>
+<h4 id="instance_store">instance_store<a class="headerlink" href="#instance_store" title="Permanent link">&para;</a></h4>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>SOCA automatically mount instance storage when available. </li>
+<li><a href="../../storage/backend-storage-options/#instance-store-partition">For instances having more than 1 volume, SOCA will create a raid device</a></li>
+<li>In all cases, instance store volumes will be mounted on <code>/scratch</code></li>
+</ul>
+</div>
+<h4 id="scratch_iops">scratch_iops<a class="headerlink" href="#scratch_iops" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Define the number of provisioned IOPS to allocate for your <code>/scratch</code> device</li>
+<li>Unit: IOPS</li>
+<li>Example: <code>-l scratch_iops=3000</code>: Your EBS disks provisioned for <code>/scratch</code> will have 3000 dedicated IOPS</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>It is recommended to set the IOPs to 3x storage capacity of your EBS disk</p>
+</div>
+<h3 id="fsx-for-lustre">FSx for Lustre<a class="headerlink" href="#fsx-for-lustre" title="Permanent link">&para;</a></h3>
+<h4 id="fsx_lustre">fsx_lustre<a class="headerlink" href="#fsx_lustre" title="Permanent link">&para;</a></h4>
+<h5 id="with-no-s3-backend">With no S3 backend<a class="headerlink" href="#with-no-s3-backend" title="Permanent link">&para;</a></h5>
+<ul>
+<li>Example: <code>-l fsx_lustre=True</code>: Create a new FSx for Lustre and mount it accross all nodes</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>FSx partitions are mounted as <code>/fsx</code>. This can be changed if needed</li>
+<li>If <code>fsx_lustre_size</code> is not specified, default to 1200 GB</li>
+</ul>
+</div>
+<h5 id="with-s3-backend">With S3 backend<a class="headerlink" href="#with-s3-backend" title="Permanent link">&para;</a></h5>
+<ul>
+<li>Example: <code>-l fsx_lustre=my-bucket-name</code> or <code>-l fsx_lustre=s3://my-bucket-name</code> : Create a new FSx for Lustre and mount it across all nodes</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>FSx partitions are mounted as <code>/fsx</code>. This can be changed if needed</li>
+<li><a href="../../storage/launch-job-with-fsx/#how-to-provision-an-ephemeral-fsx-with-s3-backend">You need to give IAM permission first</a></li>
+<li>If not specified, SOCA automatically prefix your bucket name with  <code>s3://</code></li>
+<li>If <code>fsx_lustre_size</code> is not specified, default to 1200 GB</li>
+<li><a href="../../storage/launch-job-with-fsx/#setup">You can configure custom ImportPath and ExportPath</a></li>
+</ul>
+</div>
+<h5 id="mount-existing-fsx">Mount existing FSx<a class="headerlink" href="#mount-existing-fsx" title="Permanent link">&para;</a></h5>
+<ul>
+<li>Description: Mount an existing FSx to all compute nodes if <code>fsx_lustre</code> points to a FSx filesystem's DNS name</li>
+<li>Example: <code>-l fsx_lustre=fs-xxxx.fsx.region.amazonaws.com</code></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>FSx partitions are mounted as <code>/fsx</code>. This can be changed if needed </li>
+<li>Make sure your FSx for Luster configuration is correct (use SOCA VPC and correct IAM roles)</li>
+<li><a href="../../storage/launch-job-with-fsx/#how-to-connect-to-a-permanentexisting-fsx">Make sure to use the Filesytem's DNS name</a></li>
+</ul>
+</div>
+<h4 id="fsx_lustre_size">fsx_lustre_size<a class="headerlink" href="#fsx_lustre_size" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Create an ephemeral FSx for your job and mount the  S3 bucket specified </li>
+<li>Unit: GB</li>
+<li>Example: <code>-l fsx_lustre_size=3600</code>: Provision a 3.6TB EFS disk</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If <code>fsx_lustre_size</code> is not specified, default to 1200 GB (smallest size supported)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Pre-Requisite</p>
+<p>This parameter is ignored unless you have specified <code>fsx_lustre=True</code></p>
+</div>
+<h4 id="fsx_lustre_deployment_type">fsx_lustre_deployment_type<a class="headerlink" href="#fsx_lustre_deployment_type" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Choose what type of FSx for Lustre you want to deploy</li>
+<li>Allowed Valuess: <code>SCRATCH_1</code> <code>SCRATCH_2</code> <code>PERSISTENT_1</code> (case insensitive)</li>
+<li>Default Value: <code>SCRATCH_1</code></li>
+<li>Example: <code>-l fsx_lustre_deployment_type=scratch_2</code>: Provision a FSx for Lustre with SCRATCH_2 type</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If <code>fsx_lustre_size</code> is not specified, default to 1200 GB (smallest size supported)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Pre-Requisite</p>
+<p>This parameter is ignored unless you have specified <code>fsx_lustre=True</code></p>
+</div>
+<h4 id="fsx_lustre_per_unit_throughput">fsx_lustre_per_unit_throughput<a class="headerlink" href="#fsx_lustre_per_unit_throughput" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Select the baseline disk throughput available for that file system </li>
+<li>Allowed Values: <code>50</code> <code>100</code> <code>200</code></li>
+<li>Unit: MB/s</li>
+<li>Example: <code>-l fsx_lustre_per_unit_throughput=250</code>: </li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Per Unit Throughput is only avaible when using <code>PERSISTENT_1</code> FSx for Lustre</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Pre-Requisite</p>
+<p>This parameter is ignored unless you have specified <code>fsx_lustre=True</code>   </p>
+</div>
+<h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h2>
+<h4 id="efa_support">efa_support<a class="headerlink" href="#efa_support" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Description: Enable EFA support</li>
+<li>Allowed Values: yes, true, True </li>
+<li>Example: <code>-l efa_support=True</code>: Deploy an EFA device on all the nodes</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You must use an EFA compatible instance, otherwise your job will stay in the queue</p>
+</div>
+<h4 id="ht_support_1">ht_support<a class="headerlink" href="#ht_support_1" title="Permanent link">&para;</a></h4>
+<p><em>Disabled by default</em></p>
+<ul>
+<li>Description: Enable support for hyper-threading</li>
+<li>Allowed Values: <code>yes</code> <code>true</code> (case insensitive) </li>
+<li>Example: <code>-l ht_support=True</code>: Enable hyper-threading for all instances</li>
+</ul>
+<h4 id="placement_group">placement_group<a class="headerlink" href="#placement_group" title="Permanent link">&para;</a></h4>
+<p><em>Enabled by default</em></p>
+<ul>
+<li>Description: Disable placement group</li>
+<li>Allowed Values: <code>yes</code> <code>true</code> (case insensitive) </li>
+<li>Example: <code>-l placement_group=True</code>: Instances will use placement groups</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>Placement group is enabled by default as long as the number of nodes provisioned is greated than 1</li>
+</ul>
+</div>
+<h2 id="others">Others<a class="headerlink" href="#others" title="Permanent link">&para;</a></h2>
+<h4 id="system_metrics">system_metrics<a class="headerlink" href="#system_metrics" title="Permanent link">&para;</a></h4>
+<p><em>Default to False</em></p>
+<ul>
+<li>Description: Send host level metrics to your ElasticSearch backend</li>
+<li>Allowed Values: <code>yes</code> <code>no</code> <code>true</code> <code>false</code> (case insensitive) </li>
+<li>Example: <code>-l system_metrics=False</code></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Enabling system_metrics generate a lot of data (especially if you are tracking 1000s of nodes). If needed, <a href="https://aws.amazon.com/premiumsupport/knowledge-center/add-storage-elasticsearch/">you can add more storage to your AWS ElasticSearch cluster</a> </p>
+</div>
+<h4 id="anonymous_metrics">anonymous_metrics<a class="headerlink" href="#anonymous_metrics" title="Permanent link">&para;</a></h4>
+<p><em>Default to the value specified during SOCA installation</em></p>
+<ul>
+<li>Description: <a href="https://docs.aws.amazon.com/solutions/latest/scale-out-computing-on-aws/appendix-d.html">Send anonymous operational metrics to AWS</a></li>
+<li>Allowed Values: <code>yes</code> <code>true</code> <code>no</code> <code>false</code> (case insensitive) </li>
+<li>Example: <code>-l anonymous_metrics=True</code></li>
+</ul>
+<h2 id="how-to-use-custom-parameters">How to use custom parameters<a class="headerlink" href="#how-to-use-custom-parameters" title="Permanent link">&para;</a></h2>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Here is an example about how to use a custom AMI at job or queue level. This example is applicable to all other parameters (simply change the parameter name to the one you one to use). </p>
+</div>
+<h4 id="for-a-single-job">For a single job<a class="headerlink" href="#for-a-single-job" title="Permanent link">&para;</a></h4>
+<p>Use <code>-l instance_ami</code> parameter if you want to only change the AMI for a single job</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">instance_ami</span><span class="o">=</span>ami-082b...<span class="w"> </span>--<span class="w"> </span>/bin/echo<span class="w"> </span>Hello
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Priority</p>
+<p>Job resources have the highest priorities. Your job will always use the AMI specified at submission time even if it's different thant the one configure at queue level.</p>
+</div>
+<h4 id="for-an-entire-queue">For an entire queue<a class="headerlink" href="#for-an-entire-queue" title="Permanent link">&para;</a></h4>
+<p>Edit <code>/apps/soca/$SOCA_CONFIGURATION/cluster_manager/settings/queue_mapping.yml</code> and update the default <code>instance_ami</code> parameter if you want all jobs in this queue to use your new AMI:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">queue_type</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">compute</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;queue1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;queue2&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;queue3&quot;</span><span class="p p-Indicator">]</span><span class="w"> </span>
+<span class="hll"><span class="w">    </span><span class="nt">instance_ami</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;YOUR_AMI_ID&gt;&quot;</span><span class="w"> </span><span class="c1"># &lt;- Add your new AMI </span>
+</span><span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="nt">root_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="nt">scratch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="nt">efa</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">....</span>
+</code></pre></div>
+<h2 id="view-examples"><a href="../launch-your-first-job/#examples">View Examples</a><a class="headerlink" href="#view-examples" title="Permanent link">&para;</a></h2>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="">
+        
+          <a href="../install-soca-cluster/" title="Install your Scale-Out Computing on AWS cluster" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Install your Scale-Out Computing on AWS cluster
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../job-configuration-generator/" title="Job Submission Generator" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Job Submission Generator
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+                  Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+          <hr>
+          <a href="https://aws.amazon.com/privacy/" target="_blank">Privacy</a> | <a href="https://aws.amazon.com/terms/" target="_blank">Site terms</a> | © 2021, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+      </div>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tracking", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>

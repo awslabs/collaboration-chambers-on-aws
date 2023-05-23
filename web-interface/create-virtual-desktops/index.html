@@ -1,0 +1,2570 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../create-virtual-desktops-images/">
+      
+      
+        <link rel="next" href="../create-your-own-queue/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
+    
+    
+      
+        <title>Create Virtual Desktops (Windows/Linux) - SOCA Collaboration Chamber on AWS Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#create-your-windowslinux-desktop" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-header__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SOCA Collaboration Chamber on AWS Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Create Virtual Desktops (Windows/Linux)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      What is Scale-Out Computing on AWS ?
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Custom-AMIs/" class="md-tabs__link">
+        Custom AMIs
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ/" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../analytics/" class="md-tabs__link">
+        Analytics
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../budget/" class="md-tabs__link">
+        Budget
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../debug/" class="md-tabs__link">
+        Debug
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        Security
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../storage/" class="md-tabs__link">
+        Storage
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tutorials/" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
+        Web interface
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../workshops/" class="md-tabs__link">
+        Workshops
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-nav__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SOCA Collaboration Chamber on AWS Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        What is Scale-Out Computing on AWS ?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Custom AMIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Custom AMIs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/image-builder/" class="md-nav__link">
+        EC2 Image Builder
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          FAQ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ/" class="md-nav__link">
+        Knowledge Base - List all Errors
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Analytics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Analytics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/build-kibana-dashboards/" class="md-nav__link">
+        Create your own analytics dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-cluster-activity/" class="md-nav__link">
+        Monitor your cluster and job activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-system-with-metricbeat/" class="md-nav__link">
+        Monitor Nodes with MetricBeat
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Budget
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Budget
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/prevent-overspend-hpc-cost-on-aws-soca/" class="md-nav__link">
+        Keep control of your HPC cost on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/review-hpc-costs/" class="md-nav__link">
+        Review your HPC costs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/set-up-budget-project/" class="md-nav__link">
+        Set up budget per project
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Debug
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Debug
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/desktop-instance/" class="md-nav__link">
+        Desktop Instance Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/web-interface/" class="md-nav__link">
+        Web Interface Debug
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Security
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Security
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/backup-restore-your-cluster/" class="md-nav__link">
+        Backup your entire cluster automatically
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/instance_access/" class="md-nav__link">
+        Instance Access
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/integrate-cognito-sso/" class="md-nav__link">
+        Enable Oauth2 authentication with Cognito
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/internet-proxy/" class="md-nav__link">
+        Internet Proxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/limit-concurrent-job-and-instances/" class="md-nav__link">
+        Restrict number of concurrent jobs and/or instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-acls/" class="md-nav__link">
+        Manage Access Lists at queue level
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-instance-types/" class="md-nav__link">
+        Restrict provisioning of specific instance type
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-restricted-parameters/" class="md-nav__link">
+        Prevent user to change specific parameters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/network-debug/" class="md-nav__link">
+        Network Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/update-soca-dns-ssl-certificate/" class="md-nav__link">
+        Change your DNS name and SSL certificate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/yum_repo_mirror/" class="md-nav__link">
+        Create Private Yum Repos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Storage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Storage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/backend-storage-options/" class="md-nav__link">
+        Understand backend storage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/launch-job-with-fsx/" class="md-nav__link">
+        Launch a job with FSx for Lustre
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/access-soca-cluster/" class="md-nav__link">
+        How to access Scale-Out Computing on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/install-soca-cluster/" class="md-nav__link">
+        Install your Scale-Out Computing on AWS cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/integration-ec2-job-parameters/" class="md-nav__link">
+        Job customization for EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-configuration-generator/" class="md-nav__link">
+        Job Submission Generator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-licenses-flexlm/" class="md-nav__link">
+        Job with FlexLM licenses requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-start-stop-email-notification/" class="md-nav__link">
+        Automatic emails when your job start/stop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/launch-always-on-instances/" class="md-nav__link">
+        Launch AlwaysOn nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/launch-your-first-job/" class="md-nav__link">
+        Launch your first job
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/reduce-compute-node-launch-time-with-custom-ami/" class="md-nav__link">
+        Import custom AMI to provision capacity faster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/troubleshoot-job-queue/" class="md-nav__link">
+        Debug why your jobs are not starting
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Web interface
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Web interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-hpc-job-with-http-web-rest-api/" class="md-nav__link">
+        Control your job with HTTP/REST API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../create-virtual-desktops-images/" class="md-nav__link">
+        Create Virtual Desktop Images for Windows/Linux
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Create Virtual Desktops (Windows/Linux)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Create Virtual Desktops (Windows/Linux)
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-your-windowslinux-desktop" class="md-nav__link">
+    Create your Windows/Linux desktop
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your Windows/Linux desktop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-of-linux-desktop" class="md-nav__link">
+    Example of Linux desktop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-of-windows-desktop" class="md-nav__link">
+    Example of Windows desktop
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stophibernate-your-desktop" class="md-nav__link">
+    Stop/Hibernate your desktop
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-your-desktop-auto-startstop-time" class="md-nav__link">
+    Configure your desktop auto start/stop time
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-your-hardware-requirements-on-the-fly" class="md-nav__link">
+    Update your hardware requirements on the fly
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminate-your-desktop" class="md-nav__link">
+    Terminate your desktop
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-only-retrieve-local-admin-password" class="md-nav__link">
+    (Windows only) Retrieve local admin password
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-custom-windowslinux-images" class="md-nav__link">
+    Create custom Windows/Linux images
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-idle-time-is-calculated" class="md-nav__link">
+    How idle time is calculated?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-configuration" class="md-nav__link">
+    Common configuration
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../create-your-own-queue/" class="md-nav__link">
+        Create your own queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disable-api/" class="md-nav__link">
+        Disable API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import-export-application-profiles/" class="md-nav__link">
+        Import/Export application profiles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manage-ldap-users/" class="md-nav__link">
+        Centralized user/group management
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../my-activity/" class="md-nav__link">
+        My Activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../my-files/" class="md-nav__link">
+        My Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../my-job-queue/" class="md-nav__link">
+        My Job Queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../share-data-windows-sessions/" class="md-nav__link">
+        How to easily share data with your virtual desktops
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../submit-hpc-jobs-web-based-interface/" class="md-nav__link">
+        Submit your HPC job via a custom web interface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          Workshops
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Workshops
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+          DVCon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2">
+          <span class="md-nav__icon md-icon"></span>
+          DVCon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/" class="md-nav__link">
+        DVCon Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2_3" id="__nav_11_2_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/01-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/02-web-login/" class="md-nav__link">
+        Lab 2: Login to SOCA Console and Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/03-login-compile/" class="md-nav__link">
+        Lab 3: Login to Remote Desktop and Compile Design
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/04-submit-batch/" class="md-nav__link">
+        Lab 4: Submit Batch Jobs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/05-load-verdi/" class="md-nav__link">
+        Lab 5: Bring up Verdi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/06-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+          TKO Scale Out Computing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3">
+          <span class="md-nav__icon md-icon"></span>
+          TKO Scale Out Computing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/" class="md-nav__link">
+        Scaling EDA with Vivado Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3_3" id="__nav_11_3_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/071-budgets/" class="md-nav__link">
+        Lab 6: Configure Budgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/08-analytics/" class="md-nav__link">
+        Lab 7: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+          reinvent19 MFG405
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4">
+          <span class="md-nav__icon md-icon"></span>
+          reinvent19 MFG405
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/" class="md-nav__link">
+        MFG405 Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4_3" id="__nav_11_4_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/08-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/z-budgets/" class="md-nav__link">
+        .
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-your-windowslinux-desktop" class="md-nav__link">
+    Create your Windows/Linux desktop
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your Windows/Linux desktop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-of-linux-desktop" class="md-nav__link">
+    Example of Linux desktop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-of-windows-desktop" class="md-nav__link">
+    Example of Windows desktop
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stophibernate-your-desktop" class="md-nav__link">
+    Stop/Hibernate your desktop
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-your-desktop-auto-startstop-time" class="md-nav__link">
+    Configure your desktop auto start/stop time
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-your-hardware-requirements-on-the-fly" class="md-nav__link">
+    Update your hardware requirements on the fly
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminate-your-desktop" class="md-nav__link">
+    Terminate your desktop
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-only-retrieve-local-admin-password" class="md-nav__link">
+    (Windows only) Retrieve local admin password
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-custom-windowslinux-images" class="md-nav__link">
+    Create custom Windows/Linux images
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-idle-time-is-calculated" class="md-nav__link">
+    How idle time is calculated?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-configuration" class="md-nav__link">
+    Common configuration
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Create Virtual Desktops (Windows/Linux)</h1>
+
+<div class="admonition configuration">
+<p class="admonition-title">Feature in preview</p>
+<p>This feature is only available on beta builds</p>
+</div>
+<p>SOCA lets you deploy Windows and/or Linux desktops using <a href="https://aws.amazon.com/hpc/dcv/">NICE DCV</a> technology. To get started, select either "Linux Desktop" or "Windows Desktop" in the left sidebar.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-15.png" /></p>
+<h2 id="create-your-windowslinux-desktop">Create your Windows/Linux desktop<a class="headerlink" href="#create-your-windowslinux-desktop" title="Permanent link">&para;</a></h2>
+<p>To launch your Windows/Linux desktop, you first have to pick a name, choose how much storage you want to allocate as well as specify other options such as hibernation support, compute type, software stack or even subnet id.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-1.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">Need help?</p>
+<p>Hover your mouse on the parameter name to display help section.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-2.png" /></p>
+</div>
+<p>Once you are ready, click "Launch My Session" button. Your session interface will be changed to pending state.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-3.png" /></p>
+<p>Your virtual desktop will be ready within 10-15 minutes. Startup time is based on the image selected, the operating system as well as the instance type. Windows tends to boot faster as some components such as the scheduler or EFS are not installed.</p>
+<div class="admonition info">
+<p class="admonition-title">Nvidia drivers for GPU instances</p>
+<p>SOCA automatically install Nvidia GRID (G3/G4) drivers. Tesla drivers (P3) have to be installed separately by the customers.</p>
+</div>
+<p>Once your virtual desktop is active, your session interface will display two ways to connect to it:</p>
+<p><img alt="" src="../../imgs/virtual-desktop-4.png" /></p>
+<p>You can either access your desktop directly via your browser (Option1) or use the NICE DCV native application (Option2). A link to download the application is provided on the website. For better performance, we recommend using the Option 2.</p>
+<h3 id="example-of-linux-desktop">Example of Linux desktop<a class="headerlink" href="#example-of-linux-desktop" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../imgs/virtual-desktop-5.png" /></p>
+<h3 id="example-of-windows-desktop">Example of Windows desktop<a class="headerlink" href="#example-of-windows-desktop" title="Permanent link">&para;</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Important</p>
+<p>Unlike Linux desktops, Windows desktops are not connected to the scheduler and you cannot submit jobs directly from your Windows system.</p>
+<p>To submit a job via Windows, <a href="../../web-interface/submit-hpc-jobs-web-based-interface/#submit-a-test-job">you first need to access the web ui then submit a job via HTTP endpoint</a> or <a href="../../web-interface/control-hpc-job-with-http-web-rest-api/">via the HTTP REST API</a></p>
+</div>
+<p><img alt="" src="../../imgs/virtual-desktop-14.png" /></p>
+<h2 id="stophibernate-your-desktop">Stop/Hibernate your desktop<a class="headerlink" href="#stophibernate-your-desktop" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">What does hibernate means?</p>
+<p>When you hibernate an instance, your desktop state is saved in memory. When you restart it, all your applications will automatically resume. On the other hand, stopping a virtual desktop is the same as powering off your laptop. Note not all EC2 instances support hibernation.</p>
+</div>
+<p>To stop/hibernate your session, click the "Stop" (or "Hibernate") button in the top bar.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-18.png" /></p>
+<p>A popup will appear, asking you to confirm your action. Click "Stop/Hibernate my session" button to temporarily turn off your virtual desktop.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-6.png" /></p>
+<p>Your desktop is now stopped (you are not charged for compute price while your instance is stopped). To restart your session simply click "Restart your session" button.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-7.png" /></p>
+<h2 id="configure-your-desktop-auto-startstop-time">Configure your desktop auto start/stop time<a class="headerlink" href="#configure-your-desktop-auto-startstop-time" title="Permanent link">&para;</a></h2>
+<p>To change the schedule of your desktop, click the "Schedule" button in the top bar.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-19.png" /></p>
+<p>SOCA will honors your session schedule and automatically start/stop your desktop based on your own schedule.
+Desktop will be stopped outside of scheduled hours only if they are idle.
+You can configure three type of schedule for your desktop:</p>
+<ul>
+<li>Run all day (SOCA will ensures your desktop is up and running from 12 AM to 12 PM)</li>
+<li>Stopped all day (SOCA will ensures your desktop is stopped from 12 AM to 12 PM)</li>
+<li>Custom schedule (SOCA will honors your own schedule)</li>
+</ul>
+<p><img alt="" src="../../imgs/virtual-desktop-8.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you manually start your desktop during off hours, your session will be up and running until it becomes idle. Idle time can be customized by cluster admins.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Schedule and Timezone</p>
+<p>By default, SOCA is configured to use UTC timezone and this may be a problem if you are currently using a different timezone. To fix that, you can adjust your local timezone on <code>config.py</code> (then restart the web ui)</p>
+</div>
+<h2 id="update-your-hardware-requirements-on-the-fly">Update your hardware requirements on the fly<a class="headerlink" href="#update-your-hardware-requirements-on-the-fly" title="Permanent link">&para;</a></h2>
+<p>You can upgrade/downgrade the hardware of your desktop only when your session is stopped and if you have disabled hibernation.
+To do so, click </p>
+<p><img alt="" src="../../imgs/virtual-desktop-9.png" /></p>
+<p>Choose the new type of instance you want to resize your desktop to then click "Change Instance Type".</p>
+<p><img alt="" src="../../imgs/virtual-desktop-10.png" /></p>
+<p>Hardware upgrade/downgrade are instant. Your desktop will use the updated config as soon as you restart it.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-11.png" /></p>
+<h2 id="terminate-your-desktop">Terminate your desktop<a class="headerlink" href="#terminate-your-desktop" title="Permanent link">&para;</a></h2>
+<p>To terminate your desktop, click the "Kill" button from the menu bar.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-12.png" /></p>
+<p>You will be prompted for a confirmation message. Terminate a session may cause data loss if you are using ephemeral storage, so make sure to have uploaded all your data back to SOCA filesystem first.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-13.png" /></p>
+<h2 id="windows-only-retrieve-local-admin-password">(Windows only) Retrieve local admin password<a class="headerlink" href="#windows-only-retrieve-local-admin-password" title="Permanent link">&para;</a></h2>
+<p>As of today, Windows desktops are not configured to OpenLDAP, meaning you will use a local Windows account unique to each session. To retrieve the password for the local Administrator account, click "Get Password" icon.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-16.png" /></p>
+<p>This will open a new window where you can retrieve the password.</p>
+<p><img alt="" src="../../imgs/virtual-desktop-17.png" /></p>
+<h2 id="create-custom-windowslinux-images">Create custom Windows/Linux images<a class="headerlink" href="#create-custom-windowslinux-images" title="Permanent link">&para;</a></h2>
+<p>SOCA images are Windows or Linux desktops with pre-installed applications. <a href="../../web-interface/create-virtual-desktops-images/">Refer to this page to learn more about images management</a></p>
+<h2 id="how-idle-time-is-calculated">How idle time is calculated?<a class="headerlink" href="#how-idle-time-is-calculated" title="Permanent link">&para;</a></h2>
+<p>When you have enabled <code>DCV_LINUX_HIBERNATE_IDLE_SESSION</code>, <code>DCV_LINUX_STOP_IDLE_SESSION</code>, <code>DCV_WINDOWS_HIBERNATE_IDLE_SESSION</code> or <code>DCV_WINDOWS_STOP_IDLE_SESSION</code> configured, SOCA will automatically try to hibernate/stop your idle instance if they are outside of regular schedule hours.</p>
+<p>Idle time is calculated based on:</p>
+<ul>
+<li>Last time the user accessed the virtual desktop</li>
+<li>Current CPUs usage.</li>
+</ul>
+<p>Session will only be stopped/hibernated if current CPUs is below a threshold configured via <code>DCV_IDLE_CPU_THRESHOLD</code> (default to 15%). This setting avoid desktop being stopped/hibernated while compute intensive tasks are still running on, even if the user did not access the desktop for a while.</p>
+<h2 id="common-configuration">Common configuration<a class="headerlink" href="#common-configuration" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>#  General
+TIMEZONE = &quot;UTC&quot;  # Change to match your local timezone if needed. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for all TZ
+
+DCV_FORCE_INSTANCE_HIBERNATE_SUPPORT = False  # If True, users can only provision instances that support hibernation
+DCV_TOKEN_SYMMETRIC_KEY = os.environ[&quot;SOCA_DCV_TOKEN_SYMMETRIC_KEY&quot;]  # used to encrypt/decrypt and validate DCV session auth
+DCV_BLACKLIST_INSTANCE_TYPE = [&#39;metal&#39;, &#39;nano&#39;, &#39;micro&#39;, &#39;p3&#39;, &#39;p2&#39;]  # This instance type won&#39;t be visible on the dropdown menu
+DCV_IDLE_CPU_THRESHOLD = 15  # SOCA will NOT hibernate/stop an instance if current CPU usage % is over this value
+ALLOW_DOWNLOAD_FROM_PORTAL = True  # Give user ability to download files from the web portal
+
+# DCV Linux
+DCV_LINUX_SESSION_COUNT = 4
+DCV_LINUX_ALLOW_INSTANCE_CHANGE = True  # Allow user to change their instance type if their DCV session is stopped
+DCV_LINUX_HIBERNATE_IDLE_SESSION = 1  # In hours. Windows DCV sessions will be hibernated to save cost if there is no active connection within the time specified. 0 to disable
+DCV_LINUX_STOP_IDLE_SESSION = 1  # In hours. Windows DCV sessions will be stopped to save cost if there is no active connection within the time specified. 0 to disable
+DCV_LINUX_TERMINATE_STOPPED_SESSION = 0  # In hours. Stopped Windows DCV will be permanently terminated if user won&#39;t restart it within the time specified. 0 to disable
+
+# DCV Windows
+DCV_WINDOWS_SESSION_COUNT = 4
+DCV_WINDOWS_ALLOW_INSTANCE_CHANGE = True  # Allow user to change their instance type if their DCV session is stopped
+DCV_WINDOWS_HIBERNATE_IDLE_SESSION = 1  # In hours. Windows DCV sessions will be hibernated to save cost if there is no active connection within the time specified. 0 to disable
+DCV_WINDOWS_STOP_IDLE_SESSION = 1  # In hours. Windows DCV sessions will be stopped to save cost if there is no active connection within the time specified. 0 to disable
+DCV_WINDOWS_TERMINATE_STOPPED_SESSION = 0  # In hours. Stopped Windows DCV will be permanently terminated if user won&#39;t restart it within the time specified. 0 to disable
+DCV_WINDOWS_AUTOLOGON = True  # enable or disable autologon. If disabled user will have to manually input Windows password
+ DCV_WINDOWS_AMI = {&quot;graphics&quot;: {&quot;us-east-1&quot;: &quot;ami-035a352d4d53371dc&quot;,
+                                   ....
+                                    &quot;ap-south-1&quot;: &quot;ami-09c1d03de366041a4&quot;},
+                       &quot;non-graphics&quot;: {&quot;us-east-1&quot;: &quot;ami-021660b17250fbc9b&quot;,
+                                        ....
+                                        &quot;ap-south-1&quot;: &quot;ami-08e852f6df553818a&quot;}}
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="">
+        
+          <a href="../create-virtual-desktops-images/" title="Create Virtual Desktop Images for Windows/Linux" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Create Virtual Desktop Images for Windows/Linux
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../create-your-own-queue/" title="Create your own queue" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Create your own queue
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+                  Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+          <hr>
+          <a href="https://aws.amazon.com/privacy/" target="_blank">Privacy</a> | <a href="https://aws.amazon.com/terms/" target="_blank">Site terms</a> | © 2021, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+      </div>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tracking", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>

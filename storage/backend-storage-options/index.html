@@ -1,0 +1,2668 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../launch-job-with-fsx/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
+    
+    
+      
+        <title>Understand backend storage - SOCA Collaboration Chamber on AWS Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#efs-shared-partitions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-header__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SOCA Collaboration Chamber on AWS Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Understand backend storage
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      What is Scale-Out Computing on AWS ?
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Custom-AMIs/" class="md-tabs__link">
+        Custom AMIs
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ/" class="md-tabs__link">
+        FAQ
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../analytics/" class="md-tabs__link">
+        Analytics
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../budget/" class="md-tabs__link">
+        Budget
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../debug/" class="md-tabs__link">
+        Debug
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        Security
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link md-tabs__link--active">
+        Storage
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tutorials/" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../web-interface/" class="md-tabs__link">
+        Web interface
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../workshops/" class="md-tabs__link">
+        Workshops
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SOCA Collaboration Chamber on AWS Knowledge Base" class="md-nav__button md-logo" aria-label="SOCA Collaboration Chamber on AWS Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SOCA Collaboration Chamber on AWS Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/awslabs/collaboration-chambers-on-aws" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    awslabs/collaboration-chambers-on-aws
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        What is Scale-Out Computing on AWS ?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Custom AMIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Custom AMIs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Custom-AMIs/image-builder/" class="md-nav__link">
+        EC2 Image Builder
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          FAQ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          FAQ
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ/" class="md-nav__link">
+        Knowledge Base - List all Errors
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Analytics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Analytics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/build-kibana-dashboards/" class="md-nav__link">
+        Create your own analytics dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-cluster-activity/" class="md-nav__link">
+        Monitor your cluster and job activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analytics/monitor-system-with-metricbeat/" class="md-nav__link">
+        Monitor Nodes with MetricBeat
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Budget
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Budget
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/prevent-overspend-hpc-cost-on-aws-soca/" class="md-nav__link">
+        Keep control of your HPC cost on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/review-hpc-costs/" class="md-nav__link">
+        Review your HPC costs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../budget/set-up-budget-project/" class="md-nav__link">
+        Set up budget per project
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Debug
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Debug
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/desktop-instance/" class="md-nav__link">
+        Desktop Instance Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/web-interface/" class="md-nav__link">
+        Web Interface Debug
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Security
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Security
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/backup-restore-your-cluster/" class="md-nav__link">
+        Backup your entire cluster automatically
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/instance_access/" class="md-nav__link">
+        Instance Access
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/integrate-cognito-sso/" class="md-nav__link">
+        Enable Oauth2 authentication with Cognito
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/internet-proxy/" class="md-nav__link">
+        Internet Proxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/limit-concurrent-job-and-instances/" class="md-nav__link">
+        Restrict number of concurrent jobs and/or instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-acls/" class="md-nav__link">
+        Manage Access Lists at queue level
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-instance-types/" class="md-nav__link">
+        Restrict provisioning of specific instance type
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/manage-queue-restricted-parameters/" class="md-nav__link">
+        Prevent user to change specific parameters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/network-debug/" class="md-nav__link">
+        Network Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/update-soca-dns-ssl-certificate/" class="md-nav__link">
+        Change your DNS name and SSL certificate
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/yum_repo_mirror/" class="md-nav__link">
+        Create Private Yum Repos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Storage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Storage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Understand backend storage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Understand backend storage
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#efs-shared-partitions" class="md-nav__link">
+    EFS (shared) partitions
+  </a>
+  
+    <nav class="md-nav" aria-label="EFS (shared) partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-partition" class="md-nav__link">
+    /data partition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apps-partition" class="md-nav__link">
+    /apps partition
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsx" class="md-nav__link">
+    FSx
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-local-partitions" class="md-nav__link">
+    Instance (local) partitions
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance (local) partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-partition" class="md-nav__link">
+    Root partition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch-partition" class="md-nav__link">
+    Scratch Partition
+  </a>
+  
+    <nav class="md-nav" aria-label="Scratch Partition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-a-scratch-partition-with-ssd-disk" class="md-nav__link">
+    Request a /scratch partition with SSD disk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-a-scratch-partition-with-io-optimized-disk" class="md-nav__link">
+    Request a /scratch partition with IO optimized disk
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-store-partition" class="md-nav__link">
+    Instance store partition
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance store partition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-node-has-1-instance-store-volume" class="md-nav__link">
+    When node has 1 instance store volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-node-has-more-than-1-instance-store-volumes" class="md-nav__link">
+    When node has more than 1 instance store volumes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine-custom-scratch-and-root-size" class="md-nav__link">
+    Combine custom scratch and root size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-storage-parameters-at-queue-level" class="md-nav__link">
+    Change the storage parameters at queue level
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../launch-job-with-fsx/" class="md-nav__link">
+        Launch a job with FSx for Lustre
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/access-soca-cluster/" class="md-nav__link">
+        How to access Scale-Out Computing on AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/install-soca-cluster/" class="md-nav__link">
+        Install your Scale-Out Computing on AWS cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/integration-ec2-job-parameters/" class="md-nav__link">
+        Job customization for EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-configuration-generator/" class="md-nav__link">
+        Job Submission Generator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-licenses-flexlm/" class="md-nav__link">
+        Job with FlexLM licenses requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/job-start-stop-email-notification/" class="md-nav__link">
+        Automatic emails when your job start/stop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/launch-always-on-instances/" class="md-nav__link">
+        Launch AlwaysOn nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/launch-your-first-job/" class="md-nav__link">
+        Launch your first job
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/reduce-compute-node-launch-time-with-custom-ami/" class="md-nav__link">
+        Import custom AMI to provision capacity faster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/troubleshoot-job-queue/" class="md-nav__link">
+        Debug why your jobs are not starting
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Web interface
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Web interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/control-hpc-job-with-http-web-rest-api/" class="md-nav__link">
+        Control your job with HTTP/REST API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-virtual-desktops-images/" class="md-nav__link">
+        Create Virtual Desktop Images for Windows/Linux
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-virtual-desktops/" class="md-nav__link">
+        Create Virtual Desktops (Windows/Linux)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/create-your-own-queue/" class="md-nav__link">
+        Create your own queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/disable-api/" class="md-nav__link">
+        Disable API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/import-export-application-profiles/" class="md-nav__link">
+        Import/Export application profiles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/manage-ldap-users/" class="md-nav__link">
+        Centralized user/group management
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-activity/" class="md-nav__link">
+        My Activity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-files/" class="md-nav__link">
+        My Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/my-job-queue/" class="md-nav__link">
+        My Job Queue
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/share-data-windows-sessions/" class="md-nav__link">
+        How to easily share data with your virtual desktops
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web-interface/submit-hpc-jobs-web-based-interface/" class="md-nav__link">
+        Submit your HPC job via a custom web interface
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          Workshops
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Workshops
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+          DVCon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2">
+          <span class="md-nav__icon md-icon"></span>
+          DVCon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/" class="md-nav__link">
+        DVCon Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_2_3" id="__nav_11_2_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/01-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/02-web-login/" class="md-nav__link">
+        Lab 2: Login to SOCA Console and Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/03-login-compile/" class="md-nav__link">
+        Lab 3: Login to Remote Desktop and Compile Design
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/04-submit-batch/" class="md-nav__link">
+        Lab 4: Submit Batch Jobs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/05-load-verdi/" class="md-nav__link">
+        Lab 5: Bring up Verdi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/06-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/DVCon/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+          TKO Scale Out Computing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3">
+          <span class="md-nav__icon md-icon"></span>
+          TKO Scale Out Computing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/" class="md-nav__link">
+        Scaling EDA with Vivado Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_3_3" id="__nav_11_3_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/071-budgets/" class="md-nav__link">
+        Lab 6: Configure Budgets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/08-analytics/" class="md-nav__link">
+        Lab 7: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/TKO-Scale-Out-Computing/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+          reinvent19 MFG405
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4">
+          <span class="md-nav__icon md-icon"></span>
+          reinvent19 MFG405
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/" class="md-nav__link">
+        MFG405 Workshop Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11_4_3" id="__nav_11_4_3_label" tabindex="0">
+          Modules
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_11_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/02-deploy-env/" class="md-nav__link">
+        Lab 1: Deploy Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/03-configure-desktop/" class="md-nav__link">
+        Lab 2: Configure Remote Desktop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/04-web-login/" class="md-nav__link">
+        Lab 3: Launch Remote Desktop Session
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/06-launch-vivado/" class="md-nav__link">
+        Lab 4: Launch Vivado GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/07-submit-batch/" class="md-nav__link">
+        Lab 5: Submit Batch Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/08-analytics/" class="md-nav__link">
+        Lab 6: Explore Analytics Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/09-wrap-up/" class="md-nav__link">
+        Wrap-up
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workshops/reinvent19-MFG405/modules/z-budgets/" class="md-nav__link">
+        .
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#efs-shared-partitions" class="md-nav__link">
+    EFS (shared) partitions
+  </a>
+  
+    <nav class="md-nav" aria-label="EFS (shared) partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-partition" class="md-nav__link">
+    /data partition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apps-partition" class="md-nav__link">
+    /apps partition
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsx" class="md-nav__link">
+    FSx
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-local-partitions" class="md-nav__link">
+    Instance (local) partitions
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance (local) partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-partition" class="md-nav__link">
+    Root partition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scratch-partition" class="md-nav__link">
+    Scratch Partition
+  </a>
+  
+    <nav class="md-nav" aria-label="Scratch Partition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-a-scratch-partition-with-ssd-disk" class="md-nav__link">
+    Request a /scratch partition with SSD disk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-a-scratch-partition-with-io-optimized-disk" class="md-nav__link">
+    Request a /scratch partition with IO optimized disk
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-store-partition" class="md-nav__link">
+    Instance store partition
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance store partition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-node-has-1-instance-store-volume" class="md-nav__link">
+    When node has 1 instance store volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-node-has-more-than-1-instance-store-volumes" class="md-nav__link">
+    When node has more than 1 instance store volumes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine-custom-scratch-and-root-size" class="md-nav__link">
+    Combine custom scratch and root size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-storage-parameters-at-queue-level" class="md-nav__link">
+    Change the storage parameters at queue level
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Understand backend storage</h1>
+
+<div class="admonition info">
+<p class="admonition-title">Scale-Out Computing on AWS gives you the flexibility to customize your storage backend based on your requirements</p>
+<ul>
+<li>You can customize the root partition size</li>
+<li>You can provision a local scratch partition</li>
+<li>You can deploy standard SSD (gp2) or IO Optimized SSD (io1) volumes</li>
+<li>Scale-Out Computing on AWS automatically leverages instance store disk(s) as scratch partition when applicable</li>
+<li>In term of performance: Instance Store &gt; EBS SSD IO &gt; EBS SSD Standard &gt; EFS</li>
+</ul>
+<p><a href="https://aws.amazon.com/ebs/features/">Refer to this link</a> to learn more about EBS volumes.</p>
+</div>
+<h2 id="efs-shared-partitions">EFS (shared) partitions<a class="headerlink" href="#efs-shared-partitions" title="Permanent link">&para;</a></h2>
+<h3 id="data-partition">/data partition<a class="headerlink" href="#data-partition" title="Permanent link">&para;</a></h3>
+<p>/data is an <a href="https://aws.amazon.com/efs/">Elastic File System</a> partition mounted on all hosts. This contains the home directory of your LDAP users ($HOME = <code>/data/home/&lt;USERNAME&gt;</code>). <strong>This partition is persistent</strong>. Avoid using this partition if your simulation is disk I/O intensive (use /scratch instead)</p>
+<h3 id="apps-partition">/apps partition<a class="headerlink" href="#apps-partition" title="Permanent link">&para;</a></h3>
+<p>/apps is an <a href="https://aws.amazon.com/efs/">Elastic File System</a> partition mounted on all hosts. This partition is designed to host all your CFD/FEA/EDA/Mathematical applications. <strong>This partition is persistent</strong>. Avoid using this partition if your simulation is disk I/O intensive (use /scratch instead)</p>
+<p>The corresponding EFS file system is deployed with bursting Throughput mode which depends on burst credits. /apps has cron jobs that monitor the status of the cluster, scale-up and scale-down the cluster, and is also running the web application. If the cluster stays up and running for 1+ months and not much additional applications are installed under /apps, then EFS file system might run out of burst credits which could impact the web application. Starting v2.6.0, the solution deploys CloudWatch Alarms to monitor the burst credits for /apps EFS file system. When burst credits are close to be depleted, a lambda function is triggered to change the Throughput mode to provisioned at 5 MiB/sec. This increases the monthly cost of EFS by ~$30/month (for us-west-2 and us-east-1 regions). After some time, the file system would have earned enough burst credits, so the lambda function changes Throughput mode back to bursting as it is more cost effective. <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#throughput-modes">Click here to learn more about EFS Throughput modes</a></p>
+<h2 id="fsx">FSx<a class="headerlink" href="#fsx" title="Permanent link">&para;</a></h2>
+<p>Scale-Out Computing on AWS supports FSx natively. <a href="../../storage/launch-job-with-fsx/">Click here to learn how to use FSx as backend storage for your jobs</a>.</p>
+<h2 id="instance-local-partitions">Instance (local) partitions<a class="headerlink" href="#instance-local-partitions" title="Permanent link">&para;</a></h2>
+<p>Below are the storage options you can configure at an instance level for your jobs. If needed, add/remove/modify the storage logic by editing <code>ComputeNode.sh</code> script to match your requirements.</p>
+<h3 id="root-partition">Root partition<a class="headerlink" href="#root-partition" title="Permanent link">&para;</a></h3>
+<p>By default Scale-Out Computing on AWS provision a 10GB EBS disk for the root partition. This may be an issue if you are using a custom AMI configured with a bigger root disk size or if you simply want to allocate additional storage for the root partition. 
+To expand the size of the volume, submit a simulation using <code>-l root_size=&lt;SIZE_IN_GB&gt;</code> parameter.</p>
+<div class="highlight"><pre><span></span><code>user@host:qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">root_size</span><span class="o">=</span><span class="m">25</span><span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+</code></pre></div>
+<p>Result: Root partition is now 25GB</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>lsblk
+NAME<span class="w">          </span>MAJ:MIN<span class="w"> </span>RM<span class="w"> </span>SIZE<span class="w"> </span>RO<span class="w"> </span>TYPE<span class="w"> </span>MOUNTPOINT
+<span class="hll">nvme0n1<span class="w">       </span><span class="m">259</span>:0<span class="w">    </span><span class="m">0</span><span class="w">  </span>25G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+</span>├─nvme0n1p1<span class="w">   </span><span class="m">259</span>:1<span class="w">    </span><span class="m">0</span><span class="w">  </span>25G<span class="w">  </span><span class="m">0</span><span class="w"> </span>part<span class="w"> </span>/
+└─nvme0n1p128<span class="w"> </span><span class="m">259</span>:2<span class="w">    </span><span class="m">0</span><span class="w">   </span>1M<span class="w">  </span><span class="m">0</span><span class="w"> </span>part
+
+user@host:<span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span>/
+Filesystem<span class="w">      </span>Size<span class="w">  </span>Used<span class="w"> </span>Avail<span class="w"> </span>Use%<span class="w"> </span>Mounted<span class="w"> </span>on
+<span class="hll">/dev/nvme0n1p1<span class="w">   </span>25G<span class="w">  </span><span class="m">2</span>.2G<span class="w">   </span>23G<span class="w">   </span><span class="m">9</span>%<span class="w"> </span>/
+</span></code></pre></div>
+<h3 id="scratch-partition">Scratch Partition<a class="headerlink" href="#scratch-partition" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>It's recommended to provision <code>/scratch</code> directory whenever your simulation is I/O intensive.</li>
+<li><code>/scratch</code> is a local partition and will be deleted when you job complete. Make sure to copy the job output back to your $HOME</li>
+<li><code>/scratch</code> is automatically created when Instance supports local ephemeral storage</li>
+</ul>
+</div>
+<h4 id="request-a-scratch-partition-with-ssd-disk">Request a /scratch partition with SSD disk<a class="headerlink" href="#request-a-scratch-partition-with-ssd-disk" title="Permanent link">&para;</a></h4>
+<p>During job submission, specify <code>-l scratch_size=&lt;SIZE_IN_GB&gt;</code> to provision a new EBS disk (<code>/dev/sdj</code>) mounted as <code>/scratch</code></p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">scratch_size</span><span class="o">=</span><span class="m">150</span><span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+</code></pre></div>
+<p>Result: a 150 GB /scratch partition is available on all nodes</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>lsblk
+NAME<span class="w">          </span>MAJ:MIN<span class="w"> </span>RM<span class="w">  </span>SIZE<span class="w"> </span>RO<span class="w"> </span>TYPE<span class="w"> </span>MOUNTPOINT
+<span class="hll">nvme1n1<span class="w">       </span><span class="m">259</span>:0<span class="w">    </span><span class="m">0</span><span class="w">  </span>150G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk<span class="w"> </span>/scratch
+</span>nvme0n1<span class="w">       </span><span class="m">259</span>:1<span class="w">    </span><span class="m">0</span><span class="w">   </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+├─nvme0n1p1<span class="w">   </span><span class="m">259</span>:2<span class="w">    </span><span class="m">0</span><span class="w">   </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>part<span class="w"> </span>/
+└─nvme0n1p128<span class="w"> </span><span class="m">259</span>:3<span class="w">    </span><span class="m">0</span><span class="w">    </span>1M<span class="w">  </span><span class="m">0</span><span class="w"> </span>part
+
+user@host:<span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span>/scratch
+Filesystem<span class="w">      </span>Size<span class="w">  </span>Used<span class="w"> </span>Avail<span class="w"> </span>Use%<span class="w"> </span>Mounted<span class="w"> </span>on
+<span class="hll">/dev/nvme1n1<span class="w">    </span>148G<span class="w">   </span>61M<span class="w">  </span>140G<span class="w">   </span><span class="m">1</span>%<span class="w"> </span>/scratch
+</span></code></pre></div>
+<p>To verify the type of your EBS disk, simply go to your AWS bash &gt; EC2 &gt; Volumes and verify your EBS type is "gp2" (SSD). 
+<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html">Refer to this link</a> for more information about the various EBS types available.</p>
+<p><img alt="" src="../../imgs/storage-1.png" /></p>
+<h4 id="request-a-scratch-partition-with-io-optimized-disk">Request a /scratch partition with IO optimized disk<a class="headerlink" href="#request-a-scratch-partition-with-io-optimized-disk" title="Permanent link">&para;</a></h4>
+<p>To request an optimized SSD disk, use <code>-l scratch_iops=&lt;IOPS&gt;</code> along with <code>-l scratch_size=&lt;SIZE_IN_GB&gt;</code>. <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html">Refer to this link</a> to get more details about burstable/IO EBS disks.
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">scratch_iops</span><span class="o">=</span><span class="m">6000</span><span class="w"> </span>-l<span class="w"> </span><span class="nv">scratch_size</span><span class="o">=</span><span class="m">200</span><span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+</code></pre></div></p>
+<p>Looking at the EBS bash, the disk type is now "io1" and the number of IOPS match the value specified at job submission.</p>
+<p><img alt="" src="../../imgs/storage-2.png" /></p>
+<h3 id="instance-store-partition">Instance store partition<a class="headerlink" href="#instance-store-partition" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Free storage is always good</p>
+<p>You are not charged for instance storage (included in the price of the instance)</p>
+</div>
+<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">Some instances come with default instance storage</a>.
+An instance store provides temporary block-level storage for your instance. This storage is located on disks that are physically attached to the host computer and is removed as soon as the node is deleted.</p>
+<p>Scale-Out Computing on AWS automatically detects instance store disk and will use them as /scratch <strong>unless you specify <code>-l scratch_size</code> parameter for your job</strong>. In this case, Scale-Out Computing on AWS honors the user request and ignore the instance store volume(s).</p>
+<h4 id="when-node-has-1-instance-store-volume">When node has 1 instance store volume<a class="headerlink" href="#when-node-has-1-instance-store-volume" title="Permanent link">&para;</a></h4>
+<p>For this example, I will use a "c5d.9xlarge" instance which is coming with a 900GB instance store disk.</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">instance_type</span><span class="o">=</span>c5d.9xlarge<span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+</code></pre></div>
+<p>Result: Default /scratch partition has been provisioned automatically using local instance storage</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>lsblk
+NAME<span class="w">          </span>MAJ:MIN<span class="w"> </span>RM<span class="w">   </span>SIZE<span class="w"> </span>RO<span class="w"> </span>TYPE<span class="w"> </span>MOUNTPOINT
+<span class="hll">nvme1n1<span class="w">       </span><span class="m">259</span>:0<span class="w">    </span><span class="m">0</span><span class="w"> </span><span class="m">838</span>.2G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk<span class="w"> </span>/scratch
+</span>nvme0n1<span class="w">       </span><span class="m">259</span>:1<span class="w">    </span><span class="m">0</span><span class="w">    </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+├─nvme0n1p1<span class="w">   </span><span class="m">259</span>:2<span class="w">    </span><span class="m">0</span><span class="w">    </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>part<span class="w"> </span>/
+└─nvme0n1p128<span class="w"> </span><span class="m">259</span>:3<span class="w">    </span><span class="m">0</span><span class="w">     </span>1M<span class="w">  </span><span class="m">0</span><span class="w"> </span>part
+
+user@host:<span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span>/scratch
+Filesystem<span class="w">      </span>Size<span class="w">  </span>Used<span class="w"> </span>Avail<span class="w"> </span>Use%<span class="w"> </span>Mounted<span class="w"> </span>on
+<span class="hll">/dev/nvme1n1<span class="w">    </span>825G<span class="w">   </span>77M<span class="w">  </span>783G<span class="w">   </span><span class="m">1</span>%<span class="w"> </span>/scratch
+</span></code></pre></div>
+<h4 id="when-node-has-more-than-1-instance-store-volumes">When node has more than 1 instance store volumes<a class="headerlink" href="#when-node-has-more-than-1-instance-store-volumes" title="Permanent link">&para;</a></h4>
+<p>In this special case, <code>ComputeNode.sh</code> script will create a raid0 partition using all instance store volumes available.</p>
+<p>For this example, I will use a "m5dn.12xlarge" instance which is shipped with a 2 * 900GB instance store disks (total 1.8Tb).</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>qsub<span class="w"> </span>-l<span class="w"> </span><span class="nv">instance_type</span><span class="o">=</span>m5dn.12xlarge<span class="w"> </span>--<span class="w"> </span>/bin/sleep<span class="w"> </span><span class="m">600</span>
+</code></pre></div>
+<p>Result: /scratch is a 1.7TB raid0 partition (using 2 instance store volumes)</p>
+<div class="highlight"><pre><span></span><code>user@host:<span class="w"> </span>lsblk
+NAME<span class="w">          </span>MAJ:MIN<span class="w"> </span>RM<span class="w">   </span>SIZE<span class="w"> </span>RO<span class="w"> </span>TYPE<span class="w">  </span>MOUNTPOINT
+<span class="hll">nvme1n1<span class="w">       </span><span class="m">259</span>:0<span class="w">    </span><span class="m">0</span><span class="w"> </span><span class="m">838</span>.2G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+</span>└─md127<span class="w">         </span><span class="m">9</span>:127<span class="w">  </span><span class="m">0</span><span class="w">   </span><span class="m">1</span>.7T<span class="w">  </span><span class="m">0</span><span class="w"> </span>raid0<span class="w"> </span>/scratch
+<span class="hll">nvme2n1<span class="w">       </span><span class="m">259</span>:1<span class="w">    </span><span class="m">0</span><span class="w"> </span><span class="m">838</span>.2G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+</span>└─md127<span class="w">         </span><span class="m">9</span>:127<span class="w">  </span><span class="m">0</span><span class="w">   </span><span class="m">1</span>.7T<span class="w">  </span><span class="m">0</span><span class="w"> </span>raid0<span class="w"> </span>/scratch
+nvme0n1<span class="w">       </span><span class="m">259</span>:2<span class="w">    </span><span class="m">0</span><span class="w">    </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>disk
+├─nvme0n1p1<span class="w">   </span><span class="m">259</span>:3<span class="w">    </span><span class="m">0</span><span class="w">    </span>10G<span class="w">  </span><span class="m">0</span><span class="w"> </span>part<span class="w">  </span>/
+└─nvme0n1p128<span class="w"> </span><span class="m">259</span>:4<span class="w">    </span><span class="m">0</span><span class="w">     </span>1M<span class="w">  </span><span class="m">0</span><span class="w"> </span>part
+
+user@host:<span class="w"> </span>df<span class="w"> </span>-h<span class="w"> </span>/scratch
+Filesystem<span class="w">      </span>Size<span class="w">  </span>Used<span class="w"> </span>Avail<span class="w"> </span>Use%<span class="w"> </span>Mounted<span class="w"> </span>on
+<span class="hll">/dev/md127<span class="w">      </span><span class="m">1</span>.7T<span class="w">   </span>77M<span class="w">  </span><span class="m">1</span>.6T<span class="w">   </span><span class="m">1</span>%<span class="w"> </span>/scratch
+</span></code></pre></div>
+<h3 id="combine-custom-scratch-and-root-size">Combine custom scratch and root size<a class="headerlink" href="#combine-custom-scratch-and-root-size" title="Permanent link">&para;</a></h3>
+<p>You can combine parameters as needed. For example, <code>qsub -l root_size=150 -l scratch_size=200 -l nodes=2</code> will provision 2 nodes with 150GB / and 200GB SSD /scratch</p>
+<h3 id="change-the-storage-parameters-at-queue-level">Change the storage parameters at queue level<a class="headerlink" href="#change-the-storage-parameters-at-queue-level" title="Permanent link">&para;</a></h3>
+<p>Edit <code>/apps/soca/$SOCA_CONFIGURATION/cluster_manager/settings/queue_mapping.yml</code> to configure default storage settings at a queue level:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">queue_type</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">compute</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># /root will be 30 GB and /scratch will be a standard 100GB SSD</span>
+<span class="w">    </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;queue1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;queue2&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;queue3&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">instance_ami</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ami-082b5a644766e0e6f&quot;</span>
+<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;c5.large&quot;</span>
+<span class="hll"><span class="w">    </span><span class="nt">scratch_size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100&quot;</span>
+</span><span class="hll"><span class="w">    </span><span class="nt">root_size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;30&quot;</span>
+</span><span class="w">    </span><span class="c1"># .. Refer to the doc for more supported parameters</span>
+<span class="w">  </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># /scratch will be a SSD with provisioned IO</span>
+<span class="w">    </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;queue4&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">instance_ami</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ami-082b5a644766e0e6f&quot;</span>
+<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;r5.large&quot;</span>
+<span class="hll"><span class="w">    </span><span class="nt">scratch_size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;300&quot;</span>
+</span><span class="hll"><span class="w">    </span><span class="nt">scratch_iops</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5000&quot;</span>
+</span>
+<span class="w">  </span><span class="nt">instancestore</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># /scratch will use the default instance store</span>
+<span class="w">    </span><span class="nt">queues</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;queue5&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">instance_ami</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ami-082b5a644766e0e6f&quot;</span>
+<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;m5dn.12large&quot;</span>
+<span class="hll"><span class="w">    </span><span class="nt">root_size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;300&quot;</span>
+</span></code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="">
+        
+          <a href="../" title="About" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                About
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../launch-job-with-fsx/" title="Launch a job with FSx for Lustre" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Launch a job with FSx for Lustre
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+                  Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+          <hr>
+          <a href="https://aws.amazon.com/privacy/" target="_blank">Privacy</a> | <a href="https://aws.amazon.com/terms/" target="_blank">Site terms</a> | © 2021, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+      </div>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tracking", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>
